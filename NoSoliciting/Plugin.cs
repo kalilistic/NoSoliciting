@@ -18,7 +18,8 @@ namespace NoSoliciting {
             this.pi = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
             this.ui = new PluginUI(this);
 
-            this.Config = this.pi.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration(this.pi);
+            this.Config = this.pi.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+            this.Config.Initialise(this.pi);
 
             this.rmt = new RMTDetection(this);
 
