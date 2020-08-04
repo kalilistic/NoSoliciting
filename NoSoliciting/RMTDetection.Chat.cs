@@ -37,6 +37,8 @@ namespace NoSoliciting {
             private static readonly Regex rmtRegex = new Regex(@"Off Code( *)", RegexOptions.Compiled);
 
             public static bool IsRMT(string msg) {
+                msg = RMTUtil.Normalise(msg);
+
                 return rmtSubstrings.Any(needle => msg.Contains(needle))
                     || rmtRegex.IsMatch(msg);
             }

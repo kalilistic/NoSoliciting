@@ -25,7 +25,7 @@ namespace NoSoliciting {
                     throw new ArgumentNullException(nameof(desc), "description string cannot be null");
                 }
 
-                desc = desc.ToLowerInvariant();
+                desc = RMTUtil.Normalise(desc).ToLowerInvariant();
 
                 bool containsSell = selling.Any(needle => desc.Contains(needle));
                 bool containsContent = content.Any(needle => desc.Contains(needle));
