@@ -7,7 +7,7 @@ namespace NoSoliciting {
             private static readonly string[] rmtSubstrings = {
                 "4KGOLD",
                 "We have sufficient stock",
-                "VPK.OM",
+                "PVPBANK.COM",
                 "Gil for free",
                 "www.so9.com",
                 "Fast & Convenient",
