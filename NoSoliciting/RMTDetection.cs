@@ -37,8 +37,10 @@ namespace NoSoliciting {
                     continue;
                 }
 
+                string desc = listing.Description();
+
                 // only look at listings that are RMT
-                if (!PartyFinder.IsRMT(listing.Description())) {
+                if (!PartyFinder.IsRMT(desc) && !PartyFinder.MatchesCustomFilters(desc, this.plugin.Config)) {
                     continue;
                 }
 
@@ -76,10 +78,12 @@ namespace NoSoliciting {
 
             string text = message.TextValue;
 
-            if (Chat.IsRMT(text)) {
-                PluginLog.Log($"Handled RMT message: {text}");
-                isHandled = true;
+            if (!Chat.IsRMT(text) && !Chat.MatchesCustomFilters(text, this.plugin.Config)) {
+                return;
             }
+
+            PluginLog.Log($"Handled RMT message: {text}");
+            isHandled = true;
         }
     }
 }

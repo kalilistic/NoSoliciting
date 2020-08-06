@@ -55,6 +55,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,7 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharUtil.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PFPacket.cs" />
     <Compile Include="Plugin.cs" />
@@ -73,6 +73,7 @@
     <Compile Include="RMTDetection.Chat.cs" />
     <Compile Include="RMTDetection.cs" />
     <Compile Include="RMTDetection.PartyFinder.cs" />
+    <Compile Include="RMTUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NoSoliciting.json" />
