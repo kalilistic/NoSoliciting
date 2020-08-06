@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace NoSoliciting {
@@ -34,13 +35,30 @@ namespace NoSoliciting {
                 "使用する5％オ",
                 "offers Fantasia",
             };
-            private static readonly Regex rmtRegex = new Regex(@"Off Code( *)", RegexOptions.Compiled);
+            private static readonly Regex[] rmtRegexes = {
+                new Regex(@"Off Code( *)", RegexOptions.Compiled),
+            };
 
             public static bool IsRMT(string msg) {
                 msg = RMTUtil.Normalise(msg);
 
                 return rmtSubstrings.Any(needle => msg.Contains(needle))
-                    || rmtRegex.IsMatch(msg);
+                    || rmtRegexes.Any(needle => needle.IsMatch(msg));
+            }
+
+            public static bool MatchesCustomFilters(string msg, PluginConfiguration config) {
+                if (config == null) {
+                    throw new ArgumentNullException(nameof(config), "PluginConfiguration cannot be null");
+                }
+
+                if (!config.AdvancedMode || !config.CustomChatFilter) {
+                    return false;
+                }
+
+                msg = RMTUtil.Normalise(msg);
+
+                return config.ChatSubstrings.Any(needle => msg.Contains(needle))
+                    || config.ChatRegexes.Any(needle => Regex.IsMatch(msg, needle));
             }
         }
     }
