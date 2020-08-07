@@ -3,11 +3,13 @@ using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Internal.Network;
 using Dalamud.Plugin;
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
     public partial class RMTDetection {
+        private const ushort PF_LISTING = 0x122;
+        //private static ushort PF_SUMMARY = 0x127;
+
         private readonly Plugin plugin;
 
         public RMTDetection(Plugin plugin) {
@@ -21,8 +23,13 @@ namespace NoSoliciting {
                 return;
             }
 
-            // 0x122 is sent repeatedly until 0x127, which is the last listing packet
-            if (opCode != 0x122 && opCode != 0x127) {
+            // only look at packets coming in
+            if (direction != NetworkMessageDirection.ZoneDown) {
+                return;
+            }
+
+            // PF_LISTING is sent repeatedly until PF_SUMMARY, which is a summary (and also the packet sent for the chat notifs)
+            if (opCode != PF_LISTING) {
                 return;
             }
 
@@ -33,7 +40,7 @@ namespace NoSoliciting {
                 PFListing listing = packet.listings[i];
 
                 // only look at listings that aren't null
-                if (listing.header.All(b => b == 0)) {
+                if (listing.IsNull()) {
                     continue;
                 }
 
