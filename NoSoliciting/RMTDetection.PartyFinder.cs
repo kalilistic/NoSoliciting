@@ -5,7 +5,10 @@ using System.Text.RegularExpressions;
 namespace NoSoliciting {
     public partial class RMTDetection {
         public static class PartyFinder {
-            private static readonly Regex discordTag = new Regex(@".#\d{4}", RegexOptions.Compiled);
+            private static readonly Regex[] discord = {
+                new Regex(@".#\d{4}", RegexOptions.Compiled),
+                new Regex(@"https://discord\.(gg|io)/\w+", RegexOptions.Compiled),
+            };
             private static readonly string[] content = {
                 "eden",
                 "savage",
@@ -29,9 +32,9 @@ namespace NoSoliciting {
 
                 bool containsSell = selling.Any(needle => desc.Contains(needle));
                 bool containsContent = content.Any(needle => desc.Contains(needle));
-                bool containsDiscordTag = discordTag.IsMatch(desc);
+                bool containsDiscord = discord.Any(needle => needle.IsMatch(desc));
 
-                return containsSell && containsDiscordTag && containsContent;
+                return containsSell && containsDiscord && containsContent;
             }
 
             public static bool MatchesCustomFilters(string msg, PluginConfiguration config) {
