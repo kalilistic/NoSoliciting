@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
     public partial class RMTDetection {
-        private const ushort PF_LISTING = 0x122;
-        //private static ushort PF_SUMMARY = 0x127;
+        private const ushort PF_LISTING = 0x358;
+        //private static ushort PF_SUMMARY = 0x223;
 
         private readonly Plugin plugin;
 
