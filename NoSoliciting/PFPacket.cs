@@ -19,19 +19,26 @@ namespace NoSoliciting {
 
     [StructLayout(LayoutKind.Sequential)]
     public struct PFListing {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 28)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
         private readonly byte[] header1;
 
-        internal readonly ushort duty;
-        internal readonly ushort dutyType;
+        private readonly uint unknownInt1;
+        private readonly ushort unknownShort1;
+        private readonly ushort unknownShort2;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         private readonly byte[] header2;
+
+        internal readonly ushort duty;
+        internal readonly byte dutyType;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 11)]
+        private readonly byte[] header3;
 
         internal readonly ushort world;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-        private readonly byte[] header3;
+        private readonly byte[] header4;
 
         internal readonly byte objective;
         internal readonly byte beginnersWelcome;
@@ -40,32 +47,32 @@ namespace NoSoliciting {
         internal readonly byte lootRules;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        internal readonly byte[] header4; // all zero in every pf I've examined
+        internal readonly byte[] header5; // all zero in every pf I've examined
 
         internal readonly uint lastPatchHotfixTimestamp; // last time the servers were restarted?
         internal readonly ushort secondsRemaining;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-        private readonly byte[] header5; // 00 00 01 00 00 00 in every pf I've examined
+        private readonly byte[] header6; // 00 00 01 00 00 00 in every pf I've examined
 
         internal readonly ushort minimumItemLevel;
         internal readonly ushort homeWorld;
         internal readonly ushort currentWorld;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        private readonly byte[] header6; // 02 XX 01 00 in every pf I've examined
+        private readonly byte[] header7; // 02 XX 01 00 in every pf I've examined
 
         internal readonly byte searchArea;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-        private readonly byte[] header7; // 00 01 00 00 00 for every pf except alliance raids where it's 01 03 00 00 00 (second byte # parties?)
+        private readonly byte[] header8; // 00 01 00 00 00 for every pf except alliance raids where it's 01 03 00 00 00 (second byte # parties?)
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         internal readonly uint[] slots;
         private readonly uint job; // job started as?
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        private readonly byte[] header8; // all zero in every pf I've examined
+        private readonly byte[] header9; // all zero in every pf I've examined
 
         // Note that ByValTStr will not work here because the strings are UTF-8 and there's only a CharSet for UTF-16 in C#.
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
