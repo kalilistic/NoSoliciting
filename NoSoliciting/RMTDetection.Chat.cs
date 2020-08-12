@@ -34,6 +34,7 @@ namespace NoSoliciting {
                 "FF14Mog.com",
                 "使用する5％オ",
                 "offers Fantasia",
+                "finalfantasyxiv.com-se.ru", // phishing
             };
             private static readonly Regex[] rmtRegexes = {
                 new Regex(@"Off Code( *)", RegexOptions.Compiled),
