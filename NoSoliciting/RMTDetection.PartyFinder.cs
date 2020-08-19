@@ -7,7 +7,7 @@ namespace NoSoliciting {
         public static class PartyFinder {
             private static readonly Regex[] discord = {
                 new Regex(@".#\d{4}", RegexOptions.Compiled),
-                new Regex(@"https://discord\.(gg|io)/\w+", RegexOptions.Compiled),
+                new Regex(@"discord\.(gg|io)/\w+", RegexOptions.Compiled),
             };
             private static readonly string[] content = {
                 "eden",
