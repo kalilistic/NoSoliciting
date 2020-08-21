@@ -133,9 +133,13 @@ party_finder:
     default: true
     ignore_case: true
     required_matchers:
-      # discord
+      # discord or join/contact
       - - regex: '.#\d{4}'
         - regex: 'discord\.(gg|io)/\w+'
+        - join
+        - /tell
+        - whisper
+        - dm
       # content
       - - eden
         - savage
