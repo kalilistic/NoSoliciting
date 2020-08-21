@@ -46,7 +46,7 @@ namespace NoSoliciting {
         }
 
         private void DrawBasicSettings() {
-            ImGui.SetWindowSize(new Vector2(225, 125));
+            ImGui.SetWindowSize(new Vector2(250, 225));
 
             bool filterChat = this.plugin.Config.FilterChat;
             if (ImGui.Checkbox("Filter RMT from chat", ref filterChat)) {
@@ -54,21 +54,53 @@ namespace NoSoliciting {
                 this.plugin.Config.Save();
             }
 
+            bool filterFC = this.plugin.Config.FilterFCRecruitments;
+            if (ImGui.Checkbox("Filter FC recruitments from chat", ref filterFC)) {
+                this.plugin.Config.FilterFCRecruitments = filterFC;
+                this.plugin.Config.Save();
+            }
+
+            bool filterChatRP = this.plugin.Config.FilterChatRPAds;
+            if (ImGui.Checkbox("Filter RP ads from chat", ref filterChatRP)) {
+                this.plugin.Config.FilterChatRPAds = filterChatRP;
+                this.plugin.Config.Save();
+            }
+
+            ImGui.Separator();
+
             bool filterPartyFinder = this.plugin.Config.FilterPartyFinder;
             if (ImGui.Checkbox("Filter RMT from Party Finder", ref filterPartyFinder)) {
                 this.plugin.Config.FilterPartyFinder = filterPartyFinder;
                 this.plugin.Config.Save();
             }
+
+            bool filterPFRP = this.plugin.Config.FilterPartyFinderRPAds;
+            if (ImGui.Checkbox("Filter RP ads from Party Finder", ref filterPFRP)) {
+                this.plugin.Config.FilterPartyFinderRPAds = filterPFRP;
+                this.plugin.Config.Save();
+            }
         }
 
         private void DrawAdvancedSettings() {
-            ImGui.SetWindowSize(new Vector2(600, 400));
+            ImGui.SetWindowSize(new Vector2(600, 450));
 
             if (ImGui.BeginTabBar("##nosoliciting-tabs")) {
                 if (ImGui.BeginTabItem("Chat")) {
                     bool filterChat = this.plugin.Config.FilterChat;
                     if (ImGui.Checkbox("Enable built-in RMT filter", ref filterChat)) {
                         this.plugin.Config.FilterChat = filterChat;
+                        this.plugin.Config.Save();
+                    }
+
+                    bool filterFC = this.plugin.Config.FilterFCRecruitments;
+                    if (ImGui.Checkbox("Enable built-in FC recruitment filter", ref filterFC)) {
+                        this.plugin.Config.FilterFCRecruitments = filterFC;
+                        this.plugin.Config.Save();
+                    }
+
+                    bool filterChatRP = this.plugin.Config.FilterChatRPAds;
+                    if (ImGui.Checkbox("Enable built-in RP ad filter", ref filterChatRP)) {
+                        this.plugin.Config.FilterChatRPAds = filterChatRP;
                         this.plugin.Config.Save();
                     }
 
@@ -94,6 +126,12 @@ namespace NoSoliciting {
                         this.plugin.Config.Save();
                     }
 
+                    bool filterPFRP = this.plugin.Config.FilterPartyFinderRPAds;
+                    if (ImGui.Checkbox("Enable built-in Party Finder RP filter", ref filterPFRP)) {
+                        this.plugin.Config.FilterPartyFinderRPAds = filterPFRP;
+                        this.plugin.Config.Save();
+                    }
+
                     bool customPF = this.plugin.Config.CustomPFFilter;
                     if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPF)) {
                         this.plugin.Config.CustomPFFilter = customPF;
@@ -107,6 +145,25 @@ namespace NoSoliciting {
                     }
 
                     ImGui.EndTabItem();
+                }
+
+                if (ImGui.BeginTabItem("Definitions")) {
+                    if (this.plugin.Definitions != null) {
+                        ImGui.Text($"Version: {this.plugin.Definitions.Version}");
+                    }
+
+                    if (Definitions.LastUpdate != null) {
+                        ImGui.Text($"Last update: {Definitions.LastUpdate}");
+                    }
+
+                    string error = Definitions.LastError;
+                    if (error != null) {
+                        ImGui.Text($"Last error: {error}");
+                    }
+
+                    if (ImGui.Button("Update definitions")) {
+                        this.plugin.UpdateDefinitions();
+                    }
                 }
 
                 ImGui.EndTabBar();

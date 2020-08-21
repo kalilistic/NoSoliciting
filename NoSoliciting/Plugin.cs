@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.Command;
 using Dalamud.Plugin;
 using System;
+using System.Threading.Tasks;
 
 namespace NoSoliciting {
     public partial class Plugin : IDalamudPlugin {
@@ -13,6 +14,7 @@ namespace NoSoliciting {
         private RMTDetection rmt;
 
         public PluginConfiguration Config { get; private set; }
+        public Definitions Definitions { get; private set; }
 
         public void Initialize(DalamudPluginInterface pluginInterface) {
             this.pi = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
@@ -20,6 +22,8 @@ namespace NoSoliciting {
 
             this.Config = this.pi.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.pi);
+
+            this.UpdateDefinitions();
 
             this.rmt = new RMTDetection(this);
 
@@ -29,6 +33,18 @@ namespace NoSoliciting {
             this.pi.UiBuilder.OnOpenConfigUi += this.ui.OpenSettings;
             this.pi.CommandManager.AddHandler("/prmt", new CommandInfo(OnCommand) {
                 HelpMessage = "Opens the NoSoliciting configuration"
+            });
+        }
+
+        internal void UpdateDefinitions() {
+            Task.Run(async () => {
+                Definitions defs = await Definitions.UpdateAndCache(this).ConfigureAwait(true);
+                // this shouldn't be possible, but what do I know
+                if (defs != null) {
+                    defs.Initialise();
+                    this.Definitions = defs;
+                    Definitions.LastUpdate = DateTime.Now;
+                }
             });
         }
 
