@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 chat:
   rmt:
@@ -34,7 +34,7 @@ chat:
         - "finalfantasyxiv.com-se.ru" # phishing
   free_company:
     ignore_case: true
-    likelihood_threshold: 4
+    likelihood_threshold: 3
     likely_matchers:
       # mentions free company
       - - fc
