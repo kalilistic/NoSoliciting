@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 3
+version: 4
 
 chat:
   rmt:
@@ -122,6 +122,8 @@ chat:
         - community
         - veteran
         - seasoned
+        - casual
+        - new
         - help
         - recruit
 
