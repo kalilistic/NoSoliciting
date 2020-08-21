@@ -41,7 +41,7 @@ namespace NoSoliciting {
                 Definitions defs = await Definitions.UpdateAndCache(this).ConfigureAwait(true);
                 // this shouldn't be possible, but what do I know
                 if (defs != null) {
-                    defs.Initialise();
+                    defs.Initialise(this);
                     this.Definitions = defs;
                     Definitions.LastUpdate = DateTime.Now;
                 }

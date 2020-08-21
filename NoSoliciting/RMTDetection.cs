@@ -3,7 +3,6 @@ using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Internal.Network;
 using Dalamud.Plugin;
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
@@ -20,11 +19,6 @@ namespace NoSoliciting {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "fulfilling a delegate")]
         public void OnNetwork(IntPtr dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, NetworkMessageDirection direction) {
             if (this.plugin.Definitions == null) {
-                return;
-            }
-
-            bool anyFilter = this.plugin.Config.FilterPartyFinder || this.plugin.Config.FilterPartyFinderRPAds || this.plugin.Config.CustomPFFilter;
-            if (!anyFilter) {
                 return;
             }
 
@@ -53,10 +47,12 @@ namespace NoSoliciting {
 
                 bool filter = false;
 
-                // check for RMT if enabled
-                filter |= this.plugin.Config.FilterPartyFinder && this.plugin.Definitions.PartyFinder.RMT.Matches(desc);
-                // check for RP if enabled
-                filter |= this.plugin.Config.FilterPartyFinderRPAds && this.plugin.Definitions.Global.Roleplay.Matches(desc);
+                foreach (Definition def in this.plugin.Definitions.PartyFinder.Values) {
+                    filter |= this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
+                        && enabled
+                        && def.Matches(XivChatType.None, desc);
+                }
+
                 // check for custom filters if enabled
                 filter |= this.plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.plugin.Config);
 
@@ -99,12 +95,12 @@ namespace NoSoliciting {
 
             bool filter = false;
 
-            // check for RMT if enabled
-            filter |= this.plugin.Config.FilterChat && this.plugin.Definitions.Chat.RMT.Matches(text);
-            // check for RP ads if enabled
-            filter |= this.plugin.Config.FilterChatRPAds && this.plugin.Definitions.Global.Roleplay.Matches(text);
-            // check for FC recruitment if enabled
-            filter |= this.plugin.Config.FilterFCRecruitments && this.plugin.Definitions.Chat.FreeCompany.Matches(text);
+            foreach (Definition def in this.plugin.Definitions.Chat.Values) {
+                filter |= this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
+                    && enabled
+                    && def.Matches(type, text);
+            }
+
             // check for custom filters if enabled
             filter |= this.plugin.Config.CustomChatFilter && Chat.MatchesCustomFilters(text, this.plugin.Config);
 
