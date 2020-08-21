@@ -164,6 +164,7 @@ namespace NoSoliciting {
         public List<List<Matcher>> LikelyMatchers { get; private set; } = new List<List<Matcher>>();
         public int LikelihoodThreshold { get; private set; } = 0;
         public bool IgnoreCase { get; private set; } = false;
+        public bool Normalise { get; private set; } = true;
 
         internal void Initialise() {
             if (this.initialised) {
@@ -188,6 +189,10 @@ namespace NoSoliciting {
         public bool Matches(string text) {
             if (text == null) {
                 throw new ArgumentNullException(nameof(text), "string cannot be null");
+            }
+
+            if (this.Normalise) {
+                text = RMTUtil.Normalise(text);
             }
 
             if (this.IgnoreCase) {
