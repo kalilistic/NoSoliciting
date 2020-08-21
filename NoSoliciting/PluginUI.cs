@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -7,6 +8,7 @@ using System.Text.RegularExpressions;
 namespace NoSoliciting {
     public class PluginUI {
         private readonly Plugin plugin;
+        private bool resizeWindow = false;
 
         private bool _showSettings;
         public bool ShowSettings { get => this._showSettings; set => this._showSettings = value; }
@@ -26,6 +28,12 @@ namespace NoSoliciting {
         }
 
         public void DrawSettings() {
+            if (this.resizeWindow) {
+                this.resizeWindow = false;
+                ImGui.SetNextWindowSize(new Vector2(this.plugin.Config.AdvancedMode ? 600 : 0, 0));
+            } else {
+                ImGui.SetNextWindowSize(new Vector2(0, 0), ImGuiCond.FirstUseEver);
+            }
             if (ImGui.Begin($"{this.plugin.Name} settings", ref this._showSettings)) {
                 if (this.plugin.Config.AdvancedMode) {
                     this.DrawAdvancedSettings();
@@ -39,6 +47,7 @@ namespace NoSoliciting {
                 if (ImGui.Checkbox("Advanced mode", ref advanced)) {
                     this.plugin.Config.AdvancedMode = advanced;
                     this.plugin.Config.Save();
+                    resizeWindow = true;
                 }
 
                 ImGui.End();
@@ -46,105 +55,55 @@ namespace NoSoliciting {
         }
 
         private void DrawBasicSettings() {
-            ImGui.SetWindowSize(new Vector2(250, 225));
-
-            bool filterChat = this.plugin.Config.FilterChat;
-            if (ImGui.Checkbox("Filter RMT from chat", ref filterChat)) {
-                this.plugin.Config.FilterChat = filterChat;
-                this.plugin.Config.Save();
+            if (this.plugin.Definitions == null) {
+                return;
             }
 
-            bool filterFC = this.plugin.Config.FilterFCRecruitments;
-            if (ImGui.Checkbox("Filter FC recruitments from chat", ref filterFC)) {
-                this.plugin.Config.FilterFCRecruitments = filterFC;
-                this.plugin.Config.Save();
-            }
-
-            bool filterChatRP = this.plugin.Config.FilterChatRPAds;
-            if (ImGui.Checkbox("Filter RP ads from chat", ref filterChatRP)) {
-                this.plugin.Config.FilterChatRPAds = filterChatRP;
-                this.plugin.Config.Save();
-            }
+            this.DrawCheckboxes(this.plugin.Definitions.Chat.Values, true, "chat");
 
             ImGui.Separator();
 
-            bool filterPartyFinder = this.plugin.Config.FilterPartyFinder;
-            if (ImGui.Checkbox("Filter RMT from Party Finder", ref filterPartyFinder)) {
-                this.plugin.Config.FilterPartyFinder = filterPartyFinder;
-                this.plugin.Config.Save();
-            }
-
-            bool filterPFRP = this.plugin.Config.FilterPartyFinderRPAds;
-            if (ImGui.Checkbox("Filter RP ads from Party Finder", ref filterPFRP)) {
-                this.plugin.Config.FilterPartyFinderRPAds = filterPFRP;
-                this.plugin.Config.Save();
-            }
+            this.DrawCheckboxes(this.plugin.Definitions.PartyFinder.Values, true, "Party Finder");
         }
 
         private void DrawAdvancedSettings() {
-            ImGui.SetWindowSize(new Vector2(600, 450));
-
             if (ImGui.BeginTabBar("##nosoliciting-tabs")) {
-                if (ImGui.BeginTabItem("Chat")) {
-                    bool filterChat = this.plugin.Config.FilterChat;
-                    if (ImGui.Checkbox("Enable built-in RMT filter", ref filterChat)) {
-                        this.plugin.Config.FilterChat = filterChat;
-                        this.plugin.Config.Save();
+                if (this.plugin.Definitions != null) {
+                    if (ImGui.BeginTabItem("Chat")) {
+                        this.DrawCheckboxes(this.plugin.Definitions.Chat.Values, false, "chat");
+
+                        bool customChat = this.plugin.Config.CustomChatFilter;
+                        if (ImGui.Checkbox("Enable custom chat filters", ref customChat)) {
+                            this.plugin.Config.CustomChatFilter = customChat;
+                            this.plugin.Config.Save();
+                        }
+
+                        if (this.plugin.Config.CustomChatFilter) {
+                            List<string> substrings = this.plugin.Config.ChatSubstrings;
+                            List<string> regexes = this.plugin.Config.ChatRegexes;
+                            this.DrawCustom("chat", ref substrings, ref regexes);
+                        }
+
+                        ImGui.EndTabItem();
                     }
 
-                    bool filterFC = this.plugin.Config.FilterFCRecruitments;
-                    if (ImGui.Checkbox("Enable built-in FC recruitment filter", ref filterFC)) {
-                        this.plugin.Config.FilterFCRecruitments = filterFC;
-                        this.plugin.Config.Save();
+                    if (ImGui.BeginTabItem("Party Finder")) {
+                        this.DrawCheckboxes(this.plugin.Definitions.PartyFinder.Values, false, "Party Finder");
+
+                        bool customPF = this.plugin.Config.CustomPFFilter;
+                        if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPF)) {
+                            this.plugin.Config.CustomPFFilter = customPF;
+                            this.plugin.Config.Save();
+                        }
+
+                        if (this.plugin.Config.CustomPFFilter) {
+                            List<string> substrings = this.plugin.Config.PFSubstrings;
+                            List<string> regexes = this.plugin.Config.PFRegexes;
+                            this.DrawCustom("pf", ref substrings, ref regexes);
+                        }
+
+                        ImGui.EndTabItem();
                     }
-
-                    bool filterChatRP = this.plugin.Config.FilterChatRPAds;
-                    if (ImGui.Checkbox("Enable built-in RP ad filter", ref filterChatRP)) {
-                        this.plugin.Config.FilterChatRPAds = filterChatRP;
-                        this.plugin.Config.Save();
-                    }
-
-                    bool customChat = this.plugin.Config.CustomChatFilter;
-                    if (ImGui.Checkbox("Enable custom chat filters", ref customChat)) {
-                        this.plugin.Config.CustomChatFilter = customChat;
-                        this.plugin.Config.Save();
-                    }
-
-                    if (this.plugin.Config.CustomChatFilter) {
-                        List<string> substrings = this.plugin.Config.ChatSubstrings;
-                        List<string> regexes = this.plugin.Config.ChatRegexes;
-                        this.DrawCustom("chat", ref substrings, ref regexes);
-                    }
-
-                    ImGui.EndTabItem();
-                }
-
-                if (ImGui.BeginTabItem("Party Finder")) {
-                    bool filterPartyFinder = this.plugin.Config.FilterPartyFinder;
-                    if (ImGui.Checkbox("Enable built-in Party Finder RMT filter", ref filterPartyFinder)) {
-                        this.plugin.Config.FilterPartyFinder = filterPartyFinder;
-                        this.plugin.Config.Save();
-                    }
-
-                    bool filterPFRP = this.plugin.Config.FilterPartyFinderRPAds;
-                    if (ImGui.Checkbox("Enable built-in Party Finder RP filter", ref filterPFRP)) {
-                        this.plugin.Config.FilterPartyFinderRPAds = filterPFRP;
-                        this.plugin.Config.Save();
-                    }
-
-                    bool customPF = this.plugin.Config.CustomPFFilter;
-                    if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPF)) {
-                        this.plugin.Config.CustomPFFilter = customPF;
-                        this.plugin.Config.Save();
-                    }
-
-                    if (this.plugin.Config.CustomPFFilter) {
-                        List<string> substrings = this.plugin.Config.PFSubstrings;
-                        List<string> regexes = this.plugin.Config.PFRegexes;
-                        this.DrawCustom("pf", ref substrings, ref regexes);
-                    }
-
-                    ImGui.EndTabItem();
                 }
 
                 if (ImGui.BeginTabItem("Definitions")) {
@@ -177,20 +136,24 @@ namespace NoSoliciting {
             if (ImGui.BeginChild($"##{name}-substrings", new Vector2(0, 175))) {
                 for (int i = 0; i < substrings.Count; i++) {
                     string input = substrings[i];
-                    if (ImGui.InputText($"##{name}-substring-{i}", ref input, 100)) {
+                    if (ImGui.InputText($"##{name}-substring-{i}", ref input, 1_000)) {
                         if (input.Length != 0) {
                             substrings[i] = input;
                         }
                     }
                     ImGui.SameLine();
-                    if (ImGui.Button($"Remove##{name}-substring-{i}-remove")) {
+                    ImGui.PushFont(UiBuilder.IconFont);
+                    if (ImGui.Button($"{FontAwesomeIcon.Trash.ToIconString()}##{name}-substring-{i}-remove")) {
                         substrings.RemoveAt(i);
                     }
+                    ImGui.PopFont();
                 }
 
-                if (ImGui.Button($"Add##{name}-substring-add")) {
+                ImGui.PushFont(UiBuilder.IconFont);
+                if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{name}-substring-add")) {
                     substrings.Add("");
                 }
+                ImGui.PopFont();
 
                 ImGui.EndChild();
             }
@@ -201,7 +164,7 @@ namespace NoSoliciting {
             if (ImGui.BeginChild($"##{name}-regexes", new Vector2(0, 175))) {
                 for (int i = 0; i < regexes.Count; i++) {
                     string input = regexes[i];
-                    if (ImGui.InputText($"##{name}-regex-{i}", ref input, 100)) {
+                    if (ImGui.InputText($"##{name}-regex-{i}", ref input, 1_000)) {
                         bool valid = true;
                         try {
                             _ = new Regex(input);
@@ -213,14 +176,18 @@ namespace NoSoliciting {
                         }
                     }
                     ImGui.SameLine();
-                    if (ImGui.Button($"Remove##{name}-regex-{i}-remove")) {
+                    ImGui.PushFont(UiBuilder.IconFont);
+                    if (ImGui.Button($"{FontAwesomeIcon.Trash.ToIconString()}##{name}-regex-{i}-remove")) {
                         regexes.RemoveAt(i);
                     }
+                    ImGui.PopFont();
                 }
 
-                if (ImGui.Button($"Add##{name}-regex-add")) {
+                ImGui.PushFont(UiBuilder.IconFont);
+                if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{name}-regex-add")) {
                     regexes.Add("");
                 }
+                ImGui.PopFont();
 
                 ImGui.EndChild();
             }
@@ -229,6 +196,18 @@ namespace NoSoliciting {
 
             if (ImGui.Button($"Save filters##{name}-save")) {
                 this.plugin.Config.Save();
+            }
+        }
+
+        private void DrawCheckboxes(IEnumerable<Definition> defs, bool basic, string labelFillIn) {
+            foreach (Definition def in defs) {
+                this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled);
+                string label = basic ? def.Option.Basic : def.Option.Advanced;
+                label = label.Replace("{}", labelFillIn);
+                if (ImGui.Checkbox(label, ref enabled)) {
+                    this.plugin.Config.FilterStatus[def.Id] = enabled;
+                    this.plugin.Config.Save();
+                }
             }
         }
     }

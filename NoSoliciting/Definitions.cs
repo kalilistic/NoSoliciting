@@ -1,4 +1,5 @@
-﻿using Dalamud.Plugin;
+﻿using Dalamud.Game.Chat;
+using Dalamud.Plugin;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,9 +22,11 @@ namespace NoSoliciting {
         private const string URL = "https://git.sr.ht/~jkcclemens/NoSoliciting/blob/master/NoSoliciting/definitions.yaml";
 
         public uint Version { get; private set; }
-        public ChatDefinitions Chat { get; private set; }
-        public PartyFinderDefinitions PartyFinder { get; private set; }
-        public GlobalDefinitions Global { get; private set; }
+        [YamlIgnore]
+        public int Count { get => this.Chat.Count + this.PartyFinder.Count + this.Global.Count; }
+        public Dictionary<string, Definition> Chat { get; private set; }
+        public Dictionary<string, Definition> PartyFinder { get; private set; }
+        public Dictionary<string, Definition> Global { get; private set; }
 
         public static async Task<Definitions> UpdateAndCache(Plugin plugin) {
             Definitions defs = null;
@@ -128,50 +131,60 @@ namespace NoSoliciting {
             }
         }
 
-        internal void Initialise() {
-            Definition[] all = {
-                this.Chat.RMT,
-                this.Chat.FreeCompany,
-                this.PartyFinder.RMT,
-                this.Global.Roleplay,
-            };
+        internal void Initialise(Plugin plugin) {
+            IEnumerable<KeyValuePair<string, Definition>> defs = this.Chat.Select(e => new KeyValuePair<string, Definition>($"chat.{e.Key}", e.Value))
+                .Concat(this.PartyFinder.Select(e => new KeyValuePair<string, Definition>($"party_finder.{e.Key}", e.Value)));
 
-            foreach (Definition def in all) {
-                def.Initialise();
+            foreach (KeyValuePair<string, Definition> entry in defs) {
+                entry.Value.Initialise(entry.Key);
+                if (!plugin.Config.FilterStatus.TryGetValue(entry.Key, out _)) {
+                    plugin.Config.FilterStatus[entry.Key] = entry.Value.Default;
+                }
             }
+
+            foreach (KeyValuePair<string, Definition> entry in this.Global) {
+                Definition chat = entry.Value.Clone();
+                chat.Initialise($"chat.global.{entry.Key}");
+                this.Chat[$"global.{entry.Key}"] = chat;
+
+                Definition pf = entry.Value.Clone();
+                pf.Initialise($"party_finder.global.{entry.Key}");
+                this.PartyFinder[$"global.{entry.Key}"] = pf;
+
+                if (!plugin.Config.FilterStatus.TryGetValue(chat.Id, out _)) {
+                    plugin.Config.FilterStatus[chat.Id] = chat.Default;
+                }
+                if (!plugin.Config.FilterStatus.TryGetValue(pf.Id, out _)) {
+                    plugin.Config.FilterStatus[pf.Id] = pf.Default;
+                }
+            }
+
+            plugin.Config.Save();
         }
-    }
-
-    public class ChatDefinitions {
-        [YamlMember(Alias = "rmt")]
-        public Definition RMT { get; private set; }
-        public Definition FreeCompany { get; private set; }
-    }
-
-    public class PartyFinderDefinitions {
-        [YamlMember(Alias = "rmt")]
-        public Definition RMT { get; private set; }
-    }
-
-    public class GlobalDefinitions {
-        public Definition Roleplay { get; private set; }
     }
 
     public class Definition {
         private bool initialised = false;
 
+        [YamlIgnore]
+        public string Id { get; private set; }
         public List<List<Matcher>> RequiredMatchers { get; private set; } = new List<List<Matcher>>();
         public List<List<Matcher>> LikelyMatchers { get; private set; } = new List<List<Matcher>>();
         public int LikelihoodThreshold { get; private set; } = 0;
         public bool IgnoreCase { get; private set; } = false;
         public bool Normalise { get; private set; } = true;
+        public List<XivChatType> Channels { get; private set; } = new List<XivChatType>();
+        public OptionNames Option { get; private set; }
+        public bool Default { get; private set; } = false;
 
-        internal void Initialise() {
+        internal void Initialise(string id) {
             if (this.initialised) {
                 return;
             }
 
             this.initialised = true;
+
+            this.Id = id ?? throw new ArgumentNullException(nameof(id), "string cannot be null");
 
             if (!this.IgnoreCase) {
                 return;
@@ -186,9 +199,13 @@ namespace NoSoliciting {
             }
         }
 
-        public bool Matches(string text) {
+        public bool Matches(XivChatType type, string text) {
             if (text == null) {
                 throw new ArgumentNullException(nameof(text), "string cannot be null");
+            }
+
+            if (this.Channels.Count != 0 && !this.Channels.Contains(type)) {
+                return false;
             }
 
             if (this.Normalise) {
@@ -216,6 +233,19 @@ namespace NoSoliciting {
 
             // matches only if likelihood is greater than or equal the threshold
             return likelihood >= this.LikelihoodThreshold;
+        }
+
+        public Definition Clone() {
+            return new Definition {
+                RequiredMatchers = this.RequiredMatchers,
+                LikelyMatchers = this.LikelyMatchers,
+                LikelihoodThreshold = this.LikelihoodThreshold,
+                IgnoreCase = this.IgnoreCase,
+                Normalise = this.Normalise,
+                Channels = this.Channels,
+                Option = this.Option,
+                Default = this.Default,
+            };
         }
     }
 
@@ -256,6 +286,11 @@ namespace NoSoliciting {
 
             throw new ApplicationException("Matcher created without substring or regex");
         }
+    }
+
+    public class OptionNames {
+        public string Basic { get; private set; }
+        public string Advanced { get; private set; }
     }
 
     internal sealed class MatcherConverter : IYamlTypeConverter {

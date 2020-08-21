@@ -11,12 +11,19 @@ namespace NoSoliciting {
 
         public int Version { get; set; } = 1;
 
+        [Obsolete("Use EnabledFilters")]
         public bool FilterChat { get; set; } = true;
+        [Obsolete("Use EnabledFilters")]
         public bool FilterFCRecruitments { get; set; } = false;
+        [Obsolete("Use EnabledFilters")]
         public bool FilterChatRPAds { get; set; } = false;
 
+        [Obsolete("Use EnabledFilters")]
         public bool FilterPartyFinder { get; set; } = true;
+        [Obsolete("Use EnabledFilters")]
         public bool FilterPartyFinderRPAds { get; set; } = false;
+
+        public Dictionary<string, bool> FilterStatus { get; private set; } = new Dictionary<string, bool>();
 
         public bool AdvancedMode { get; set; } = false;
 
