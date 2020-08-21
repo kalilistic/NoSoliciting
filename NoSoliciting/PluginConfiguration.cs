@@ -12,7 +12,11 @@ namespace NoSoliciting {
         public int Version { get; set; } = 1;
 
         public bool FilterChat { get; set; } = true;
+        public bool FilterFCRecruitments { get; set; } = false;
+        public bool FilterChatRPAds { get; set; } = false;
+
         public bool FilterPartyFinder { get; set; } = true;
+        public bool FilterPartyFinderRPAds { get; set; } = false;
 
         public bool AdvancedMode { get; set; } = false;
 

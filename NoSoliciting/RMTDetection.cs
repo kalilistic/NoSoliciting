@@ -3,6 +3,7 @@ using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Internal.Network;
 using Dalamud.Plugin;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
@@ -18,8 +19,12 @@ namespace NoSoliciting {
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "fulfilling a delegate")]
         public void OnNetwork(IntPtr dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, NetworkMessageDirection direction) {
-            // only filter when enabled
-            if (!this.plugin.Config.FilterPartyFinder) {
+            if (this.plugin.Definitions == null) {
+                return;
+            }
+
+            bool anyFilter = this.plugin.Config.FilterPartyFinder || this.plugin.Config.FilterPartyFinderRPAds || this.plugin.Config.CustomPFFilter;
+            if (!anyFilter) {
                 return;
             }
 
@@ -46,15 +51,23 @@ namespace NoSoliciting {
 
                 string desc = listing.Description();
 
-                // only look at listings that are RMT
-                if (!PartyFinder.IsRMT(desc) && !PartyFinder.MatchesCustomFilters(desc, this.plugin.Config)) {
+                bool filter = false;
+
+                // check for RMT if enabled
+                filter |= this.plugin.Config.FilterPartyFinder && this.plugin.Definitions.PartyFinder.RMT.Matches(desc);
+                // check for RP if enabled
+                filter |= this.plugin.Config.FilterPartyFinderRPAds && this.plugin.Definitions.Global.Roleplay.Matches(desc);
+                // check for custom filters if enabled
+                filter |= this.plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.plugin.Config);
+
+                if (!filter) {
                     continue;
                 }
 
                 // replace the listing with an empty one
                 packet.listings[i] = new PFListing();
 
-                PluginLog.Log($"Filtered out PF listing from {listing.Name()}: {listing.Description()}");
+                PluginLog.Log($"Filtered PF listing from {listing.Name()}: {listing.Description()}");
             }
 
             // get some memory for writing to
@@ -78,18 +91,28 @@ namespace NoSoliciting {
                 throw new ArgumentNullException(nameof(message), "SeString cannot be null");
             }
 
-            // only filter when enabled
-            if (!this.plugin.Config.FilterChat) {
+            if (this.plugin.Definitions == null) {
                 return;
             }
 
             string text = message.TextValue;
 
-            if (!Chat.IsRMT(text) && !Chat.MatchesCustomFilters(text, this.plugin.Config)) {
+            bool filter = false;
+
+            // check for RMT if enabled
+            filter |= this.plugin.Config.FilterChat && this.plugin.Definitions.Chat.RMT.Matches(text);
+            // check for RP ads if enabled
+            filter |= this.plugin.Config.FilterChatRPAds && this.plugin.Definitions.Global.Roleplay.Matches(text);
+            // check for FC recruitment if enabled
+            filter |= this.plugin.Config.FilterFCRecruitments && this.plugin.Definitions.Chat.FreeCompany.Matches(text);
+            // check for custom filters if enabled
+            filter |= this.plugin.Config.CustomChatFilter && Chat.MatchesCustomFilters(text, this.plugin.Config);
+
+            if (!filter) {
                 return;
             }
 
-            PluginLog.Log($"Handled RMT message: {text}");
+            PluginLog.Log($"Filtered chat message: {text}");
             isHandled = true;
         }
     }

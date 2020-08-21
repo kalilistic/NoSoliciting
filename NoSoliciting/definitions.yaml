@@ -1,0 +1,133 @@
+version: 1
+
+chat:
+  rmt:
+    required_matchers:
+      - - "4KGOLD"
+        - "We have sufficient stock"
+        - "PVPBANK.COM"
+        - "Gil for free"
+        - "www.so9.com"
+        - "Fast & Convenient"
+        - "Cheap & Safety Guarantee"
+        - "【Code|A O A U E"
+        - "igfans"
+        - "4KGOLD.COM"
+        - "Cheapest Gil with"
+        - "pvp and bank on google"
+        - "Selling Cheap GIL"
+        - "ff14mogstation.com"
+        - "Cheap Gil 1000k"
+        - "gilsforyou"
+        - "server 1000K ="
+        - "gils_selling"
+        - "E A S Y.C O M"
+        - "bonus code"
+        - "mins delivery guarantee"
+        - "Sell cheap"
+        - "Salegm.com"
+        - "cheap Mog"
+        - "Off Code"
+        - "FF14Mog.com"
+        - "使用する5％オ"
+        - "offers Fantasia"
+        - "finalfantasyxiv.com-se.ru" # phishing
+  free_company:
+    ignore_case: true
+    likelihood_threshold: 4
+    likely_matchers:
+      # mentions free company
+      - - fc
+        - free company
+      # contains a call to action
+      - - join
+        - apply
+        - /tell
+        - /t
+        - dm
+        - whisper
+      # mentions benefits
+      - - discord
+        - map
+        - rank
+        - active
+        - weekly
+        - social
+        - friendly
+        - buff
+        - event
+        - house
+      # has common keywords
+      - - family
+        - community
+        - new
+        - veteran
+        - seasoned
+        - help
+        - recruit
+
+party_finder:
+  rmt:
+    ignore_case: true
+    required_matchers:
+      # discord
+      - - regex: '.#\d{4}'
+        - regex: 'discord\.(gg|io)/\w+'
+      # content
+      - - eden
+        - savage
+        - primal
+        - ultimate
+        - ex
+      # selling
+      - - sell
+        - $ell
+        - sale
+        - price
+        - cheap
+
+global:
+  roleplay:
+    ignore_case: true
+    required_matchers:
+      - - regex: 'w(ard)?\s*\d+[\s/,]*(p(lot)?|a(pt\.?|partment)?)\s*\d+'
+    likelihood_threshold: 1
+    likely_matchers:
+      # mentions roleplaying or fairly rp-only keywords
+      - - rp
+        - roleplay
+        - role play
+        - sfw # also catches nsfw
+        - '18+'
+        - '18 +'
+        - open
+      # has venue type
+      - - cafe
+        - bar
+        - lounge
+        - brothel
+        - casino
+        - venue
+        - restaurant
+        - library
+        - bookstore
+        - book store
+      # mentions services/activities
+      - - entertainment
+        - live
+        - raffle
+        - menu
+        - atmosphere
+        - drink
+        - food
+        - eat
+        - dance
+        - dancing
+        - music
+        - contest
+      # mentions a housing zone
+      - - gob # catches goblet, as well
+        - mist
+        - lb
+        - lav # catches lavender/lavender beds, as well
+        - shiro # catches shirogane, as well
