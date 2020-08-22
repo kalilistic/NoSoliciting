@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 4
+version: 5
 
 chat:
   rmt:
@@ -117,8 +117,12 @@ chat:
         - buff
         - event
         - house
+        - level
+        - raid
+        - hunt
       # has common keywords
       - - family
+        - friend
         - community
         - veteran
         - seasoned
