@@ -1,7 +1,5 @@
-﻿using Dalamud.Game.Chat;
-using System;
+﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace NoSoliciting {
     public partial class RMTDetection {
@@ -17,8 +15,8 @@ namespace NoSoliciting {
 
                 msg = RMTUtil.Normalise(msg);
 
-                return config.ChatSubstrings.Any(needle => msg.Contains(needle))
-                    || config.ChatRegexes.Any(needle => Regex.IsMatch(msg, needle));
+                return config.ChatSubstrings.Any(needle => msg.ContainsIgnoreCase(needle))
+                    || config.CompiledChatRegexes.Any(needle => needle.IsMatch(msg));
             }
         }
     }

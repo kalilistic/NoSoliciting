@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace NoSoliciting {
@@ -112,6 +113,12 @@ namespace NoSoliciting {
                 input = input.Replace($"{entry.Key}", entry.Value);
             }
             return input.Normalize(NormalizationForm.FormKD);
+        }
+    }
+
+    public static class RMTExtensions {
+        public static bool ContainsIgnoreCase(this string haystack, string needle) {
+            return CultureInfo.InvariantCulture.CompareInfo.IndexOf(haystack, needle, CompareOptions.IgnoreCase) >= 0;
         }
     }
 }
