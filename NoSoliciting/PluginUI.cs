@@ -196,6 +196,7 @@ namespace NoSoliciting {
 
             if (ImGui.Button($"Save filters##{name}-save")) {
                 this.plugin.Config.Save();
+                this.plugin.Config.CompileRegexes();
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace NoSoliciting {
     public partial class RMTDetection {
@@ -16,8 +15,8 @@ namespace NoSoliciting {
 
                 msg = RMTUtil.Normalise(msg);
 
-                return config.PFSubstrings.Any(needle => msg.Contains(needle))
-                    || config.PFRegexes.Any(needle => Regex.IsMatch(msg, needle));
+                return config.PFSubstrings.Any(needle => msg.ContainsIgnoreCase(needle))
+                    || config.CompiledPFRegexes.Any(needle => needle.IsMatch(msg));
             }
         }
     }
