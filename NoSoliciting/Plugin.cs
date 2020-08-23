@@ -9,29 +9,29 @@ namespace NoSoliciting {
 
         public string Name => "NoSoliciting";
 
-        private DalamudPluginInterface pi;
         private PluginUI ui;
-        private RMTDetection rmt;
+        private Filter filter;
 
+        public DalamudPluginInterface Interface { get; private set; }
         public PluginConfiguration Config { get; private set; }
         public Definitions Definitions { get; private set; }
 
         public void Initialize(DalamudPluginInterface pluginInterface) {
-            this.pi = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
+            this.Interface = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
             this.ui = new PluginUI(this);
 
-            this.Config = this.pi.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
-            this.Config.Initialise(this.pi);
+            this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+            this.Config.Initialise(this.Interface);
 
             this.UpdateDefinitions();
 
-            this.rmt = new RMTDetection(this);
+            this.filter = new Filter(this);
 
-            this.pi.Framework.Network.OnNetworkMessage += this.rmt.OnNetwork;
-            this.pi.Framework.Gui.Chat.OnCheckMessageHandled += this.rmt.OnChat;
-            this.pi.UiBuilder.OnBuildUi += this.ui.Draw;
-            this.pi.UiBuilder.OnOpenConfigUi += this.ui.OpenSettings;
-            this.pi.CommandManager.AddHandler("/prmt", new CommandInfo(OnCommand) {
+            this.Interface.Framework.Network.OnNetworkMessage += this.filter.OnNetwork;
+            this.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.filter.OnChat;
+            this.Interface.UiBuilder.OnBuildUi += this.ui.Draw;
+            this.Interface.UiBuilder.OnOpenConfigUi += this.ui.OpenSettings;
+            this.Interface.CommandManager.AddHandler("/prmt", new CommandInfo(OnCommand) {
                 HelpMessage = "Opens the NoSoliciting configuration"
             });
         }
@@ -55,11 +55,11 @@ namespace NoSoliciting {
         protected virtual void Dispose(bool disposing) {
             if (!this.disposedValue) {
                 if (disposing) {
-                    this.pi.Framework.Network.OnNetworkMessage -= this.rmt.OnNetwork;
-                    this.pi.Framework.Gui.Chat.OnCheckMessageHandled -= this.rmt.OnChat;
-                    this.pi.UiBuilder.OnBuildUi -= this.ui.Draw;
-                    this.pi.UiBuilder.OnOpenConfigUi -= this.ui.OpenSettings;
-                    this.pi.CommandManager.RemoveHandler("/prmt");
+                    this.Interface.Framework.Network.OnNetworkMessage -= this.filter.OnNetwork;
+                    this.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.filter.OnChat;
+                    this.Interface.UiBuilder.OnBuildUi -= this.ui.Draw;
+                    this.Interface.UiBuilder.OnOpenConfigUi -= this.ui.OpenSettings;
+                    this.Interface.CommandManager.RemoveHandler("/prmt");
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

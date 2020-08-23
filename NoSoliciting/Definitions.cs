@@ -209,7 +209,7 @@ namespace NoSoliciting {
             }
 
             if (this.Normalise) {
-                text = RMTUtil.Normalise(text);
+                text = FilterUtil.Normalise(text);
             }
 
             if (this.IgnoreCase) {

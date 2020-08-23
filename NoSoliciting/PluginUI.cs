@@ -30,10 +30,11 @@ namespace NoSoliciting {
         public void DrawSettings() {
             if (this.resizeWindow) {
                 this.resizeWindow = false;
-                ImGui.SetNextWindowSize(new Vector2(this.plugin.Config.AdvancedMode ? 600 : 0, 0));
+                ImGui.SetNextWindowSize(new Vector2(this.plugin.Config.AdvancedMode ? 650 : 0, 0));
             } else {
                 ImGui.SetNextWindowSize(new Vector2(0, 0), ImGuiCond.FirstUseEver);
             }
+
             if (ImGui.Begin($"{this.plugin.Name} settings", ref this._showSettings)) {
                 if (this.plugin.Config.AdvancedMode) {
                     this.DrawAdvancedSettings();
@@ -64,6 +65,12 @@ namespace NoSoliciting {
             ImGui.Separator();
 
             this.DrawCheckboxes(this.plugin.Definitions.PartyFinder.Values, true, "Party Finder");
+
+            bool filterHugeItemLevelPFs = this.plugin.Config.FilterHugeItemLevelPFs;
+            if (ImGui.Checkbox("Filter PFs with item level above maximum", ref filterHugeItemLevelPFs)) {
+                this.plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
+                this.plugin.Config.Save();
+            }
         }
 
         private void DrawAdvancedSettings() {
@@ -89,6 +96,12 @@ namespace NoSoliciting {
 
                     if (ImGui.BeginTabItem("Party Finder")) {
                         this.DrawCheckboxes(this.plugin.Definitions.PartyFinder.Values, false, "Party Finder");
+
+                        bool filterHugeItemLevelPFs = this.plugin.Config.FilterHugeItemLevelPFs;
+                        if (ImGui.Checkbox("Enable built-in maximum item level filter", ref filterHugeItemLevelPFs)) {
+                            this.plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
+                            this.plugin.Config.Save();
+                        }
 
                         bool customPF = this.plugin.Config.CustomPFFilter;
                         if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPF)) {

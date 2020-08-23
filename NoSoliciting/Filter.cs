@@ -6,13 +6,13 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
-    public partial class RMTDetection {
+    public partial class Filter {
         private const ushort PF_LISTING = 0x358;
         //private static ushort PF_SUMMARY = 0x223;
 
         private readonly Plugin plugin;
 
-        public RMTDetection(Plugin plugin) {
+        public Filter(Plugin plugin) {
             this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
         }
 
@@ -52,6 +52,8 @@ namespace NoSoliciting {
                         && enabled
                         && def.Matches(XivChatType.None, desc);
                 }
+
+                filter |= this.plugin.Config.FilterHugeItemLevelPFs && listing.minimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.plugin.Interface.Data);
 
                 // check for custom filters if enabled
                 filter |= this.plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.plugin.Config);

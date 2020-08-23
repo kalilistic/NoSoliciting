@@ -74,10 +74,10 @@
     <Compile Include="PluginConfiguration.cs" />
     <Compile Include="PluginUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RMTDetection.Chat.cs" />
-    <Compile Include="RMTDetection.cs" />
-    <Compile Include="RMTDetection.PartyFinder.cs" />
-    <Compile Include="RMTUtil.cs" />
+    <Compile Include="Filter.Chat.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="Filter.PartyFinder.cs" />
+    <Compile Include="FilterUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="definitions.yaml" />

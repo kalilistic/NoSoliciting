@@ -42,6 +42,8 @@ namespace NoSoliciting {
         [JsonIgnore]
         public List<Regex> CompiledPFRegexes { get; private set; } = new List<Regex>();
 
+        public bool FilterHugeItemLevelPFs { get; set; } = false;
+
         public void Initialise(DalamudPluginInterface pi) {
             this.pi = pi ?? throw new ArgumentNullException(nameof(pi), "DalamudPluginInterface cannot be null");
             this.CompileRegexes();
