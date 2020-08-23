@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace NoSoliciting {
-    public partial class RMTDetection {
+    public partial class Filter {
         public static class Chat {
             public static bool MatchesCustomFilters(string msg, PluginConfiguration config) {
                 if (config == null) {
@@ -13,7 +13,7 @@ namespace NoSoliciting {
                     return false;
                 }
 
-                msg = RMTUtil.Normalise(msg);
+                msg = FilterUtil.Normalise(msg);
 
                 return config.ChatSubstrings.Any(needle => msg.ContainsIgnoreCase(needle))
                     || config.CompiledChatRegexes.Any(needle => needle.IsMatch(msg));
