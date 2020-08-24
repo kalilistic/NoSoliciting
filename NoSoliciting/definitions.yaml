@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 6
+version: 7
 
 chat:
   rmt:
@@ -166,7 +166,7 @@ global:
       advanced: 'Enable built-in {} RP filter'
     ignore_case: true
     required_matchers:
-      - - regex: 'w(ard)?\s*\d+[\s/,]*(p(lot)?|a(pt\.?|partment)?)\s*\d+'
+      - - regex: 'w(ard)?\s*\d+.*(p(lot)?|a(pt\.?|partment)?)\s*\d+'
     likelihood_threshold: 1
     likely_matchers:
       # mentions roleplaying or fairly rp-only keywords
