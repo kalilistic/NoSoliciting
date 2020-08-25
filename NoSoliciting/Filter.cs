@@ -1,34 +1,37 @@
 ﻿using Dalamud.Game.Chat;
 using Dalamud.Game.Chat.SeStringHandling;
-using Dalamud.Game.Internal.Network;
+using Dalamud.Hooking;
 using Dalamud.Plugin;
 using System;
 using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
     public partial class Filter {
-        private const ushort PF_LISTING = 0x252;
-        //private static ushort PF_SUMMARY = 0x174;
-
         private readonly Plugin plugin;
+
+        private delegate void HandlePFPacketDelegate(IntPtr param_1, IntPtr param_2);
+        private readonly Hook<HandlePFPacketDelegate> handlePacketHook;
 
         public Filter(Plugin plugin) {
             this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
+
+            IntPtr delegatePtr = this.plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
+            if (delegatePtr == IntPtr.Zero) {
+                PluginLog.Log("Party Finder filtering disabled because hook could not be created.");
+                return;
+            }
+
+            this.handlePacketHook = new Hook<HandlePFPacketDelegate>(delegatePtr, new HandlePFPacketDelegate(this.HandlePFPacket));
+            this.handlePacketHook.Enable();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "fulfilling a delegate")]
-        public void OnNetwork(IntPtr dataPtr, ushort opCode, uint sourceActorId, uint targetActorId, NetworkMessageDirection direction) {
+        public void Dispose() {
+            this.handlePacketHook?.Dispose();
+        }
+
+        private void HandlePFPacket(IntPtr param_1, IntPtr param_2) {
             if (this.plugin.Definitions == null) {
-                return;
-            }
-
-            // only look at packets coming in
-            if (direction != NetworkMessageDirection.ZoneDown) {
-                return;
-            }
-
-            // PF_LISTING is sent repeatedly until PF_SUMMARY, which is a summary (and also the packet sent for the chat notifs)
-            if (opCode != PF_LISTING) {
+                this.handlePacketHook.Original(param_1, param_2);
                 return;
             }
 
@@ -82,6 +85,9 @@ namespace NoSoliciting {
 
             // free memory
             pinnedArray.Free();
+
+            // call original function
+            this.handlePacketHook.Original(param_1, param_2);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "fulfilling a delegate")]
