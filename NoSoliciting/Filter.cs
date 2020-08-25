@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
     public partial class Filter {
-        private const ushort PF_LISTING = 0x358;
-        //private static ushort PF_SUMMARY = 0x223;
+        private const ushort PF_LISTING = 0x252;
+        //private static ushort PF_SUMMARY = 0x174;
 
         private readonly Plugin plugin;
 
