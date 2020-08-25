@@ -27,7 +27,6 @@ namespace NoSoliciting {
 
             this.filter = new Filter(this);
 
-            this.Interface.Framework.Network.OnNetworkMessage += this.filter.OnNetwork;
             this.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.filter.OnChat;
             this.Interface.UiBuilder.OnBuildUi += this.ui.Draw;
             this.Interface.UiBuilder.OnOpenConfigUi += this.ui.OpenSettings;
@@ -55,7 +54,7 @@ namespace NoSoliciting {
         protected virtual void Dispose(bool disposing) {
             if (!this.disposedValue) {
                 if (disposing) {
-                    this.Interface.Framework.Network.OnNetworkMessage -= this.filter.OnNetwork;
+                    this.filter.Dispose();
                     this.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.filter.OnChat;
                     this.Interface.UiBuilder.OnBuildUi -= this.ui.Draw;
                     this.Interface.UiBuilder.OnOpenConfigUi -= this.ui.OpenSettings;
