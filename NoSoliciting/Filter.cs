@@ -47,16 +47,17 @@ namespace NoSoliciting {
 
                 bool filter = false;
 
+                filter = filter || (this.plugin.Config.FilterHugeItemLevelPFs && listing.minimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.plugin.Interface.Data));
+
                 foreach (Definition def in this.plugin.Definitions.PartyFinder.Values) {
-                    filter |= this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
+                    filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
                         && enabled
-                        && def.Matches(XivChatType.None, desc);
+                        && def.Matches(XivChatType.None, desc));
                 }
 
-                filter |= this.plugin.Config.FilterHugeItemLevelPFs && listing.minimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.plugin.Interface.Data);
 
                 // check for custom filters if enabled
-                filter |= this.plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.plugin.Config);
+                filter = filter || (this.plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.plugin.Config));
 
                 if (!filter) {
                     continue;
@@ -98,13 +99,13 @@ namespace NoSoliciting {
             bool filter = false;
 
             foreach (Definition def in this.plugin.Definitions.Chat.Values) {
-                filter |= this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
+                filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
                     && enabled
-                    && def.Matches(type, text);
+                    && def.Matches(type, text));
             }
 
             // check for custom filters if enabled
-            filter |= this.plugin.Config.CustomChatFilter && Chat.MatchesCustomFilters(text, this.plugin.Config);
+            filter = filter || (this.plugin.Config.CustomChatFilter && Chat.MatchesCustomFilters(text, this.plugin.Config));
 
             if (!filter) {
                 return;
