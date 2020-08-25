@@ -32,6 +32,8 @@ namespace NoSoliciting {
                 return;
             }
 
+            IntPtr dataPtr = param_2 + 0x10;
+
             // parse the packet into a struct
             PFPacket packet = Marshal.PtrToStructure<PFPacket>(dataPtr);
 
