@@ -6,11 +6,12 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace NoSoliciting {
-    public partial class Filter {
+    public partial class Filter : IDisposable {
         private readonly Plugin plugin;
 
         private delegate void HandlePFPacketDelegate(IntPtr param_1, IntPtr param_2);
         private readonly Hook<HandlePFPacketDelegate> handlePacketHook;
+        private bool disposedValue;
 
         public Filter(Plugin plugin) {
             this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
@@ -23,10 +24,6 @@ namespace NoSoliciting {
 
             this.handlePacketHook = new Hook<HandlePFPacketDelegate>(delegatePtr, new HandlePFPacketDelegate(this.HandlePFPacket));
             this.handlePacketHook.Enable();
-        }
-
-        public void Dispose() {
-            this.handlePacketHook?.Dispose();
         }
 
         private void HandlePFPacket(IntPtr param_1, IntPtr param_2) {
@@ -119,6 +116,22 @@ namespace NoSoliciting {
 
             PluginLog.Log($"Filtered chat message: {text}");
             isHandled = true;
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (!disposedValue) {
+                if (disposing) {
+                    this.handlePacketHook?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose() {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
