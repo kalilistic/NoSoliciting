@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 8
+version: 9
 
 chat:
   rmt:
@@ -99,6 +99,7 @@ chat:
       # mentions free company
       - - fc
         - free company
+        - regex: '<\w+>'
       # contains a call to action
       - - join
         - apply
