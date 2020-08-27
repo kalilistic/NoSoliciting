@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 9
+version: 10
 
 chat:
   rmt:
@@ -85,7 +85,8 @@ chat:
         - "FF14Mog.com"
         - "使用する5％オ"
         - "offers Fantasia"
-        - "finalfantasyxiv.com-se.ru" # phishing
+        - regex: 'finalfantasyxiv\.com-\w+\.\w+' # phishing
+        - regex: 'square-enix\.com-\w+\.\w+' # phishing
   free_company:
     option:
       basic: Filter FC recruitments from chat
