@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 12
+version: 13
 
 chat:
   rmt:
@@ -165,6 +165,7 @@ party_finder:
         - $ e l l
         - sale
         - s a l e
+        - offer
         - price
         - cheap
 
