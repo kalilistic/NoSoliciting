@@ -383,26 +383,26 @@ namespace NoSoliciting {
 
                 if (message.FilterReason == "custom") {
                     ImGui.TextColored(new Vector4(1f, 0f, 0f, 1f), "You cannot report messages filtered because of a custom filter.");
-                }
-
-                if (message.FilterReason != "custom" && ImGui.Button("Report")) {
-                    Task.Run(async () => {
-                        string resp = null;
-                        try {
-                            using (WebClient client = new WebClient()) {
-                                this.lastReportStatus = ReportStatus.InProgress;
-                                resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
-                            }
+                } else {
+                    if (ImGui.Button("Report")) {
+                        Task.Run(async () => {
+                            string resp = null;
+                            try {
+                                using (WebClient client = new WebClient()) {
+                                    this.lastReportStatus = ReportStatus.InProgress;
+                                    resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
+                                }
 #pragma warning disable CA1031 // Do not catch general exception types
-                        } catch (Exception) {}
+                            } catch (Exception) { }
 #pragma warning restore CA1031 // Do not catch general exception types
-                        this.lastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
-                        PluginLog.Log($"Report sent. Response: {resp}");
-                    });
-                    ImGui.CloseCurrentPopup();
-                }
+                            this.lastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
+                            PluginLog.Log($"Report sent. Response: {resp}");
+                        });
+                        ImGui.CloseCurrentPopup();
+                    }
 
-                ImGui.SameLine();
+                    ImGui.SameLine();
+                }
 
                 if (ImGui.Button("Cancel")) {
                     ImGui.CloseCurrentPopup();
