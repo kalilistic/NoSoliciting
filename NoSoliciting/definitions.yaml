@@ -48,7 +48,10 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 13
+version: 14
+
+# This is the URL the plugin will POST reports to.
+report_url: https://nosol.annaclemens.io/report
 
 chat:
   rmt:

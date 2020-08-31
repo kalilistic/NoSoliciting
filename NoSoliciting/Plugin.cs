@@ -1,6 +1,7 @@
 ﻿using Dalamud.Game.Command;
 using Dalamud.Plugin;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NoSoliciting {
@@ -15,6 +16,12 @@ namespace NoSoliciting {
         public DalamudPluginInterface Interface { get; private set; }
         public PluginConfiguration Config { get; private set; }
         public Definitions Definitions { get; private set; }
+
+        private readonly List<Message> messageHistory = new List<Message>();
+        public IReadOnlyCollection<Message> MessageHistory { get => this.messageHistory; }
+
+        private readonly List<Message> partyFinderHistory = new List<Message>();
+        public IReadOnlyCollection<Message> PartyFinderHistory { get => this.partyFinderHistory; }
 
         public void Initialize(DalamudPluginInterface pluginInterface) {
             this.Interface = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
@@ -49,6 +56,22 @@ namespace NoSoliciting {
 
         public void OnCommand(string command, string args) {
             this.ui.OpenSettings(null, null);
+        }
+
+        public void AddMessageHistory(Message message) {
+            this.messageHistory.Insert(0, message);
+
+            while (this.messageHistory.Count > 250) {
+                this.messageHistory.RemoveAt(this.messageHistory.Count - 1);
+            }
+        }
+
+        public void ClearPartyFinderHistory() {
+            this.partyFinderHistory.Clear();
+        }
+
+        public void AddPartyFinderHistory(Message message) {
+            this.partyFinderHistory.Add(message);
         }
 
         protected virtual void Dispose(bool disposing) {
