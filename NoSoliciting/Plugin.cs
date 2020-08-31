@@ -38,7 +38,7 @@ namespace NoSoliciting {
             this.Interface.UiBuilder.OnBuildUi += this.ui.Draw;
             this.Interface.UiBuilder.OnOpenConfigUi += this.ui.OpenSettings;
             this.Interface.CommandManager.AddHandler("/prmt", new CommandInfo(OnCommand) {
-                HelpMessage = "Opens the NoSoliciting configuration"
+                HelpMessage = "Opens the NoSoliciting configuration",
             });
         }
 
