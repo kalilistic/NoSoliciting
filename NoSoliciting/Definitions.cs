@@ -22,6 +22,7 @@ namespace NoSoliciting {
         private const string URL = "https://git.sr.ht/~jkcclemens/NoSoliciting/blob/master/NoSoliciting/definitions.yaml";
 
         public uint Version { get; private set; }
+        public Uri ReportUrl { get; private set; }
         [YamlIgnore]
         public int Count { get => this.Chat.Count + this.PartyFinder.Count + this.Global.Count; }
         public Dictionary<string, Definition> Chat { get; private set; }
