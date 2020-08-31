@@ -51,6 +51,7 @@ namespace NoSoliciting {
             var de = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .WithTypeConverter(new MatcherConverter())
+                .IgnoreUnmatchedProperties()
                 .Build();
             return de.Deserialize<Definitions>(text);
         }
