@@ -113,7 +113,7 @@ namespace NoSoliciting {
                     LastError = null;
                     return Tuple.Create(Load(text), text);
                 }
-            } catch (WebException e) {
+            } catch (Exception e) when (e is WebException || e is YamlException) {
                 PluginLog.Log($"Could not download newest definitions.");
                 PluginLog.Log(e.ToString());
                 LastError = e.Message;
