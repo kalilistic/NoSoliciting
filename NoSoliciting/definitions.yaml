@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 16
+version: 17
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -127,7 +127,6 @@ chat:
         - hunt
       # has common keywords
       - - family
-        - friend
         - community
         - veteran
         - seasoned
@@ -179,7 +178,10 @@ global:
       advanced: 'Enable built-in {} RP filter'
     ignore_case: true
     required_matchers:
-      - - regex: 'w(ard)?\s*\d+.*(p(lot)?|a(pt\.?|partment)?)\s*\d+'
+      # - - regex: 'w(ard)?\s*\d+.*(p(lot)?|(a(pt\.?|partment)(\s*#)?)?)\s*\d+'
+      - - ward
+      - - plot
+        - apt
     likelihood_threshold: 1
     likely_matchers:
       # mentions roleplaying or fairly rp-only keywords
@@ -201,6 +203,7 @@ global:
         - library
         - bookstore
         - book store
+        - hostel
       # mentions services/activities
       - - entertainment
         - live
@@ -216,6 +219,7 @@ global:
         - contest
         - giveaway
         - party
+        - gambling
       # mentions a housing zone
       - - gob # catches goblet, as well
         - mist
