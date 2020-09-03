@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 19
+version: 20
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -182,10 +182,10 @@ global:
     required_matchers:
       # - - regex: 'w(ard)?\s*\d+.*(p(lot)?|(a(pt\.?|partment)(\s*#)?)?)\s*\d+'
       - - ward
-        - regex: 'w\s*\d'
+        - regex: 'w.{0,2}\d'
       - - plot
         - apt
-        - regex: 'p\s*\d'
+        - regex: 'p.{0,2}\d'
     likelihood_threshold: 1
     likely_matchers:
       # mentions roleplaying or fairly rp-only keywords
@@ -209,6 +209,7 @@ global:
         - book store
         - hostel
         - club
+        - bath
       # mentions services/activities
       - - entertainment
         - live
