@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 18
+version: 19
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -143,6 +143,18 @@ party_finder:
     default: true
     ignore_case: true
     required_matchers:
+      # selling
+      - - sell
+        - s e l l
+        - $ell
+        - $ e l l
+        - sale
+        - s a l e
+        - offer
+        - price
+        - cheap
+    likelihood_threshold: 1
+    likely_matchers:
       # discord or join/contact
       - - regex: '.#\d{4}'
         - regex: 'discord\.(gg|io)/\w+'
@@ -160,16 +172,6 @@ party_finder:
         - mount
         - loot
         - regex: e[1-9][0-2]?
-      # selling
-      - - sell
-        - s e l l
-        - $ell
-        - $ e l l
-        - sale
-        - s a l e
-        - offer
-        - price
-        - cheap
 
 global:
   roleplay:
@@ -206,6 +208,7 @@ global:
         - bookstore
         - book store
         - hostel
+        - club
       # mentions services/activities
       - - entertainment
         - live
