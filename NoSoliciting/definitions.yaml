@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 20
+version: 21
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -153,15 +153,6 @@ party_finder:
         - offer
         - price
         - cheap
-    likelihood_threshold: 1
-    likely_matchers:
-      # discord or join/contact
-      - - regex: '.#\d{4}'
-        - regex: 'discord\.(gg|io)/\w+'
-        - join
-        - /tell
-        - whisper
-        - dm
       # content
       - - eden
         - savage
@@ -179,15 +170,19 @@ global:
       basic: 'Filter RP advertisements from {}'
       advanced: 'Enable built-in {} RP filter'
     ignore_case: true
-    required_matchers:
-      # - - regex: 'w(ard)?\s*\d+.*(p(lot)?|(a(pt\.?|partment)(\s*#)?)?)\s*\d+'
+    likelihood_threshold: 3
+    likely_matchers:
+      # mentions housing wards
       - - ward
         - regex: 'w.{0,2}\d'
+      # mentions housing plots
       - - plot
         - apt
         - regex: 'p.{0,2}\d'
-    likelihood_threshold: 1
-    likely_matchers:
+      # has a discord or website
+      - - discord.gg
+        - carrd.co
+        - discord.io
       # mentions roleplaying or fairly rp-only keywords
       - - rp
         - roleplay
@@ -196,6 +191,7 @@ global:
         - '18+'
         - '18 +'
         - open
+        - event
       # has venue type
       - - cafe
         - bar
@@ -210,6 +206,7 @@ global:
         - hostel
         - club
         - bath
+        - regex: '\bden\b'
       # mentions services/activities
       - - entertainment
         - live
@@ -226,9 +223,7 @@ global:
         - giveaway
         - party
         - gambling
-      # mentions a housing zone
-      - - gob # catches goblet, as well
-        - mist
-        - lb
-        - lav # catches lavender/lavender beds, as well
-        - shiro # catches shirogane, as well
+        - cosplay
+        - bounty
+        - bounties
+        - adventur # adventuring, adventure, adventurer, etc.
