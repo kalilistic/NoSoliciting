@@ -60,7 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefinitionsTests\Chat.FreeCompany.cs" />
+    <Compile Include="DefinitionsTests\Global.FreeCompany.cs" />
     <Compile Include="DefinitionsTests\Chat.RMT.cs" />
     <Compile Include="DefinitionsTests\DefinitionsTests.cs" />
     <Compile Include="DefinitionsTests\DefinitionTest.cs" />

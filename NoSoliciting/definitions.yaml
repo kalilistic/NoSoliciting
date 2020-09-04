@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 22
+version: 23
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -90,50 +90,6 @@ chat:
         - "offers Fantasia"
         - regex: 'finalfantasyxiv\.com-\w+\.\w+' # phishing
         - regex: 'square-enix\.com-\w+\.\w+' # phishing
-  free_company:
-    option:
-      basic: Filter FC recruitments from chat
-      advanced: Enable built-in chat FC recruitment filter
-    ignore_case: true
-    channels:
-      - shout
-      - yell
-    likelihood_threshold: 3
-    likely_matchers:
-      # mentions free company
-      - - fc
-        - free company
-        - regex: '<\w+>'
-      # contains a call to action
-      - - join
-        - apply
-        - /tell
-        - /t
-        - dm
-        - whisper
-      # mentions benefits
-      - - discord
-        - map
-        - rank
-        - active
-        - weekly
-        - social
-        - friendly
-        - buff
-        - event
-        - house
-        - level
-        - raid
-        - hunt
-      # has common keywords
-      - - family
-        - community
-        - veteran
-        - seasoned
-        - casual
-        - new
-        - help
-        - recruit
 
 party_finder:
   rmt:
@@ -228,3 +184,48 @@ global:
         - bounties
         - adventur # adventuring, adventure, adventurer, etc.
         - courtesan
+  free_company:
+    option:
+      basic: 'Filter FC recruitments from {}'
+      advanced: 'Enable built-in {} FC recruitment filter'
+    ignore_case: true
+    channels:
+      - none
+      - shout
+      - yell
+    likelihood_threshold: 3
+    likely_matchers:
+      # mentions free company
+      - - fc
+        - free company
+        - regex: '<\w+>'
+      # contains a call to action
+      - - join
+        - apply
+        - /tell
+        - /t
+        - dm
+        - whisper
+      # mentions benefits
+      - - discord
+        - map
+        - rank
+        - active
+        - weekly
+        - social
+        - friendly
+        - buff
+        - event
+        - house
+        - level
+        - raid
+        - hunt
+      # has common keywords
+      - - family
+        - community
+        - veteran
+        - seasoned
+        - casual
+        - new
+        - help
+        - recruit
