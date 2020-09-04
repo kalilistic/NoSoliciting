@@ -60,13 +60,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefinitionsTests.cs" />
-    <Compile Include="DefinitionsTests.Roleplay.cs" />
-    <Compile Include="DefinitionTest.cs" />
+    <Compile Include="DefinitionsTests\Chat.FreeCompany.cs" />
+    <Compile Include="DefinitionsTests\Chat.RMT.cs" />
+    <Compile Include="DefinitionsTests\DefinitionsTests.cs" />
+    <Compile Include="DefinitionsTests\DefinitionTest.cs" />
+    <Compile Include="DefinitionsTests\PartyFinder.RMT.cs" />
+    <Compile Include="DefinitionsTests\Roleplay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefinitionsTests.PartyFinder.RMT.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
