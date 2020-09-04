@@ -83,6 +83,7 @@
   <ItemGroup>
     <None Include="definitions.yaml" />
     <None Include="NoSoliciting.json" />
+    <None Include="package.sh" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
