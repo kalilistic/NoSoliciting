@@ -11,6 +11,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "Selling HQ 490 DoH/DoL sets, just in time for the Ishgard restoration project. Cheaper than MB, Whipser or join for info.",
             "Looking to sell medium odder otter walls(2mil) join or tell.",
             @"Selling 1x Eldthurs Horn for 8mil. Skip MB taxes \o/ Join if interested",
+            "Selling Phanta mats, let me know what you want and I can deliver it to you. 2k for 300k. Join the party don't /tell please",
         });
 
         public static object[][] DataPositives => DefUtils.DataFromStrings(new string[] {
