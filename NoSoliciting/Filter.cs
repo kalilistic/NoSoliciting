@@ -81,6 +81,7 @@ namespace NoSoliciting {
                     && SetReason(ref reason, "custom"));
 
                 this.plugin.AddPartyFinderHistory(new Message(
+                    defs: this.plugin.Definitions,
                     type: ChatType.None,
                     sender: listing.Name(),
                     content: listing.Description(),
@@ -149,6 +150,7 @@ namespace NoSoliciting {
                 && SetReason(ref reason, "custom"));
 
             this.plugin.AddMessageHistory(new Message(
+                defs: this.plugin.Definitions,
                 type: (ChatType)type,
                 sender: sender,
                 content: message,

@@ -9,14 +9,20 @@ using System.Linq;
 namespace NoSoliciting {
     public class Message {
         public Guid Id { get; private set; }
+        public uint DefinitionsVersion { get; private set; }
         public DateTime Timestamp { get; private set; }
         public ChatType ChatType { get; private set; }
         public SeString Sender { get; private set; }
         public SeString Content { get; private set; }
         public string FilterReason { get; private set; }
 
-        public Message(ChatType type, SeString sender, SeString content, string reason) {
+        public Message(Definitions defs, ChatType type, SeString sender, SeString content, string reason) {
+            if (defs == null) {
+                throw new ArgumentNullException(nameof(defs), "Definitions cannot be null");
+            }
+
             this.Id = Guid.NewGuid();
+            this.DefinitionsVersion = defs.Version;
             this.Timestamp = DateTime.Now;
             this.ChatType = type;
             this.Sender = sender;
@@ -24,19 +30,19 @@ namespace NoSoliciting {
             this.FilterReason = reason;
         }
 
-        public Message(ChatType type, string sender, string content, string reason) {
-            this.Id = Guid.NewGuid();
-            this.Timestamp = DateTime.Now;
-            this.ChatType = type;
-            this.Sender = new SeString(new Payload[] { new TextPayload(sender) });
-            this.Content = new SeString(new Payload[] { new TextPayload(content) });
-            this.FilterReason = reason;
-        }
+        public Message(Definitions defs, ChatType type, string sender, string content, string reason) : this(
+            defs,
+            type,
+            new SeString(new Payload[] { new TextPayload(sender) }),
+            new SeString(new Payload[] { new TextPayload(content) }),
+            reason
+        ) { }
 
         [Serializable]
         [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
         private class JsonMessage {
             public Guid Id { get; set; }
+            public uint DefinitionsVersion { get; set; }
             public DateTime Timestamp { get; set; }
             public ushort Type { get; set; }
             // note: cannot use byte[] because Newtonsoft thinks it's a good idea to always base64 byte[]
@@ -49,6 +55,7 @@ namespace NoSoliciting {
         public string ToJson() {
             JsonMessage msg = new JsonMessage {
                 Id = this.Id,
+                DefinitionsVersion = this.DefinitionsVersion,
                 Timestamp = this.Timestamp,
                 Type = (ushort)this.ChatType,
                 Sender = this.Sender.Encode().ToList(),
