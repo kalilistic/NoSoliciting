@@ -9,7 +9,6 @@ cd pack/temp || exit
 
 # copy the dlls, defs, and the manifest
 cp ../../bin/Release/NoSoliciting.dll ../../bin/Release/YamlDotNet.dll ./
-cp ../../definitions.yaml default_definitions.yaml
 cp ../../NoSoliciting.json ./
 
 # make sure none of them are marked executable

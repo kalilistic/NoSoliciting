@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.Chat;
 using Dalamud.Plugin;
+using NoSoliciting.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,10 @@ namespace NoSoliciting {
         public Dictionary<string, Definition> Global { get; private set; }
 
         public static async Task<Definitions> UpdateAndCache(Plugin plugin) {
+#if DEBUG
+            return LoadDefaults();
+#endif
+
             Definitions defs = null;
 
             var download = await Download().ConfigureAwait(true);
@@ -89,21 +94,11 @@ namespace NoSoliciting {
             }
 
         LoadDefaults:
-            return await LoadDefaults().ConfigureAwait(true);
+            return LoadDefaults();
         }
 
-        private static async Task<Definitions> LoadDefaults() {
-            string defaultPath = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "default_definitions.yaml"
-            );
-
-            string text;
-            using (StreamReader file = File.OpenText(defaultPath)) {
-                text = await file.ReadToEndAsync().ConfigureAwait(true);
-            }
-
-            return Load(text);
+        private static Definitions LoadDefaults() {
+            return Load(Resources.default_definitions);
         }
 
         private static async Task<Tuple<Definitions, string>> Download() {
