@@ -47,7 +47,7 @@ namespace NoSoliciting {
             return defs ?? await CacheOrDefault(plugin).ConfigureAwait(true);
         }
 
-        private static Definitions Load(string text) {
+        public static Definitions Load(string text) {
             var de = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .WithTypeConverter(new MatcherConverter())
