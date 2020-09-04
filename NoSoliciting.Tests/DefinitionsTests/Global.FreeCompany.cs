@@ -1,13 +1,17 @@
 ﻿using Xunit;
 
-namespace NoSoliciting.Tests.DefinitionsTests.Chat {
+namespace NoSoliciting.Tests.DefinitionsTests.Global {
     public class FreeCompany : DefinitionTest {
         public FreeCompany(DefinitionsFixture fixture) {
-            this.Def = fixture.defs.Chat["free_company"];
+            this.Def = fixture.defs.Global["free_company"];
         }
 
         public static object[][] DataPositives => DefUtils.DataFromMessages(new TestMessage[] {
+            // chat
             new TestMessage(ChatType.Shout, "<LUL> is recruiting! Join our community blah blah discord lul"),
+
+            // party finder
+            new TestMessage("FC recruiting new and experienced players. Interested? Join party, send me a /tell or stop by the FC house for more information. "),
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
