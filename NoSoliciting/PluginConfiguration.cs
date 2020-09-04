@@ -14,16 +14,16 @@ namespace NoSoliciting {
 
         public int Version { get; set; } = 1;
 
-        [Obsolete("Use EnabledFilters")]
+        [Obsolete("Use FilterStatus")]
         public bool FilterChat { get; set; } = true;
-        [Obsolete("Use EnabledFilters")]
+        [Obsolete("Use FilterStatus")]
         public bool FilterFCRecruitments { get; set; } = false;
-        [Obsolete("Use EnabledFilters")]
+        [Obsolete("Use FilterStatus")]
         public bool FilterChatRPAds { get; set; } = false;
 
-        [Obsolete("Use EnabledFilters")]
+        [Obsolete("Use FilterStatus")]
         public bool FilterPartyFinder { get; set; } = true;
-        [Obsolete("Use EnabledFilters")]
+        [Obsolete("Use FilterStatus")]
         public bool FilterPartyFinderRPAds { get; set; } = false;
 
         public Dictionary<string, bool> FilterStatus { get; private set; } = new Dictionary<string, bool>();
