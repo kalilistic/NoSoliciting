@@ -98,6 +98,7 @@ namespace NoSoliciting {
         NpcChat2 = 61,
         ObtainGil = 62,
         NpcChat = 68,
+        FCBuff = 69,
         RetainerSale = 71,
         PartyFinderSummary = 72,
         CrossLinkShell2 = 101,
@@ -110,6 +111,7 @@ namespace NoSoliciting {
         MailSent = 569,
         FCMotd = 581,
         BattleAbility = 2091,
+        SystemMessage2 = 2105,
         SelfRevive = 2106,
         SelfGainBuff = 2222,
         SelfLoseBuff = 2224,
@@ -159,6 +161,7 @@ namespace NoSoliciting {
                 case ChatType.ObtainExperience:
                 case ChatType.ObtainItem:
                 case ChatType.LevelUpAchievement:
+                case ChatType.SystemMessage2:
                     return false;
             }
 
