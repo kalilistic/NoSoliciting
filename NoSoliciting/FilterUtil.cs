@@ -9,35 +9,6 @@ using System.Text;
 namespace NoSoliciting {
     public static class FilterUtil {
         private static readonly Dictionary<char, string> replacements = new Dictionary<char, string>() {
-            // alphabet
-            ['\ue070'] = "?",
-            ['\ue071'] = "A",
-            ['\ue072'] = "B",
-            ['\ue073'] = "C",
-            ['\ue074'] = "D",
-            ['\ue075'] = "E",
-            ['\ue076'] = "F",
-            ['\ue077'] = "G",
-            ['\ue078'] = "H",
-            ['\ue079'] = "I",
-            ['\ue07a'] = "J",
-            ['\ue07b'] = "K",
-            ['\ue07c'] = "L",
-            ['\ue07d'] = "M",
-            ['\ue07e'] = "N",
-            ['\ue07f'] = "O",
-            ['\ue080'] = "P",
-            ['\ue081'] = "Q",
-            ['\ue082'] = "R",
-            ['\ue083'] = "S",
-            ['\ue084'] = "T",
-            ['\ue085'] = "U",
-            ['\ue086'] = "V",
-            ['\ue087'] = "W",
-            ['\ue088'] = "X",
-            ['\ue089'] = "Y",
-            ['\ue08a'] = "Z",
-
             // numerals
             ['\ue055'] = "1",
             ['\ue056'] = "2",
@@ -45,26 +16,6 @@ namespace NoSoliciting {
             ['\ue058'] = "4",
             ['\ue059'] = "5",
 
-            ['\ue060'] = "0",
-            ['\ue061'] = "1",
-            ['\ue062'] = "2",
-            ['\ue063'] = "3",
-            ['\ue064'] = "4",
-            ['\ue065'] = "5",
-            ['\ue066'] = "6",
-            ['\ue067'] = "7",
-            ['\ue068'] = "8",
-            ['\ue069'] = "9",
-
-            ['\ue090'] = "1",
-            ['\ue091'] = "2",
-            ['\ue092'] = "3",
-            ['\ue093'] = "4",
-            ['\ue094'] = "5",
-            ['\ue095'] = "6",
-            ['\ue096'] = "7",
-            ['\ue097'] = "8",
-            ['\ue098'] = "9",
             ['\ue099'] = "10",
             ['\ue09a'] = "11",
             ['\ue09b'] = "12",
@@ -88,18 +39,9 @@ namespace NoSoliciting {
             ['\ue0ad'] = "30",
             ['\ue0ae'] = "31",
 
-            ['\ue0b1'] = "1",
-            ['\ue0b2'] = "2",
-            ['\ue0b3'] = "3",
-            ['\ue0b4'] = "4",
-            ['\ue0b5'] = "5",
-            ['\ue0b6'] = "6",
-            ['\ue0b7'] = "7",
-            ['\ue0b8'] = "8",
-            ['\ue0b9'] = "9",
-
             // symbols
             ['\ue0af'] = "+",
+            ['\ue070'] = "?",
 
             // letters in other sets
             ['\ue022'] = "A",
@@ -107,14 +49,56 @@ namespace NoSoliciting {
             ['\ue0b0'] = "E",
         };
 
+        private const char lowestReplacement = '\ue022';
+
         public static string Normalise(string input) {
             if (input == null) {
                 throw new ArgumentNullException(nameof(input), "input cannot be null");
             }
 
-            foreach (KeyValuePair<char, string> entry in replacements) {
-                input = input.Replace($"{entry.Key}", entry.Value);
+            // replace ffxiv private use chars
+            var builder = new StringBuilder(input.Length);
+            foreach (char c in input) {
+                if (c < lowestReplacement) {
+                    goto AppendNormal;
+                }
+
+                // alphabet
+                if (c >= 0xe071 && c <= 0xe08a) {
+                    builder.Append((char)(c - 0xe030));
+                    continue;
+                }
+
+                // 0 to 9
+                if (c >= 0xe060 && c <= 0xe069) {
+                    builder.Append((char)(c - 0xe030));
+                    continue;
+                }
+
+                // 1 to 9
+                if (c >= 0xe0b1 && c <= 0xe0b9) {
+                    builder.Append((char)(c - 0xe080));
+                    continue;
+                }
+
+                // 1 to 9 again
+                if (c >= 0xe090 && c <= 0xe098) {
+                    builder.Append((char)(c - 0xe05f));
+                    continue;
+                }
+
+                // replacements in map
+                if (replacements.TryGetValue(c, out string rep)) {
+                    builder.Append(rep);
+                    continue;
+                }
+
+            AppendNormal:
+                builder.Append(c);
             }
+            input = builder.ToString();
+
+            // NFKD unicode normalisation
             return input.Normalize(NormalizationForm.FormKD);
         }
 
