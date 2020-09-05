@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.Chat;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xunit;
@@ -10,7 +11,18 @@ namespace NoSoliciting.Tests.DefinitionsTests {
     }
 
     public class DefinitionsFixture {
-        internal readonly Definitions defs = Definitions.Load(File.ReadAllText("../../../NoSoliciting/definitions.yaml"));
+        internal readonly Definitions defs;
+
+        public DefinitionsFixture() {
+            this.defs = Definitions.Load(File.ReadAllText("../../../NoSoliciting/definitions.yaml"));
+
+            var allDefs = defs.Chat
+                .Concat(defs.PartyFinder)
+                .Concat(defs.Global);
+            foreach (KeyValuePair<string, Definition> entry in allDefs) {
+                entry.Value.Initialise(entry.Key);
+            }
+        }
     }
 
     public class TestMessage {
