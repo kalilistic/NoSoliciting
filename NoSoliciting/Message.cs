@@ -108,6 +108,7 @@ namespace NoSoliciting {
         FCBuff = 69,
         RetainerSale = 71,
         PartyFinderSummary = 72,
+        NoviceNetworkSystem = 75,
         CrossLinkShell2 = 101,
         CrossLinkShell3 = 102,
         CrossLinkShell4 = 103,
