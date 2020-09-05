@@ -19,6 +19,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "「 MINMAXØ 」 SALES ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts Etc. ≫ World #1 teams, instant delivery. Discord → azrael#6447",
             "「」™️ Found it Cheaper? We will beat it! $elling EdenVerse, BLU, Ultimates, Primals, Discord: Valentine#5943",
             "「BiS」Selling 》Sac EX, Unreal Shiva 》Savages, Ultimates 》Mounts & More | Price Match Guarantee | Discord→Present#0148",
+            "｢ Selling ｣ ♥ Raids Trials Ultimates BLU ♥ Fast Delivery ♥ Price Match ♥ Discord→ Shion#5162",
+            "♥ SELLING ♥ Shiva Unreal / WoL XM - Eden Savage (☆ i500/i505 ☆) - TEA/UwU/UCoB - Old raids and + |  Discord add me: gin#5147",
         });
 
         [Theory]
