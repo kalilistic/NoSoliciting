@@ -19,6 +19,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "DLITE Is OPEN! Come grab a courtesan and relax in our lounge and let our expert staff see to your every whim, SIren, gob W19,43",
             "If you're looking for something to do, come find monthly contests, 4 weekly RP events and more! discord.gg/LuckySevens",
             "[18+]Need to get your RP/ERP fix in? Wishing to become or buy a courtesan? C'mere to Touch Fluffy Tail @ discord.gg/fCS8Zng",
+            "MR casino venue looking for greeters and courtesans. Join pt if interested.",
+            "Have a venue? Come plug yourself while checking us out!  We're The - !! - https://discord.gg/S7BUVKh",
         });
 
         [Theory]
