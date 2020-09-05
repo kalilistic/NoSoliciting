@@ -8,14 +8,23 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
 
         public static object[][] DataPositives => DefUtils.DataFromMessages(new TestMessage[] {
             // chat
-            new TestMessage(ChatType.Shout, "<LUL> is recruiting! Join our community blah blah discord lul"),
+            new TestMessage(ChatType.Shout, "PhD: Phantasy Degree is a Rank 30 FC with a Large plot, 24/7 FC/EXP Buffs. There are NO Level Restrictions to join, we take new and old players. Ask to join or apply."),
+            new TestMessage(ChatType.Shout, "Wind up fc is a small company looking for new/seasoned adventures to join! If you need help with the msq/clear the latest raid well do our best to help! Send a tell/app to join"),
+            new TestMessage(ChatType.Shout, "Porxie Menace is recruiting! Veterans & newbies are welcome to join our plan to take over the world... with a snort!  Raiding, mapping, eureka, potd/hoh, pvp and much more!!"),
+            new TestMessage(ChatType.Shout, "Looking for an 18+ FC that enjoys all aspects of the game? <Lusty> (Rank 30) is here for you. From RP to Hunts; Whether you're new or a vet, we're a tight-knit group offering assistance to those who'd like it. We are a different kind of Free Company than what you'd expect. We have 24/7 buffs, discord, and of course are a judgement free LGBTQA+ friendly group ;) just click on my name and send a tell to get started!"),
+            new TestMessage(ChatType.Shout, "join my free company. we don't got much, but we could have you. which probably also isn't much. join anyway. maps on wednesdays, discord if you feel like it, new player friendly. Ask about a house tour. <<GECKO>> /tell"),
+            new TestMessage(ChatType.Shout, "♡♡ PomHub <Pom> is recruiting new and veteran players to join our growing family! | 18 + | LGBTQ Friendly | Housing | Daily Buffs | Events | Discord |"),
+            new TestMessage(ChatType.Shout, "Have you been running alone looking for the sweeter things on Faerie? Wanting to find a rowdy, yet caring, bunch of friends? Well, look no further than <CANDY>! we are a social rank 30 FC, friendly and willing to help new or returning players! Have a discord and Large House at Shiro! 18+, RP friendly, LGBTQ friendly as well. Send a tell and join today :hearts:"),
+            new TestMessage(ChatType.Shout, "Need an FC? Why not come home to Amaurot? A small group with weekly events, active discord, players primarily on 3 - 11 pm EST /tell me for more info!"),
+            new TestMessage(ChatType.Shout, "<Memoria> is a small, social FC looking for new or active players who regularly want to socialize and do content together. If this sounds like something you’re interested in, send me a /tell or apply via an application"),
 
             // party finder
             new TestMessage("FC recruiting new and experienced players. Interested? Join party, send me a /tell or stop by the FC house for more information. "),
+            new TestMessage(@"Golden Crow [FC] offering new and old players a save place to hang and have fun with - join the weebs now \o/ /pm for info "),
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
-            new TestMessage(ChatType.Say, "<LUL> is recruiting! Join our community blah blah discord lul"),
+            new TestMessage("Static recruit. Not hardcore. Discord needed. tues-thurs 11:30pmEST. Join if you have questions."),
         });
 
         [Theory]
