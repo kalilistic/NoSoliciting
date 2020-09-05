@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 27
+version: 28
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -195,6 +195,7 @@ global:
       - shout
       - yell
     likelihood_threshold: 3
+    # FC Toxic looking for new memeber, Fc house, master crafter and gatherer, buffs available for new players as well as end game
     likely_matchers:
       # mentions free company
       - - fc
@@ -228,5 +229,7 @@ global:
         - seasoned
         - casual
         - help
+        - new player
+        - new member
         - regex: '\bold\b'
         - regex: '\bvets?\b'
