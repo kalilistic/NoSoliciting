@@ -195,7 +195,6 @@ global:
       - shout
       - yell
     likelihood_threshold: 3
-    # FC Toxic looking for new memeber, Fc house, master crafter and gatherer, buffs available for new players as well as end game
     likely_matchers:
       # mentions free company
       - - fc
