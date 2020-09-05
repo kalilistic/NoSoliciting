@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -174,7 +173,7 @@ namespace NoSoliciting {
         public OptionNames Option { get; private set; }
         public bool Default { get; private set; } = false;
 
-        internal void Initialise(string id) {
+        public void Initialise(string id) {
             if (this.initialised) {
                 return;
             }
