@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 25
+version: 26
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -60,34 +60,34 @@ chat:
       advanced: Enable built-in chat RMT filter
     default: true
     required_matchers:
-      - - "4KGOLD"
-        - "We have sufficient stock"
-        - "PVPBANK.COM"
-        - "Gil for free"
-        - "www.so9.com"
-        - "Fast & Convenient"
-        - "Cheap & Safety Guarantee"
-        - "【Code|A O A U E"
-        - "igfans"
-        - "4KGOLD.COM"
-        - "Cheapest Gil with"
-        - "pvp and bank on google"
-        - "Selling Cheap GIL"
-        - "ff14mogstation.com"
-        - "Cheap Gil 1000k"
-        - "gilsforyou"
-        - "server 1000K ="
-        - "gils_selling"
-        - "E A S Y.C O M"
-        - "bonus code"
-        - "mins delivery guarantee"
-        - "Sell cheap"
-        - "Salegm.com"
-        - "cheap Mog"
-        - "Off Code"
-        - "FF14Mog.com"
-        - "使用する5％オ"
-        - "offers Fantasia"
+      - - 4KGOLD
+        - We have sufficient stock
+        - PVPBANK.COM
+        - Gil for free
+        - www.so9.com
+        - Fast & Convenient
+        - Cheap & Safety Guarantee
+        - 【Code|A O A U E
+        - igfans
+        - 4KGOLD.COM
+        - Cheapest Gil with
+        - pvp and bank on google
+        - Selling Cheap GIL
+        - ff14mogstation.com
+        - Cheap Gil 1000k
+        - gilsforyou
+        - server 1000K =
+        - gils_selling
+        - E A S Y.C O M
+        - bonus code
+        - mins delivery guarantee
+        - Sell cheap
+        - Salegm.com
+        - cheap Mog
+        - Off Code
+        - FF14Mog.com
+        - 使用する5％オ
+        - offers Fantasia
         - regex: 'finalfantasyxiv\.com-\w+\.\w+' # phishing
         - regex: 'square-enix\.com-\w+\.\w+' # phishing
 
@@ -114,10 +114,10 @@ party_finder:
         - savage
         - primal
         - ultimate
-        - ex
         - trial
-        - mount
         - loot
+        - regex: '\bex\b'
+        - regex: '\bmount\b'
         - regex: e[1-9][0-2]?
 
 global:
@@ -148,6 +148,7 @@ global:
         - '18 +'
         - open
         - event
+        - venue
       # has venue type
       - - cafe
         - café
@@ -155,7 +156,7 @@ global:
         - lounge
         - brothel
         - casino
-        - venue
+        - cabaret
         - restaurant
         - library
         - bookstore
