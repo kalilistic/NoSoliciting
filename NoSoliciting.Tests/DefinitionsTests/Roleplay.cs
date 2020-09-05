@@ -23,8 +23,16 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "Have a venue? Come plug yourself while checking us out!  We're The - !! - https://discord.gg/S7BUVKh",
         });
 
+        public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
+            "«ToC» recruiting active members. Join the party, send me a /Tell or stop by the FC house (Goblet P13, W19) for more information.",
+        });
+
         [Theory]
         [MemberData(nameof(DataPositives))]
         public void Positives(string msg) => this.Check(msg, CheckType.Positive);
+
+        [Theory]
+        [MemberData(nameof(DataNegatives))]
+        public void Negatives(string msg) => this.Check(msg, CheckType.Negative);
     }
 }

@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 26
+version: 27
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -179,7 +179,6 @@ global:
         - music
         - contest
         - giveaway
-        - party
         - gambling
         - cosplay
         - bounty
@@ -200,7 +199,7 @@ global:
       # mentions free company
       - - fc
         - free company
-        - regex: '<\w+>'
+        - regex: '[<«]\w+[>»]'
       # contains a call to action
       - - join
         - apply
@@ -228,5 +227,6 @@ global:
         - veteran
         - seasoned
         - casual
-        - new
         - help
+        - regex: '\bold\b'
+        - regex: '\bvets?\b'
