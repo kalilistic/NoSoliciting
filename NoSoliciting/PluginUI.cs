@@ -294,7 +294,8 @@ namespace NoSoliciting {
 
                             string sender = message.Sender.Payloads
                                 .Where(payload => payload.Type == PayloadType.RawText)
-                                .Select(payload => (payload as TextPayload).Text)
+                                .Cast<TextPayload>()
+                                .Select(payload => payload.Text)
                                 .FirstOrDefault() ?? "";
 
                             if (AddColumn(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.ToString(), message.FilterReason ?? "", sender, message.Content.TextValue)) {
@@ -357,6 +358,8 @@ namespace NoSoliciting {
                     }
                     ImGui.EndTabItem();
                 }
+
+                ImGui.EndTabBar();
             }
 
             ImGui.End();
@@ -364,54 +367,56 @@ namespace NoSoliciting {
 
         private void SetUpReportModal(Message message) {
             ImGui.SetNextWindowSize(new Vector2(350, -1));
-            if (ImGui.BeginPopupModal($"Report to NoSoliciting###modal-message-{message.Id}")) {
-                ImGui.PushTextWrapPos();
+            if (!ImGui.BeginPopupModal($"Report to NoSoliciting###modal-message-{message.Id}")) {
+                return;
+            }
 
-                ImGui.Text("Reporting this message will let the developer know that you think this message was incorrectly classified.");
+            ImGui.PushTextWrapPos();
 
-                if (message.FilterReason != null) {
-                    ImGui.Text("Specifically, this message WAS filtered but shouldn't have been.");
-                } else {
-                    ImGui.Text("Specifically, this message WAS NOT filtered but should have been.");
-                }
+            ImGui.Text("Reporting this message will let the developer know that you think this message was incorrectly classified.");
 
-                ImGui.Separator();
+            if (message.FilterReason != null) {
+                ImGui.Text("Specifically, this message WAS filtered but shouldn't have been.");
+            } else {
+                ImGui.Text("Specifically, this message WAS NOT filtered but should have been.");
+            }
 
-                ImGui.Text(message.Content.TextValue);
+            ImGui.Separator();
 
-                ImGui.Separator();
+            ImGui.Text(message.Content.TextValue);
 
-                if (message.FilterReason == "custom") {
-                    ImGui.TextColored(new Vector4(1f, 0f, 0f, 1f), "You cannot report messages filtered because of a custom filter.");
-                } else {
-                    if (ImGui.Button("Report")) {
-                        Task.Run(async () => {
-                            string resp = null;
-                            try {
-                                using (WebClient client = new WebClient()) {
-                                    this.lastReportStatus = ReportStatus.InProgress;
-                                    resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
-                                }
+            ImGui.Separator();
+
+            if (message.FilterReason == "custom") {
+                ImGui.TextColored(new Vector4(1f, 0f, 0f, 1f), "You cannot report messages filtered because of a custom filter.");
+            } else {
+                if (ImGui.Button("Report")) {
+                    Task.Run(async () => {
+                        string resp = null;
+                        try {
+                            using (WebClient client = new WebClient()) {
+                                this.lastReportStatus = ReportStatus.InProgress;
+                                resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
+                            }
 #pragma warning disable CA1031 // Do not catch general exception types
-                            } catch (Exception) { }
+                        } catch (Exception) { }
 #pragma warning restore CA1031 // Do not catch general exception types
-                            this.lastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
-                            PluginLog.Log($"Report sent. Response: {resp}");
-                        });
-                        ImGui.CloseCurrentPopup();
-                    }
-
-                    ImGui.SameLine();
-                }
-
-                if (ImGui.Button("Cancel")) {
+                        this.lastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
+                        PluginLog.Log($"Report sent. Response: {resp}");
+                    });
                     ImGui.CloseCurrentPopup();
                 }
 
-                ImGui.PopTextWrapPos();
-
-                ImGui.EndPopup();
+                ImGui.SameLine();
             }
+
+            if (ImGui.Button("Cancel")) {
+                ImGui.CloseCurrentPopup();
+            }
+
+            ImGui.PopTextWrapPos();
+
+            ImGui.EndPopup();
         }
 
         private enum ReportStatus {
