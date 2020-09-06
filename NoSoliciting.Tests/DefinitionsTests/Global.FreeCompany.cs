@@ -23,6 +23,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage(@"Golden Crow [FC] offering new and old players a save place to hang and have fun with - join the weebs now \o/ /pm for info "),
             new TestMessage("«ToC» recruiting active members. Join the party, send me a /Tell or stop by the FC house (Goblet P13, W19) for more information."),
             new TestMessage("FC Toxic looking for new memeber, Fc house, master crafter and gatherer, buffs available for new players as well as end game"),
+            new TestMessage("<Panic> is recruiting! We're a slowly growing fc that would appreciate some new faces. /tell for more info or an inv <3"),
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {

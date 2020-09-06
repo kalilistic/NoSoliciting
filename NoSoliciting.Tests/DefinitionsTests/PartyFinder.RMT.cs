@@ -22,6 +22,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             @"Selling 1x Eldthurs Horn for 8mil. Skip MB taxes \o/ Join if interested",
             "Selling Phanta mats, let me know what you want and I can deliver it to you. 2k for 300k. Join the party don't /tell please",
             "#1 NA WHOLESALER! NEO SET-660K! i490 SET-1.5M(w/DISCOUNT OPTIONS)! BUYING PHANTAS ANY AMOUNT 3K! JOIN PARTY!!!",
+            "1/2 chest Lootmaster for sam weap. If weap drops then coffer is rolled on. KB uptime. Ilya. If you just want a page or to help.",
         });
 
         [Theory]
