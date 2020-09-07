@@ -256,21 +256,12 @@ namespace NoSoliciting {
             ImGui.Text("Click on one of the entries below to report it to the developer as miscategorised.");
 
             if (this.lastReportStatus != ReportStatus.None) {
-                string status;
-                switch (this.lastReportStatus) {
-                    case ReportStatus.Failure:
-                        status = "failed to send";
-                        break;
-                    case ReportStatus.Successful:
-                        status = "sent successfully";
-                        break;
-                    case ReportStatus.InProgress:
-                        status = "sending";
-                        break;
-                    default:
-                        status = "unknown";
-                        break;
-                }
+                string status = this.lastReportStatus switch {
+                    ReportStatus.Failure => "failed to send",
+                    ReportStatus.Successful => "sent successfully",
+                    ReportStatus.InProgress => "sending",
+                    _ => "unknown",
+                };
                 ImGui.Text($"Last report status: {status}");
             }
 
@@ -394,10 +385,9 @@ namespace NoSoliciting {
                     Task.Run(async () => {
                         string resp = null;
                         try {
-                            using (WebClient client = new WebClient()) {
-                                this.lastReportStatus = ReportStatus.InProgress;
-                                resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
-                            }
+                            using WebClient client = new WebClient();
+                            this.lastReportStatus = ReportStatus.InProgress;
+                            resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
 #pragma warning disable CA1031 // Do not catch general exception types
                         } catch (Exception) { }
 #pragma warning restore CA1031 // Do not catch general exception types

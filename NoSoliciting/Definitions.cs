@@ -36,7 +36,7 @@ namespace NoSoliciting {
 
             Definitions defs = null;
 
-            var download = await Download().ConfigureAwait(true);
+            Tuple<Definitions, string> download = await Download().ConfigureAwait(true);
             if (download != null) {
                 defs = download.Item1;
 
@@ -52,7 +52,7 @@ namespace NoSoliciting {
         }
 
         public static Definitions Load(string text) {
-            var de = new DeserializerBuilder()
+            IDeserializer de = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .WithTypeConverter(new MatcherConverter())
                 .IgnoreUnmatchedProperties()
@@ -82,7 +82,7 @@ namespace NoSoliciting {
             }
 
             string text;
-            using (var file = File.OpenText(cachedPath)) {
+            using (StreamReader file = File.OpenText(cachedPath)) {
                 text = await file.ReadToEndAsync().ConfigureAwait(true);
             }
 
@@ -102,11 +102,10 @@ namespace NoSoliciting {
 
         private static async Task<Tuple<Definitions, string>> Download() {
             try {
-                using (WebClient client = new WebClient()) {
-                    string text = await client.DownloadStringTaskAsync(URL).ConfigureAwait(true);
-                    LastError = null;
-                    return Tuple.Create(Load(text), text);
-                }
+                using WebClient client = new WebClient();
+                string text = await client.DownloadStringTaskAsync(URL).ConfigureAwait(true);
+                LastError = null;
+                return Tuple.Create(Load(text), text);
             } catch (Exception e) when (e is WebException || e is YamlException) {
                 PluginLog.Log($"Could not download newest definitions.");
                 PluginLog.Log(e.ToString());
@@ -122,9 +121,8 @@ namespace NoSoliciting {
 
             byte[] b = Encoding.UTF8.GetBytes(defs);
 
-            using (var file = File.OpenWrite(cachePath)) {
-                await file.WriteAsync(b, 0, b.Length).ConfigureAwait(true);
-            }
+            using FileStream file = File.OpenWrite(cachePath);
+            await file.WriteAsync(b, 0, b.Length).ConfigureAwait(true);
         }
 
         internal void Initialise(Plugin plugin) {
@@ -221,7 +219,7 @@ namespace NoSoliciting {
             // calculate likelihood
             int likelihood = 0;
 
-            foreach (var matchers in this.LikelyMatchers) {
+            foreach (List<Matcher> matchers in this.LikelyMatchers) {
                 if (matchers.Any(matcher => matcher.Matches(text))) {
                     likelihood += 1;
                 }
