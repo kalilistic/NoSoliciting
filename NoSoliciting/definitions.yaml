@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 32
+version: 33
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -190,6 +190,9 @@ global:
         - adventur # adventuring, adventure, adventurer, etc.
         - courtesan
         - rp night
+        - maid
+      # specific RP names
+      - - Lucky Sevens
   free_company:
     option:
       basic: 'Filter FC recruitments from {}'
@@ -204,14 +207,15 @@ global:
       # mentions free company
       - - fc
         - free company
+        - recruiting
         - regex: '[<«]\w+[>»]'
       # contains a call to action
       - - join
         - apply
-        - /tell
         - /t
         - dm
         - whisper
+        - regex: '\btell'
       # mentions benefits
       - - discord
         - map
