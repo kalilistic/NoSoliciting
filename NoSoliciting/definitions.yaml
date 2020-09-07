@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 34
+version: 35
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -227,6 +227,7 @@ global:
         - buff
         - event
         - house
+        - mansion
         - level
         - raid
         - hunt
@@ -245,3 +246,4 @@ global:
         - regex: '\bvets?\b'
       # has common keywords 2
       - - welcom
+        - invite
