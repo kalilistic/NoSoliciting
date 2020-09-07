@@ -203,6 +203,7 @@ global:
       - shout
       - yell
     likelihood_threshold: 3
+    # Free Company | Fallen Angel | is welcoming new players on Gilgamesh
     likely_matchers:
       # mentions free company
       - - fc
@@ -243,3 +244,5 @@ global:
         - new face
         - regex: '\bold\b'
         - regex: '\bvets?\b'
+      # has common keywords 2
+      - - welcom

@@ -25,6 +25,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("«ToC» recruiting active members. Join the party, send me a /Tell or stop by the FC house (Goblet P13, W19) for more information."),
             new TestMessage("FC Toxic looking for new memeber, Fc house, master crafter and gatherer, buffs available for new players as well as end game"),
             new TestMessage("<Panic> is recruiting! We're a slowly growing fc that would appreciate some new faces. /tell for more info or an inv <3"),
+            new TestMessage("Free Company | Fallen Angel | is welcoming new players on Gilgamesh"),
+            new TestMessage("[FC recruitment] Small/New FC looking for more members to join us.  New and experienced welcomed. Send tell if interested!"),
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
