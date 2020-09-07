@@ -19,6 +19,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage(ChatType.Shout, "<Memoria> is a small, social FC looking for new or active players who regularly want to socialize and do content together. If this sounds like something you’re interested in, send me a /tell or apply via an application"),
             new TestMessage(ChatType.Shout, @"Paw Paw Grrr is currently recruiting! We are friendly bunch with constant mood for weird ideas! New? Veteran? Crafter? Doesn't matter! \tell me or Ophelia Shepard for inv :)"),
             new TestMessage(ChatType.Shout, "We have a beautiful mansion in the Mist with all comforts, a fleet farming for us and +20% battle exp buff on Saturdays! Send me a /tell if you want more info or a invite!"),
+            new TestMessage(ChatType.Shout, "Nothing is a small and cozy FC looking for members! If emptiness is endless, then everything rests in nothingness. DM me to join on our endless journey!"),
 
             // party finder
             new TestMessage("FC recruiting new and experienced players. Interested? Join party, send me a /tell or stop by the FC house for more information. "),
