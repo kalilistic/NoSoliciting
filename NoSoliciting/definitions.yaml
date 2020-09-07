@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 33
+version: 34
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -203,7 +203,6 @@ global:
       - shout
       - yell
     likelihood_threshold: 3
-    # Free Company | Fallen Angel | is welcoming new players on Gilgamesh
     likely_matchers:
       # mentions free company
       - - fc
