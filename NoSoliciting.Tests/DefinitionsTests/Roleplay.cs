@@ -21,6 +21,10 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "[18+]Need to get your RP/ERP fix in? Wishing to become or buy a courtesan? C'mere to Touch Fluffy Tail @ discord.gg/fCS8Zng",
             "MR casino venue looking for greeters and courtesans. Join pt if interested.",
             "Have a venue? Come plug yourself while checking us out!  We're The - !! - https://discord.gg/S7BUVKh",
+            "Looking for a good time? Come to the Sapphire for frat/sorority night! 5-10EST Gilga Mist W2 P9",
+            "Lucky Sevens - 18+ RP community to find partners, advertise your venue, post screenies and enjoy FF14! discord.gg/LuckySevens",
+            "{RP} New venue coming to Siren! Join for more information ahead of our grand opening! https://www.discord.gg/nqJtQSD",
+            "Open RP night with the Lucky Sevens at The Gold Court, Hyperion’s Steps of Thal X: 11, Y: 11 - discord.gg/LuckySevens",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
