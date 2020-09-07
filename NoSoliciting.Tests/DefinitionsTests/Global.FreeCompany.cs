@@ -17,6 +17,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage(ChatType.Shout, "Have you been running alone looking for the sweeter things on Faerie? Wanting to find a rowdy, yet caring, bunch of friends? Well, look no further than <CANDY>! we are a social rank 30 FC, friendly and willing to help new or returning players! Have a discord and Large House at Shiro! 18+, RP friendly, LGBTQ friendly as well. Send a tell and join today :hearts:"),
             new TestMessage(ChatType.Shout, "Need an FC? Why not come home to Amaurot? A small group with weekly events, active discord, players primarily on 3 - 11 pm EST /tell me for more info!"),
             new TestMessage(ChatType.Shout, "<Memoria> is a small, social FC looking for new or active players who regularly want to socialize and do content together. If this sounds like something you’re interested in, send me a /tell or apply via an application"),
+            new TestMessage(ChatType.Shout, @"Paw Paw Grrr is currently recruiting! We are friendly bunch with constant mood for weird ideas! New? Veteran? Crafter? Doesn't matter! \tell me or Ophelia Shepard for inv :)"),
 
             // party finder
             new TestMessage("FC recruiting new and experienced players. Interested? Join party, send me a /tell or stop by the FC house for more information. "),

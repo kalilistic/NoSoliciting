@@ -25,6 +25,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "Lucky Sevens - 18+ RP community to find partners, advertise your venue, post screenies and enjoy FF14! discord.gg/LuckySevens",
             "{RP} New venue coming to Siren! Join for more information ahead of our grand opening! https://www.discord.gg/nqJtQSD",
             "Open RP night with the Lucky Sevens at The Gold Court, Hyperion’s Steps of Thal X: 11, Y: 11 - discord.gg/LuckySevens",
+            "LUST the original Maid Harem- welcome guests into our discord! https://discord.gg/wczaT6k ERP discord 18+",
+            "Lucky Sevens - Primal's largest and most active RP discord - Welcomes you! discord.gg/LuckySevens",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
