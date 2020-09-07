@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 30
+version: 31
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -150,7 +150,8 @@ global:
         - event
         - venue
       # has venue type
-      - - cafe
+      - - venue
+        - cafe
         - café
         - bar
         - lounge
@@ -164,6 +165,8 @@ global:
         - hostel
         - club
         - bath
+        - frat
+        - sorority
         - regex: '\bden\b'
       # mentions services/activities
       - - entertainment
@@ -185,6 +188,7 @@ global:
         - bounties
         - adventur # adventuring, adventure, adventurer, etc.
         - courtesan
+        - rp night
   free_company:
     option:
       basic: 'Filter FC recruitments from {}'
