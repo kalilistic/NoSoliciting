@@ -426,7 +426,7 @@ namespace NoSoliciting {
                 if (last) {
                     ImGui.PushTextWrapPos();
                 }
-                ImGui.Text(arg);
+                ImGui.TextUnformatted(arg);
                 if (last) {
                     ImGui.PopTextWrapPos();
                 }
