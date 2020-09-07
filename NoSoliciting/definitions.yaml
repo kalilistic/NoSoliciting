@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 31
+version: 32
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -87,6 +87,7 @@ chat:
         - Off Code
         - FF14Mog.com
         - 使用する5％オ
+        - 5分納品
         - offers Fantasia
         - regex: 'finalfantasyxiv\.com-\w+\.\w+' # phishing
         - regex: 'square-enix\.com-\w+\.\w+' # phishing

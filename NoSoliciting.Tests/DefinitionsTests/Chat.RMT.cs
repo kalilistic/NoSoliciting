@@ -9,6 +9,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.Chat {
         public static object[][] DataPositives => DefUtils.DataFromMessages(new TestMessage[] {
             new TestMessage(ChatType.Shout, "FF14Mog.com selling cheap Mog Station Redeem Code,Dirndl's Attire  $8.99, Chocobo Carriage  $14.39 ,Use 5Off Code:FF5"),
             new TestMessage(ChatType.Say, "----[4KGOLD.COM]----[Best Buy Gil Store]----[Cheapest Price]-----[4KGOLD.COM]---[Ultrafast Deliveryin 10 Mins]--[6OFF Code;LOVE]---359qe"),
+            new TestMessage(ChatType.Shout, "【 PVP◇NK.℃ O M 、◇ = BA 】，5分納品！ジル＆480-500HQセット＆希望の園エデン (野蛮)全部強奪!安い&安全保障【コード：714、5％OFF】!!!-ssrum"),
+            new TestMessage(ChatType.Shout, "【 PV■NK.℃ O M 、■ = PBA 】，5分納品！ジル＆480-500HQセット＆希望の園エデン (野蛮)全部強奪!安い&安全保障【コード：714、5％OFF】!!!-cfjyf"),
         });
 
         //public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
