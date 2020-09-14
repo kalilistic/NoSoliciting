@@ -117,6 +117,7 @@ namespace NoSoliciting {
         CrossLinkShell7 = 106,
         CrossLinkShell8 = 107,
         MailSent = 569,
+        MailError = 572,
         FCMotd = 581,
         BattleAbility = 2091,
         SystemMessage2 = 2105,
@@ -134,6 +135,7 @@ namespace NoSoliciting {
         Revive = 8250,
         LevelUpAchievement = 8256,
         CraftItem = 8258,
+        FCJoin = 8261,
         AttackMiss = 8746,
         RecoverHp = 8749,
         GainBuff = 8750,
@@ -157,23 +159,67 @@ namespace NoSoliciting {
         PetCausesHpRecovery = 23085,
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32")]
+    public enum ChatCategory : byte {
+        Progress = 0,
+        Loot = 1,
+        Crafting = 2,
+        Gathering = 3,
+        Damage = 41,
+        Miss = 42,
+        Ability = 43,
+        Item = 44,
+        Healing = 45,
+        GainBuff = 46,
+        GainDebuff = 47,
+        LoseBuff = 48,
+        LoseDebuff = 49,
+        Defeated = 58,
+        System = 57,
+        GatheringSystem = 59,
+        Error = 60,
+        ObtainItem = 62,
+    }
+
     public static class ChatTypeExt {
+        private const ushort THRESHOLD = 1024;
+        private const ushort CLEAR_6 = ~(~0 << 6);
+
+        public static ChatCategory? Category(this ChatType type) {
+            if ((ushort)type < THRESHOLD) {
+                return null;
+            }
+
+            return (ChatCategory)((ushort)type & CLEAR_6);
+        }
+
         public static bool IsBattle(this ChatType type) {
-            ushort id = (ushort)type;
-            if (id < 1_000) {
+            var category = type.Category();
+            if (category == null) {
                 return false;
             }
 
-            switch (type) {
-                case ChatType.CraftItem:
-                case ChatType.ObtainExperience:
-                case ChatType.ObtainItem:
-                case ChatType.LevelUpAchievement:
-                case ChatType.SystemMessage2:
+            return category.Value.IsBattle();
+        }
+    }
+
+    public static class ChatCategoryExt {
+        public static bool IsBattle(this ChatCategory category) {
+            switch (category) {
+                case ChatCategory.Damage:
+                case ChatCategory.Miss:
+                case ChatCategory.Ability:
+                case ChatCategory.Item:
+                case ChatCategory.Healing:
+                case ChatCategory.GainBuff:
+                case ChatCategory.LoseBuff:
+                case ChatCategory.GainDebuff:
+                case ChatCategory.LoseDebuff:
+                case ChatCategory.Defeated:
+                    return true;
+                default:
                     return false;
             }
-
-            return true;
         }
     }
 }
