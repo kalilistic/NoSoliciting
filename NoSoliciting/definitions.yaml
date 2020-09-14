@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 36
+version: 37
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -191,6 +191,8 @@ global:
         - courtesan
         - rp night
         - maid
+        - cowboy
+        - merry
       # specific RP names
       - - Lucky Sevens
   free_company:

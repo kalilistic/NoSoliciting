@@ -27,6 +27,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "Open RP night with the Lucky Sevens at The Gold Court, Hyperion’s Steps of Thal X: 11, Y: 11 - discord.gg/LuckySevens",
             "LUST the original Maid Harem- welcome guests into our discord! https://discord.gg/wczaT6k ERP discord 18+",
             "Lucky Sevens - Primal's largest and most active RP discord - Welcomes you! discord.gg/LuckySevens",
+            "SPAGHETTI WESTERN NIGHT AT SPAGET 2112! Free cowboy hats! Whiskey provided by the Whiskey Tears! Gilga Mist W21 P12",
+            "(RP) Adonis Blue invites you to frolick and play within our land of enchantment. All are welcome to  make merry.Lamia Gob W14 L4.",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
