@@ -128,7 +128,7 @@ namespace NoSoliciting {
                 throw new ArgumentNullException(nameof(message), "SeString cannot be null");
             }
 
-            if (this.plugin.Definitions == null || ((ChatType)type).IsBattle()) {
+            if (this.plugin.Definitions == null || ChatTypeExt.FromDalamud(type).IsBattle()) {
                 return;
             }
 
@@ -151,7 +151,7 @@ namespace NoSoliciting {
 
             this.plugin.AddMessageHistory(new Message(
                 defs: this.plugin.Definitions,
-                type: (ChatType)type,
+                type: ChatTypeExt.FromDalamud(type),
                 sender: sender,
                 content: message,
                 reason: reason

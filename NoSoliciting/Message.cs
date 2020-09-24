@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Chat.SeStringHandling;
+﻿using Dalamud.Game.Chat;
+using Dalamud.Game.Chat.SeStringHandling;
 using Dalamud.Game.Chat.SeStringHandling.Payloads;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -81,141 +82,103 @@ namespace NoSoliciting {
         TellIncoming = 13,
         Party = 14,
         Alliance = 15,
-        Ls1 = 16,
-        Ls2 = 17,
-        Ls3 = 18,
-        Ls4 = 19,
-        Ls5 = 20,
-        Ls6 = 21,
-        Ls7 = 22,
-        Ls8 = 23,
+        Linkshell1 = 16,
+        Linkshell2 = 17,
+        Linkshell3 = 18,
+        Linkshell4 = 19,
+        Linkshell5 = 20,
+        Linkshell6 = 21,
+        Linkshell7 = 22,
+        Linkshell8 = 23,
         FreeCompany = 24,
         NoviceNetwork = 27,
         CustomEmote = 28,
         StandardEmote = 29,
         Yell = 30,
         CrossParty = 32,
-        PvPTeam = 36,
-        CrossLinkShell1 = 37,
-        Echo = 56,
-        SystemMessage = 57,
-        SystemError = 58,
-        GatheringSystemMessage = 59,
-        ErrorMessage = 60,
-        NpcChat2 = 61,
-        ObtainGil = 62,
-        NpcChat = 68,
-        FCBuff = 69,
-        RetainerSale = 71,
-        PartyFinderSummary = 72,
-        NoviceNetworkSystem = 75,
-        CrossLinkShell2 = 101,
-        CrossLinkShell3 = 102,
-        CrossLinkShell4 = 103,
-        CrossLinkShell5 = 104,
-        CrossLinkShell6 = 105,
-        CrossLinkShell7 = 106,
-        CrossLinkShell8 = 107,
-        MailSent = 569,
-        MailError = 572,
-        FCMotd = 581,
-        BattleAbility = 2091,
-        SystemMessage2 = 2105,
-        SelfRevive = 2106,
-        SelfGainBuff = 2222,
-        SelfLoseBuff = 2224,
-        SelfOutgoingDamage = 2729,
-        SelfMiss = 2730,
-        DealDamage = 2857,
-        ActorDefeated = 2874,
-        ObtainItem = 2110,
-        ObtainExperience = 2112,
-        PlayerUsesAbility = 8235,
-        UseItem = 8236,
-        Revive = 8250,
-        LevelUpAchievement = 8256,
-        CraftItem = 8258,
-        FCJoin = 8261,
-        AttackMiss = 8746,
-        RecoverHp = 8749,
-        GainBuff = 8750,
-        LoseBuff = 8752,
-        FCLoginLogout = 8774,
-        PlayerHitsEnemy = 9001,
-        PlayerDefeatsEnemy = 9018,
-        BattleEnemyAbility = 10283,
-        BattleIncomingDamage = 10409,
-        BattleEnemyMiss = 10410,
-        EnemyRestoreHp = 10925,
-        BattleEnemyAbility2 = 12331,
-        PlayerTakesDamage = 12841,
-        EnemyHitsFriendlyNpc = 13225,
-        FriendlyNpcCast = 14379,
-        FriendlyNpcHitsEnemy = 15145,
-        FriendlyNpcMissesEnemy = 15146,
-        FriendlyNpcGainBuff = 15278,
-        FriendlyNpcLoseBuff = 15280,
-        PetAbility = 22571,
-        PetCausesHpRecovery = 23085,
-    }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32")]
-    public enum ChatCategory : byte {
-        Progress = 0,
-        Loot = 1,
-        Crafting = 2,
-        Gathering = 3,
+        PvpTeam = 36,
+        CrossLinkshell1 = 37,
         Damage = 41,
         Miss = 42,
-        Ability = 43,
+        Action = 43,
         Item = 44,
         Healing = 45,
         GainBuff = 46,
         GainDebuff = 47,
         LoseBuff = 48,
         LoseDebuff = 49,
-        Defeated = 58,
+        Alarm = 55,
+        Echo = 56,
         System = 57,
+        BattleSystem = 58,
         GatheringSystem = 59,
         Error = 60,
-        ObtainItem = 62,
+        NpcDialogue = 61,
+        LootNotice = 62,
+        Progress = 64,
+        LootRoll = 65,
+        Crafting = 66,
+        Gathering = 67,
+        NpcAnnouncement = 68,
+        FreeCompanyAnnouncement = 69,
+        FreeCompanyLoginLogout = 70,
+        RetainerSale = 71,
+        PeriodicRecruitmentNotification = 72,
+        Sign = 73,
+        RandomNumber = 74,
+        NoviceNetworkSystem = 75,
+        Orchestrion = 76,
+        PvpTeamAnnouncement = 77,
+        PvpTeamLoginLogout = 78,
+        MessageBook = 79,
+        GmTell = 80,
+        GmSay = 81,
+        GmShout = 82,
+        GmYell = 83,
+        GmParty = 84,
+        GmFreeComapny = 85,
+        GmLinkshell1 = 86,
+        GmLinkshell2 = 87,
+        GmLinkshell3 = 88,
+        GmLinkshell4 = 89,
+        GmLinkshell5 = 90,
+        GmLinkshell6 = 91,
+        GmLinkshell7 = 92,
+        GmLinkshell8 = 93,
+        GmNoviceNetwork = 94,
+        CrossLinkshell2 = 101,
+        CrossLinkshell3 = 102,
+        CrossLinkshell4 = 103,
+        CrossLinkshell5 = 104,
+        CrossLinkshell6 = 105,
+        CrossLinkshell7 = 106,
+        CrossLinkshell8 = 107,
     }
 
     public static class ChatTypeExt {
-        private const ushort THRESHOLD = 1024;
-        private const ushort CLEAR_6 = ~(~0 << 6);
+        //private const ushort THRESHOLD = 127;
+        private const ushort CLEAR_7 = ~(~0 << 7);
 
-        public static ChatCategory? Category(this ChatType type) {
-            if ((ushort)type < THRESHOLD) {
-                return null;
-            }
+        public static ChatType FromCode(ushort code) {
+            return (ChatType)(code & CLEAR_7);
+        }
 
-            return (ChatCategory)((ushort)type & CLEAR_6);
+        public static ChatType FromDalamud(XivChatType type) {
+            return ChatTypeExt.FromCode((ushort)type);
         }
 
         public static bool IsBattle(this ChatType type) {
-            var category = type.Category();
-            if (category == null) {
-                return false;
-            }
-
-            return category.Value.IsBattle();
-        }
-    }
-
-    public static class ChatCategoryExt {
-        public static bool IsBattle(this ChatCategory category) {
-            switch (category) {
-                case ChatCategory.Damage:
-                case ChatCategory.Miss:
-                case ChatCategory.Ability:
-                case ChatCategory.Item:
-                case ChatCategory.Healing:
-                case ChatCategory.GainBuff:
-                case ChatCategory.LoseBuff:
-                case ChatCategory.GainDebuff:
-                case ChatCategory.LoseDebuff:
-                case ChatCategory.Defeated:
+            switch (type) {
+                case ChatType.Damage:
+                case ChatType.Miss:
+                case ChatType.Action:
+                case ChatType.Item:
+                case ChatType.Healing:
+                case ChatType.GainBuff:
+                case ChatType.LoseBuff:
+                case ChatType.GainDebuff:
+                case ChatType.LoseDebuff:
+                case ChatType.BattleSystem:
                     return true;
                 default:
                     return false;
