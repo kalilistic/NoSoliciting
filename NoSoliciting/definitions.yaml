@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 37
+version: 38
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -117,6 +117,7 @@ party_finder:
         - ultimate
         - trial
         - loot
+        - content
         - regex: '\bex\b'
         - regex: '\bmount\b'
         - regex: e[1-9][0-2]?
@@ -140,16 +141,21 @@ global:
       - - discord.gg
         - carrd.co
         - discord.io
-      # mentions roleplaying or fairly rp-only keywords
+        - tinyurl.com
+      # mentions roleplaying
       - - rp
         - roleplay
         - role play
-        - sfw # also catches nsfw
+      # mentions fairly rp-only keywords
+      - - sfw # also catches nsfw
         - '18+'
         - '18 +'
         - open
         - event
         - venue
+      # has a call to action
+      #- - join
+      #  - regex: '\btell'
       # has venue type
       - - venue
         - cafe
@@ -168,6 +174,7 @@ global:
         - bath
         - frat
         - sorority
+        - bazaar
         - regex: '\bden\b'
       # mentions services/activities
       - - entertainment
@@ -181,6 +188,7 @@ global:
         - dance
         - dancing
         - music
+        - karaoke
         - contest
         - giveaway
         - gambling
@@ -193,6 +201,9 @@ global:
         - maid
         - cowboy
         - merry
+        - girlfriend
+        - wife
+        - sleepover
       # specific RP names
       - - Lucky Sevens
   free_company:
@@ -205,20 +216,21 @@ global:
       - shout
       - yell
     likelihood_threshold: 3
-    # Nothing is a small and cozy FC looking for members! If emptiness is endless, then everything rests in nothingness. DM me to join on our endless journey!
     likely_matchers:
       # mentions free company
       - - fc
         - free company
         - recruiting
-        - regex: '[<«]\w+[>»]'
+        - regex: '[<«][\w\-]+[>»]'
       # contains a call to action
       - - join
         - apply
         - /t
         - dm
+        - pm
         - whisper
         - regex: '\btell'
+        - regex: '[ie]nquire'
       # mentions benefits
       - - discord
         - map
@@ -241,13 +253,17 @@ global:
         - seasoned
         - casual
         - help
+        - player
         - new player
         - new member
         - new people
         - new face
+        - characters
         - looking for member
+        - lonely
         - regex: '\bold\b'
         - regex: '\bvets?\b'
       # has common keywords 2
       - - welcom
         - invite
+        - Ranked

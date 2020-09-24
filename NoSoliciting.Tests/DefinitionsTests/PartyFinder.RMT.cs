@@ -14,6 +14,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "｢ Selling ｣ ♥ Raids Trials Ultimates BLU ♥ Fast Delivery ♥ Price Match ♥ Discord→ Shion#5162",
             "♥ SELLING ♥ Shiva Unreal / WoL XM - Eden Savage (☆ i500/i505 ☆) - TEA/UwU/UCoB - Old raids and + |  Discord add me: gin#5147",
             "「MinmaxØ」 Offering any  →  →  → & more, Instant delivery. Discord→ Minmax#0001",
+            "[Viet Rice Farmers] is selling All Content Add on Discord Heyitsjowey#2703",
+            "【Selling ー All the content. You want something? We got this!ーHQ teams and speed at your service!】Discord : Victoriam#4716",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
