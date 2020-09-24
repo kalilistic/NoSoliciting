@@ -34,6 +34,14 @@ namespace NoSoliciting {
 
             this.filter = new Filter(this);
 
+            // pre-compute the max ilvl to prevent stutter
+            Task.Run(async () => {
+                while (!this.Interface.Data.IsDataReady) {
+                    await Task.Delay(1_000).ConfigureAwait(true);
+                }
+                FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
+            });
+
             this.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.filter.OnChat;
             this.Interface.UiBuilder.OnBuildUi += this.ui.Draw;
             this.Interface.UiBuilder.OnOpenConfigUi += this.ui.OpenSettings;
