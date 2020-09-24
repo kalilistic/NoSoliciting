@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 38
+version: 39
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -153,9 +153,7 @@ global:
         - open
         - event
         - venue
-      # has a call to action
-      #- - join
-      #  - regex: '\btell'
+        - hosting
       # has venue type
       - - venue
         - cafe
@@ -204,6 +202,7 @@ global:
         - girlfriend
         - wife
         - sleepover
+        - masquerade
       # specific RP names
       - - Lucky Sevens
   free_company:
