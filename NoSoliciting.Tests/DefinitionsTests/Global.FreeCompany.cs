@@ -20,6 +20,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage(ChatType.Shout, @"Paw Paw Grrr is currently recruiting! We are friendly bunch with constant mood for weird ideas! New? Veteran? Crafter? Doesn't matter! \tell me or Ophelia Shepard for inv :)"),
             new TestMessage(ChatType.Shout, "We have a beautiful mansion in the Mist with all comforts, a fleet farming for us and +20% battle exp buff on Saturdays! Send me a /tell if you want more info or a invite!"),
             new TestMessage(ChatType.Shout, "Nothing is a small and cozy FC looking for members! If emptiness is endless, then everything rests in nothingness. DM me to join on our endless journey!"),
+            new TestMessage(ChatType.Shout, "Tired of wandering through the game a lonely weeb? Want Senpai to notice you?! Fat Chocobo FC is now recruiting! Top Ranked FC on Exodus & Worldwide, 6 yrs+ running strong!"),
 
             // party finder
             new TestMessage("FC recruiting new and experienced players. Interested? Join party, send me a /tell or stop by the FC house for more information. "),
@@ -29,11 +30,14 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("<Panic> is recruiting! We're a slowly growing fc that would appreciate some new faces. /tell for more info or an inv <3"),
             new TestMessage("Free Company | Fallen Angel | is welcoming new players on Gilgamesh"),
             new TestMessage("[FC recruitment] Small/New FC looking for more members to join us.  New and experienced welcomed. Send tell if interested!"),
+            new TestMessage("<WICH> FC is now recruiting!! we are looking for all types of players. PM me for more info :slight_smile:"),
+            new TestMessage("Rhotano Mercantile <RM-RP> (18+ RP FC) is recruiting neutral and evil characters for dark RP, enquire within! https://rm-rp.carrd.co/"),
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
             new TestMessage("Static recruit. Not hardcore. Discord needed. tues-thurs 11:30pmEST. Join if you have questions."),
             new TestMessage("LF new LGBT friends to chill with in Eorzea! Join up, let's chat, and hang out. I have discord as well :)"),
+            new TestMessage("(Bored)Lovely Au Ra woman [Famfrit] available to be RP girlfriend/wife for long term or short term. Send tell if in need."),
         });
 
         [Theory]

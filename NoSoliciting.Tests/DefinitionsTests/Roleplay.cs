@@ -29,6 +29,10 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "Lucky Sevens - Primal's largest and most active RP discord - Welcomes you! discord.gg/LuckySevens",
             "SPAGHETTI WESTERN NIGHT AT SPAGET 2112! Free cowboy hats! Whiskey provided by the Whiskey Tears! Gilga Mist W21 P12",
             "(RP) Adonis Blue invites you to frolick and play within our land of enchantment. All are welcome to  make merry.Lamia Gob W14 L4.",
+            "[18+RP] Teraflare is having a VIP sleepover at 1am EST!! Talk to management, and get your VIP access to join our shenanigans!!",
+            "[RP] Karaoke Night at NRAID HQ! Sign up for a chance to perform on our stage! Spectators welcome! https://discord.gg/ZhgqEqf",
+            " Coeurlseye Bazaar Night! 9 PM EST - Vendors, food, unique trinkets and more! Learn more at tinyurl.com/CBazaar",
+            "[RP] [Siren] The Black Flower Lounge is looking for new staff! waiter, bartender and escort positions open! join for info!",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
