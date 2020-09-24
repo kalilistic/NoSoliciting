@@ -33,6 +33,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "[RP] Karaoke Night at NRAID HQ! Sign up for a chance to perform on our stage! Spectators welcome! https://discord.gg/ZhgqEqf",
             " Coeurlseye Bazaar Night! 9 PM EST - Vendors, food, unique trinkets and more! Learn more at tinyurl.com/CBazaar",
             "[RP] [Siren] The Black Flower Lounge is looking for new staff! waiter, bartender and escort positions open! join for info!",
+            "The Starlight Room is hosting a gothic masquerade tonight from 8PM EST til 1AM EST. The Goblet War 10 Plot 19 Sargatanas!",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
