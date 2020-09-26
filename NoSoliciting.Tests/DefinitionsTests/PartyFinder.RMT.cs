@@ -16,6 +16,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "「MinmaxØ」 Offering any  →  →  → & more, Instant delivery. Discord→ Minmax#0001",
             "[Viet Rice Farmers] is selling All Content Add on Discord Heyitsjowey#2703",
             "【Selling ー All the content. You want something? We got this!ーHQ teams and speed at your service!】Discord : Victoriam#4716",
+            "「」 Guaranteed results! World #1 raiders! ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts ≫ Discord → ashlar#6021",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
