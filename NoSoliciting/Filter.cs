@@ -22,7 +22,7 @@ namespace NoSoliciting {
             this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
 
             IntPtr listingPtr = this.plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
-            IntPtr summaryPtr = this.plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 57 48 83 EC 20 48 8B D9 48 8B FA 48 8B 49 ?? 48 8B 01 FF 90 ?? ?? ?? ?? 48 8B C8 BA 79 00 00 00 E8 ?? ?? ?? ?? 48 85 C0 74 ?? 44 0F B6 83 ?? ?? ?? ??");
+            IntPtr summaryPtr = this.plugin.Interface.TargetModuleScanner.ScanText("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 48 8B CE E8 ?? ?? ?? ?? 49 8B 07");
             if (listingPtr == IntPtr.Zero || summaryPtr == IntPtr.Zero) {
                 PluginLog.Log("Party Finder filtering disabled because hook could not be created.");
                 return;
