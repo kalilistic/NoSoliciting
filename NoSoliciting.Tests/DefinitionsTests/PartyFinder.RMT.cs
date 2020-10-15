@@ -17,6 +17,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "[Viet Rice Farmers] is selling All Content Add on Discord Heyitsjowey#2703",
             "【Selling ー All the content. You want something? We got this!ーHQ teams and speed at your service!】Discord : Victoriam#4716",
             "「」 Guaranteed results! World #1 raiders! ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts ≫ Discord → ashlar#6021",
+            "Primal/Omega/E4S mounts Gil only at  https://rollraider.carrd.co/ or https://discord.gg/FfS5QnW",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {

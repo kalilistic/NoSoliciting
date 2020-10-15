@@ -21,6 +21,9 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage(ChatType.Shout, "We have a beautiful mansion in the Mist with all comforts, a fleet farming for us and +20% battle exp buff on Saturdays! Send me a /tell if you want more info or a invite!"),
             new TestMessage(ChatType.Shout, "Nothing is a small and cozy FC looking for members! If emptiness is endless, then everything rests in nothingness. DM me to join on our endless journey!"),
             new TestMessage(ChatType.Shout, "Tired of wandering through the game a lonely weeb? Want Senpai to notice you?! Fat Chocobo FC is now recruiting! Top Ranked FC on Exodus & Worldwide, 6 yrs+ running strong!"),
+            new TestMessage(ChatType.TellIncoming, "<<>> Eclipsehey what about joining a  fc full of  people? Low & High end Casual FC (24/7buffs). Accept, Decline or PM me♡."),
+            new TestMessage(ChatType.TellIncoming, "<<>>Eclipse would like you to join a - Low & High end Casual FC (24/7buffs). Accept, Decline or PM me♡."),
+            new TestMessage(ChatType.TellIncoming, "Hello!;-) I've just send u an invite to join Artemis Moonlight. Join us if u like! We are a friendly and helpful FC, willing to help all level players and for fun teamplay. Kupo!"),
 
             // party finder
             new TestMessage("FC recruiting new and experienced players. Interested? Join party, send me a /tell or stop by the FC house for more information. "),
@@ -32,6 +35,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("[FC recruitment] Small/New FC looking for more members to join us.  New and experienced welcomed. Send tell if interested!"),
             new TestMessage("<WICH> FC is now recruiting!! we are looking for all types of players. PM me for more info :slight_smile:"),
             new TestMessage("Rhotano Mercantile <RM-RP> (18+ RP FC) is recruiting neutral and evil characters for dark RP, enquire within! https://rm-rp.carrd.co/"),
+            new TestMessage("Elemancia is a Chill FC looking for people who enjoy EX Trials, Animanga, Zombies and Foodie Stuff, Bible Study Available."),
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
