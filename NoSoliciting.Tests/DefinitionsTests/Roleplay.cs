@@ -34,6 +34,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             " Coeurlseye Bazaar Night! 9 PM EST - Vendors, food, unique trinkets and more! Learn more at tinyurl.com/CBazaar",
             "[RP] [Siren] The Black Flower Lounge is looking for new staff! waiter, bartender and escort positions open! join for info!",
             "The Starlight Room is hosting a gothic masquerade tonight from 8PM EST til 1AM EST. The Goblet War 10 Plot 19 Sargatanas!",
+            "[RP/LGBT+] The Ponspectors present: \"BAKE SALE!\" |Excal|Mist|Ward13|Apartment6| Come see our catboys!",
+            "[RP][2 LIVES GONE CAFE] \"Take a break from housing. Inside a house\"  LB W23 P17",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
