@@ -6,7 +6,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             this.Def = fixture.defs.Global["roleplay"];
         }
 
-        public static object[][] DataPositives => DefUtils.DataFromStrings(new string[] {
+        public static object[][] DataPositives => DefUtils.DataFromStrings(new[] {
             "If you're looking for something to do, come find monthly contests, 4 weekly RP events and more! discord.gg/LuckySevens",
             "Thorned Dragon Cosplay Event Sunday 9/6! Website for more info: tdevent.carrd.co Discord: discord.gg/thorneddragonclub",
             "[Rp] The Viridian Orchid is a non-profit companion's den seeking those interested in joining our community! <viriorchid.carrd.co>",
@@ -36,9 +36,17 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "The Starlight Room is hosting a gothic masquerade tonight from 8PM EST til 1AM EST. The Goblet War 10 Plot 19 Sargatanas!",
             "[RP/LGBT+] The Ponspectors present: \"BAKE SALE!\" |Excal|Mist|Ward13|Apartment6| Come see our catboys!",
             "[RP][2 LIVES GONE CAFE] \"Take a break from housing. Inside a house\"  LB W23 P17",
+            "Need a break from Bozja? Come relax at Cottontail Cafe and enjoy our food and drink  Exodus Mist 12, 57",
+            "[RP] The Reading Nook Come in For Tea,Treats, and the Company of your Fellow Xaela/Raens from the Azim Steppe!",
+            "CLUB KARMA serves what you deserve every Wednesday! Join our Discord for more fun and info: https://discord.gg/xmNc7rn",
+            "Crescents Keep All Saints Date Auction and Costume Party! Over 1mil in prizes! Mist Ward 14 Plot 34 7-10 EST",
+            "Black Lotus HalloweenParty Oct.26th7pmCST!CostumeContest,DJ,  Auction and More!  https://blacklotushalloweenparty.carrd.co/",
+            "The Queen's Parlor all-inclusive resort is hiring! Front of house, restaurant, spa and casino all have openings!",
+            "\"A Grave Affair\", party on Cactuar, Goblet, W6P6! Costume contest w/ prizes, raffle, and more! https://discord.gg/6X24tx6v",
+            "Come pull up to the Bread Bank and buy some bread\nIn the Adamantoise Goblet, Ward 20, plot 40",
         });
 
-        public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
+        public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
             "«ToC» recruiting active members. Join the party, send me a /Tell or stop by the FC house (Goblet P13, W19) for more information.",
         });
 

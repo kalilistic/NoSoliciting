@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 42
+version: 43
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -86,6 +86,7 @@ chat:
         - cheap Mog
         - Off Code
         - FF14Mog.com
+        - ff14mog.com
         - 使用する5％オ
         - 5分納品
         - offers Fantasia
@@ -120,6 +121,7 @@ party_finder:
         - trial
         - loot
         - content
+        - ucob
         - regex: '\bex\b'
         - regex: '\bmount\b'
         - regex: e[1-9][0-2]?
@@ -140,6 +142,7 @@ global:
         - apartment
         - apt
         - regex: 'p.{0,2}\d'
+        - regex: '\d{1,2}.{0,2}\d{1,2}'
       # has a discord or website
       - - discord.gg
         - carrd.co
@@ -157,6 +160,7 @@ global:
         - event
         - venue
         - hosting
+        - hiring
       # has venue type
       - - venue
         - cafe
@@ -176,6 +180,7 @@ global:
         - frat
         - sorority
         - bazaar
+        - nook
         - regex: '\bden\b'
       # mentions services/activities
       - - entertainment
@@ -206,6 +211,11 @@ global:
         - wife
         - sleepover
         - masquerade
+        - tea
+        - costume
+        - bread
+        - regex: '\ball.inclusive'
+        - regex: 'serve\b'
       # specific RP names
       - - Lucky Sevens
   free_company:
@@ -232,6 +242,7 @@ global:
         - dm
         - pm
         - whisper
+        - accept
         - regex: '\btell'
         - regex: '[ie]nquire'
       # mentions benefits
@@ -266,9 +277,10 @@ global:
         - looking for member
         - looking for people
         - lonely
+        - level
         - regex: '\bold\b'
         - regex: '\bvets?\b'
       # has common keywords 2
       - - welcom
         - invite
-        - Ranked
+        - ranked

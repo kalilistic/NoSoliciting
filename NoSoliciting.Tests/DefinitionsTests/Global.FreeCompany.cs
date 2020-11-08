@@ -36,6 +36,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("<WICH> FC is now recruiting!! we are looking for all types of players. PM me for more info :slight_smile:"),
             new TestMessage("Rhotano Mercantile <RM-RP> (18+ RP FC) is recruiting neutral and evil characters for dark RP, enquire within! https://rm-rp.carrd.co/"),
             new TestMessage("Elemancia is a Chill FC looking for people who enjoy EX Trials, Animanga, Zombies and Foodie Stuff, Bible Study Available."),
+            new TestMessage("Sol Verinia FC is recruiting! We accept all levels, looking for active members. We look forward to you becoming one of the spire."),
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
