@@ -13,8 +13,8 @@ namespace NoSoliciting {
         private delegate void HandlePFPacketDelegate(IntPtr param_1, IntPtr param_2);
         private readonly Hook<HandlePFPacketDelegate> handlePacketHook;
 
-        private delegate long HandlePFSummaryDelegate(long param_1, long param_2);
-        private readonly Hook<HandlePFSummaryDelegate> handleSummaryHook;
+        private delegate long HandlePFSummary2Delegate(long param_1, long param_2, byte param_3);
+        private readonly Hook<HandlePFSummary2Delegate> handleSummaryHook;
 
         private bool disposedValue;
 
@@ -22,7 +22,7 @@ namespace NoSoliciting {
             this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
 
             IntPtr listingPtr = this.plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
-            IntPtr summaryPtr = this.plugin.Interface.TargetModuleScanner.ScanText("E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 48 8B CE E8 ?? ?? ?? ?? 49 8B 07");
+            IntPtr summaryPtr = this.plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 8B FA 48 8B F1 45 84 C0 74 ?? 0F B7 0A");
             if (listingPtr == IntPtr.Zero || summaryPtr == IntPtr.Zero) {
                 PluginLog.Log("Party Finder filtering disabled because hook could not be created.");
                 return;
@@ -31,7 +31,7 @@ namespace NoSoliciting {
             this.handlePacketHook = new Hook<HandlePFPacketDelegate>(listingPtr, new HandlePFPacketDelegate(this.HandlePFPacket));
             this.handlePacketHook.Enable();
 
-            this.handleSummaryHook = new Hook<HandlePFSummaryDelegate>(summaryPtr, new HandlePFSummaryDelegate(this.HandleSummary));
+            this.handleSummaryHook = new Hook<HandlePFSummary2Delegate>(summaryPtr, new HandlePFSummary2Delegate(this.HandleSummary));
             this.handleSummaryHook.Enable();
         }
 
@@ -116,10 +116,10 @@ namespace NoSoliciting {
             this.handlePacketHook.Original(param_1, param_2);
         }
 
-        private long HandleSummary(long param_1, long param_2) {
+        private long HandleSummary(long param_1, long param_2, byte param_3) {
             this.clearOnNext = true;
 
-            return this.handleSummaryHook.Original(param_1, param_2);
+            return this.handleSummaryHook.Original(param_1, param_2, param_3);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "fulfilling a delegate")]
