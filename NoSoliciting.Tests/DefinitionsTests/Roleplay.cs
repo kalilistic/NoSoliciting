@@ -44,6 +44,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "The Queen's Parlor all-inclusive resort is hiring! Front of house, restaurant, spa and casino all have openings!",
             "\"A Grave Affair\", party on Cactuar, Goblet, W6P6! Costume contest w/ prizes, raffle, and more! https://discord.gg/6X24tx6v",
             "Come pull up to the Bread Bank and buy some bread\nIn the Adamantoise Goblet, Ward 20, plot 40",
+            "Come to The House Of Seoul and enjoy Jazz with eastern influence. Relax, eat, or drink. Vibe is a must. Faerie Shiro 24 24",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
