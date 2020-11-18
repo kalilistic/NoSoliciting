@@ -21,6 +21,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage(ChatType.Shout, "We have a beautiful mansion in the Mist with all comforts, a fleet farming for us and +20% battle exp buff on Saturdays! Send me a /tell if you want more info or a invite!"),
             new TestMessage(ChatType.Shout, "Nothing is a small and cozy FC looking for members! If emptiness is endless, then everything rests in nothingness. DM me to join on our endless journey!"),
             new TestMessage(ChatType.Shout, "Tired of wandering through the game a lonely weeb? Want Senpai to notice you?! Fat Chocobo FC is now recruiting! Top Ranked FC on Exodus & Worldwide, 6 yrs+ running strong!"),
+            new TestMessage(ChatType.Shout, "Ashes Of Aesir <<Aesir>> FC is recruiting! we are a friendly bunch in search of expanding our wings with friendly and active members."),
             new TestMessage(ChatType.TellIncoming, "<<>> Eclipsehey what about joining a  fc full of  people? Low & High end Casual FC (24/7buffs). Accept, Decline or PM me♡."),
             new TestMessage(ChatType.TellIncoming, "<<>>Eclipse would like you to join a - Low & High end Casual FC (24/7buffs). Accept, Decline or PM me♡."),
             new TestMessage(ChatType.TellIncoming, "Hello!;-) I've just send u an invite to join Artemis Moonlight. Join us if u like! We are a friendly and helpful FC, willing to help all level players and for fun teamplay. Kupo!"),

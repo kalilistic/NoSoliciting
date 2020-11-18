@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 45
+version: 46
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -113,6 +113,7 @@ party_finder:
         - cheap
         - gil only
         - minmax # name of a RMT group because they thought to stop saying "sell" lul
+        - regex: 'pre.?order'
         - regex: '\boffer'
       # content
       - - eden
@@ -280,6 +281,7 @@ global:
         - looking for people
         - lonely
         - level
+        - active member
         - regex: '\bold\b'
         - regex: '\bvets?\b'
       # has common keywords 2
