@@ -6,7 +6,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             this.Def = fixture.defs.Global["free_company"];
         }
 
-        public static object[][] DataPositives => DefUtils.DataFromMessages(new TestMessage[] {
+        public static object[][] DataPositives => DefUtils.DataFromMessages(new[] {
             // chat
             new TestMessage(ChatType.Shout, "PhD: Phantasy Degree is a Rank 30 FC with a Large plot, 24/7 FC/EXP Buffs. There are NO Level Restrictions to join, we take new and old players. Ask to join or apply."),
             new TestMessage(ChatType.Shout, "Wind up fc is a small company looking for new/seasoned adventures to join! If you need help with the msq/clear the latest raid well do our best to help! Send a tell/app to join"),
@@ -40,7 +40,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("Sol Verinia FC is recruiting! We accept all levels, looking for active members. We look forward to you becoming one of the spire."),
         });
 
-        public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
+        public static object[][] DataNegatives => DefUtils.DataFromMessages(new[] {
             new TestMessage("Static recruit. Not hardcore. Discord needed. tues-thurs 11:30pmEST. Join if you have questions."),
             new TestMessage("LF new LGBT friends to chill with in Eorzea! Join up, let's chat, and hang out. I have discord as well :)"),
             new TestMessage("(Bored)Lovely Au Ra woman [Famfrit] available to be RP girlfriend/wife for long term or short term. Send tell if in need."),

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace NoSoliciting {
     public class PluginUI {
         private readonly Plugin plugin;
-        private bool resizeWindow = false;
+        private bool resizeWindow;
         private ReportStatus lastReportStatus = ReportStatus.None;
 
         private bool _showSettings;
@@ -175,11 +175,13 @@ namespace NoSoliciting {
                             substrings[i] = input;
                         }
                     }
+
                     ImGui.SameLine();
                     ImGui.PushFont(UiBuilder.IconFont);
                     if (ImGui.Button($"{FontAwesomeIcon.Trash.ToIconString()}##{name}-substring-{i}-remove")) {
                         substrings.RemoveAt(i);
                     }
+
                     ImGui.PopFont();
                 }
 
@@ -187,6 +189,7 @@ namespace NoSoliciting {
                 if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{name}-substring-add")) {
                     substrings.Add("");
                 }
+
                 ImGui.PopFont();
 
                 ImGui.EndChild();
@@ -205,15 +208,18 @@ namespace NoSoliciting {
                         } catch (ArgumentException) {
                             valid = false;
                         }
+
                         if (valid && input.Length != 0) {
                             regexes[i] = input;
                         }
                     }
+
                     ImGui.SameLine();
                     ImGui.PushFont(UiBuilder.IconFont);
                     if (ImGui.Button($"{FontAwesomeIcon.Trash.ToIconString()}##{name}-regex-{i}-remove")) {
                         regexes.RemoveAt(i);
                     }
+
                     ImGui.PopFont();
                 }
 
@@ -221,6 +227,7 @@ namespace NoSoliciting {
                 if (ImGui.Button($"{FontAwesomeIcon.Plus.ToIconString()}##{name}-regex-add")) {
                     regexes.Add("");
                 }
+
                 ImGui.PopFont();
 
                 ImGui.EndChild();
@@ -270,7 +277,7 @@ namespace NoSoliciting {
 
             if (ImGui.BeginTabBar("##report-tabs")) {
                 if (ImGui.BeginTabItem("Chat##chat-report")) {
-                    float[] maxSizes = { 0f, 0f, 0f, 0f };
+                    float[] maxSizes = {0f, 0f, 0f, 0f};
 
                     if (ImGui.BeginChild("##chat-messages", new Vector2(-1, -1))) {
                         ImGui.Columns(5);
@@ -299,9 +306,11 @@ namespace NoSoliciting {
 
                             this.SetUpReportModal(message);
                         }
+
                         for (int idx = 0; idx < maxSizes.Length; idx++) {
                             ImGui.SetColumnWidth(idx, maxSizes[idx] + ImGui.GetStyle().ItemSpacing.X * 2);
                         }
+
                         ImGui.Columns(1);
 
                         ImGui.EndChild();
@@ -311,7 +320,7 @@ namespace NoSoliciting {
                 }
 
                 if (ImGui.BeginTabItem("Party Finder##pf-report")) {
-                    float[] maxSizes = { 0f, 0f, 0f };
+                    float[] maxSizes = {0f, 0f, 0f};
 
                     if (ImGui.BeginChild("##pf-messages", new Vector2(-1, -1))) {
                         ImGui.Columns(4);
@@ -340,13 +349,16 @@ namespace NoSoliciting {
 
                             this.SetUpReportModal(message);
                         }
+
                         for (int idx = 0; idx < maxSizes.Length; idx++) {
                             ImGui.SetColumnWidth(idx, maxSizes[idx] + ImGui.GetStyle().ItemSpacing.X * 2);
                         }
+
                         ImGui.Columns(1);
 
                         ImGui.EndChild();
                     }
+
                     ImGui.EndTabItem();
                 }
 
@@ -388,9 +400,8 @@ namespace NoSoliciting {
                             using WebClient client = new WebClient();
                             this.lastReportStatus = ReportStatus.InProgress;
                             resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
-#pragma warning disable CA1031 // Do not catch general exception types
                         } catch (Exception) { }
-#pragma warning restore CA1031 // Do not catch general exception types
+
                         this.lastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
                         PluginLog.Log($"Report sent. Response: {resp}");
                     });
@@ -426,14 +437,17 @@ namespace NoSoliciting {
                 if (last) {
                     ImGui.PushTextWrapPos();
                 }
+
                 ImGui.TextUnformatted(arg);
                 if (last) {
                     ImGui.PopTextWrapPos();
                 }
+
                 clicked = clicked || ImGui.IsItemClicked();
                 if (!last) {
                     maxSizes[i] = Math.Max(maxSizes[i], ImGui.CalcTextSize(arg).X);
                 }
+
                 ImGui.NextColumn();
             }
 

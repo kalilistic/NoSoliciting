@@ -15,7 +15,6 @@ namespace NoSoliciting {
             ['\ue057'] = "3",
             ['\ue058'] = "4",
             ['\ue059'] = "5",
-
             ['\ue099'] = "10",
             ['\ue09a'] = "11",
             ['\ue09b'] = "12",
@@ -93,9 +92,10 @@ namespace NoSoliciting {
                     continue;
                 }
 
-            AppendNormal:
+                AppendNormal:
                 builder.Append(c);
             }
+
             input = builder.ToString();
 
             // NFKD unicode normalisation
@@ -128,27 +128,53 @@ namespace NoSoliciting {
 
             if (cat.MainHand != 0) {
                 return Slot.MainHand;
-            } else if (cat.Head != 0) {
+            }
+
+            if (cat.Head != 0) {
                 return Slot.Head;
-            } else if (cat.Body != 0) {
+            }
+
+            if (cat.Body != 0) {
                 return Slot.Chest;
-            } else if (cat.Gloves != 0) {
+            }
+
+            if (cat.Gloves != 0) {
                 return Slot.Hands;
-            } else if (cat.Waist != 0) {
+            }
+
+            if (cat.Waist != 0) {
                 return Slot.Waist;
-            } else if (cat.Legs != 0) {
+            }
+
+            if (cat.Legs != 0) {
                 return Slot.Legs;
-            } else if (cat.Feet != 0) {
+            }
+
+            if (cat.Feet != 0) {
                 return Slot.Feet;
-            } else if (cat.OffHand != 0) {
+            }
+
+            if (cat.OffHand != 0) {
                 return Slot.OffHand;
-            } else if (cat.Ears != 0) {
+            }
+
+            if (cat.Ears != 0) {
                 return Slot.Earrings;
-            } else if (cat.Neck != 0) {
+            }
+
+            if (cat.Neck != 0) {
                 return Slot.Neck;
-            } else if (cat.FingerL != 0) {
+            }
+
+            if (cat.Wrists != 0) {
+                return Slot.Wrist;
+            }
+
+            if (cat.FingerL != 0) {
                 return Slot.RingL;
-            } else if (cat.FingerR != 0) {
+            }
+
+            if (cat.FingerR != 0) {
                 return Slot.RingR;
             }
 

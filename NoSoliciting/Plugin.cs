@@ -18,10 +18,10 @@ namespace NoSoliciting {
         public Definitions Definitions { get; private set; }
 
         private readonly List<Message> messageHistory = new List<Message>();
-        public IReadOnlyCollection<Message> MessageHistory { get => this.messageHistory; }
+        public IEnumerable<Message> MessageHistory { get => this.messageHistory; }
 
         private readonly List<Message> partyFinderHistory = new List<Message>();
-        public IReadOnlyCollection<Message> PartyFinderHistory { get => this.partyFinderHistory; }
+        public IEnumerable<Message> PartyFinderHistory { get => this.partyFinderHistory; }
 
         public void Initialize(DalamudPluginInterface pluginInterface) {
             this.Interface = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
