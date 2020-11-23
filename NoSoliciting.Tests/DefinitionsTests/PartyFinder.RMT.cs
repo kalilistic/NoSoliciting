@@ -6,7 +6,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             this.Def = fixture.defs.PartyFinder["rmt"];
         }
 
-        public static object[][] DataPositives => DefUtils.DataFromStrings(new string[] {
+        public static object[][] DataPositives => DefUtils.DataFromStrings(new[] {
             "「Best Prices」《 Shiva Unreal ★ Warrior of Light ★ Ultimates ★ Eden's Verse i500/i505",
             "「 MINMAXØ 」 SALES ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts Etc. ≫ World #1 teams, instant delivery. Discord → azrael#6447",
             "「」™️ Found it Cheaper? We will beat it! $elling EdenVerse, BLU, Ultimates, Primals, Discord: Valentine#5943",
@@ -22,7 +22,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "☀5.4 Pre-orders☀Savage☀Trials☀Ultimates☀BLU ｢ＤＩＳＣＯＲＤ｣⇒ Meliora#2500",
         });
 
-        public static object[][] DataNegatives => DefUtils.DataFromStrings(new string[] {
+        public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
             "Doing Art commission of your charactet with good price! more info add me on discord: d0uglaz#7409 ♥",
             "Selling HQ 490 DoH/DoL sets, just in time for the Ishgard restoration project. Cheaper than MB, Whipser or join for info.",
             "Looking to sell medium odder otter walls(2mil) join or tell.",
