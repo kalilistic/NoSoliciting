@@ -49,6 +49,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
             "«ToC» recruiting active members. Join the party, send me a /Tell or stop by the FC house (Goblet P13, W19) for more information.",
+            "This new group I joined has some newer ultimate raiders in it, one of them hasn't cleared E8S. But I was surprised. We got through p1 of TEA in about 7-8 hours and now we're working on limit cut",
         });
 
         [Theory]

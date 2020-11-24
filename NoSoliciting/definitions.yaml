@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 46
+version: 47
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -214,7 +214,6 @@ global:
         - wife
         - sleepover
         - masquerade
-        - tea
         - costume
         - bread
         - regex: '\ball.inclusive'
@@ -264,6 +263,7 @@ global:
         - raid
         - hunt
         - trial
+        - dungeon
       # has common keywords
       - - family
         - community
