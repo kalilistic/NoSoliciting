@@ -22,6 +22,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage(ChatType.Shout, "Nothing is a small and cozy FC looking for members! If emptiness is endless, then everything rests in nothingness. DM me to join on our endless journey!"),
             new TestMessage(ChatType.Shout, "Tired of wandering through the game a lonely weeb? Want Senpai to notice you?! Fat Chocobo FC is now recruiting! Top Ranked FC on Exodus & Worldwide, 6 yrs+ running strong!"),
             new TestMessage(ChatType.Shout, "Ashes Of Aesir <<Aesir>> FC is recruiting! we are a friendly bunch in search of expanding our wings with friendly and active members."),
+            new TestMessage(ChatType.Shout, "Imperium Nirvana is now looking for new members! All are welcomed new or old, we dabble in RP and we dungeon often, If your looking for a new home look no where else!"),
             new TestMessage(ChatType.TellIncoming, "<<>> Eclipsehey what about joining a  fc full of  people? Low & High end Casual FC (24/7buffs). Accept, Decline or PM me♡."),
             new TestMessage(ChatType.TellIncoming, "<<>>Eclipse would like you to join a - Low & High end Casual FC (24/7buffs). Accept, Decline or PM me♡."),
             new TestMessage(ChatType.TellIncoming, "Hello!;-) I've just send u an invite to join Artemis Moonlight. Join us if u like! We are a friendly and helpful FC, willing to help all level players and for fun teamplay. Kupo!"),
@@ -44,6 +45,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("Static recruit. Not hardcore. Discord needed. tues-thurs 11:30pmEST. Join if you have questions."),
             new TestMessage("LF new LGBT friends to chill with in Eorzea! Join up, let's chat, and hang out. I have discord as well :)"),
             new TestMessage("(Bored)Lovely Au Ra woman [Famfrit] available to be RP girlfriend/wife for long term or short term. Send tell if in need."),
+            new TestMessage("7/8 mC looking for Tank/Heal 4.4 Discord required//pm Hiro#0000 or here Tues/Fri 8:30-10:30 pm EST Sat 8:30-11:30 pm EST"),
         });
 
         [Theory]
