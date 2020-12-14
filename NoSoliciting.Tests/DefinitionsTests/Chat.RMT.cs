@@ -14,6 +14,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.Chat {
             new TestMessage(ChatType.Shout, "www.ff14mog.com贩売非常に安い  レベルブースト1280円 チョコボキャリッジ 1612円  ディアンドル 1008円 割引コード:JPMOG"),
             new TestMessage(ChatType.Shout, "【 PV■NK.℃ O M 、■ = PBA 】，5分納品！ジル＆480-500HQセット＆希望の園エデン (野蛮)全部強奪!安い&安全保障【コード：714、5％OFF】!!!-unpcp"),
             new TestMessage(ChatType.Say, "5GOLD.COM--Buy FFXIV Gil Cheapest,100% Handwork Guaranteed,24/7 online service[5% OFF Code;GOLD].12456"),
+            new TestMessage(ChatType.Shout, "【 PVP●K.℃ O M 、● = BAN 】，5分納品！ジル＆480-500HQセット＆希望の園エデン (野蛮)全部強奪!安い&安全保障【コード：714、5％OFF】!!!-kgthx"),
+            new TestMessage(ChatType.Shout, "【 PVP●K.℃ O M 、● = BAN 】，5分納品！ジル＆480-500HQセット＆希望の園エデン (野蛮)全部強奪!安い&安全保障【コード：714、5％OFF】!!!-pdonb"),
         });
 
         //public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
