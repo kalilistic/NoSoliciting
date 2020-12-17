@@ -16,6 +16,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Chat {
             new TestMessage(ChatType.Say, "5GOLD.COM--Buy FFXIV Gil Cheapest,100% Handwork Guaranteed,24/7 online service[5% OFF Code;GOLD].12456"),
             new TestMessage(ChatType.Shout, "【 PVP●K.℃ O M 、● = BAN 】，5分納品！ジル＆480-500HQセット＆希望の園エデン (野蛮)全部強奪!安い&安全保障【コード：714、5％OFF】!!!-kgthx"),
             new TestMessage(ChatType.Shout, "【 PVP●K.℃ O M 、● = BAN 】，5分納品！ジル＆480-500HQセット＆希望の園エデン (野蛮)全部強奪!安い&安全保障【コード：714、5％OFF】!!!-pdonb"),
+            new TestMessage(ChatType.Say, "Buy Cheap gils on www,G/a/m/e/r/E/a/s/y.c0m, 8% code,FFXIV2020, 15 mins deliveryvnm15"),
         });
 
         //public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {
