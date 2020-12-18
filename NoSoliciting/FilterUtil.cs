@@ -48,7 +48,7 @@ namespace NoSoliciting {
             ['\ue0b0'] = "E",
         };
 
-        private const char lowestReplacement = '\ue022';
+        private const char LowestReplacement = '\ue022';
 
         public static string Normalise(string input) {
             if (input == null) {
@@ -58,7 +58,7 @@ namespace NoSoliciting {
             // replace ffxiv private use chars
             var builder = new StringBuilder(input.Length);
             foreach (char c in input) {
-                if (c < lowestReplacement) {
+                if (c < LowestReplacement) {
                     goto AppendNormal;
                 }
 
