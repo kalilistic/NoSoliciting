@@ -8,7 +8,7 @@ using System.Text;
 
 namespace NoSoliciting {
     public static class FilterUtil {
-        private static readonly Dictionary<char, string> replacements = new Dictionary<char, string>() {
+        private static readonly Dictionary<char, string> Replacements = new Dictionary<char, string>() {
             // numerals
             ['\ue055'] = "1",
             ['\ue056'] = "2",
@@ -57,37 +57,37 @@ namespace NoSoliciting {
 
             // replace ffxiv private use chars
             var builder = new StringBuilder(input.Length);
-            foreach (char c in input) {
+            foreach (var c in input) {
                 if (c < LowestReplacement) {
                     goto AppendNormal;
                 }
 
                 // alphabet
                 if (c >= 0xe071 && c <= 0xe08a) {
-                    builder.Append((char)(c - 0xe030));
+                    builder.Append((char) (c - 0xe030));
                     continue;
                 }
 
                 // 0 to 9
                 if (c >= 0xe060 && c <= 0xe069) {
-                    builder.Append((char)(c - 0xe030));
+                    builder.Append((char) (c - 0xe030));
                     continue;
                 }
 
                 // 1 to 9
                 if (c >= 0xe0b1 && c <= 0xe0b9) {
-                    builder.Append((char)(c - 0xe080));
+                    builder.Append((char) (c - 0xe080));
                     continue;
                 }
 
                 // 1 to 9 again
                 if (c >= 0xe090 && c <= 0xe098) {
-                    builder.Append((char)(c - 0xe05f));
+                    builder.Append((char) (c - 0xe05f));
                     continue;
                 }
 
                 // replacements in map
-                if (replacements.TryGetValue(c, out string rep)) {
+                if (Replacements.TryGetValue(c, out var rep)) {
                     builder.Append(rep);
                     continue;
                 }
@@ -102,9 +102,9 @@ namespace NoSoliciting {
             return input.Normalize(NormalizationForm.FormKD);
         }
 
-        private static int MaxItemLevel { get; set; } = 0;
+        private static int MaxItemLevel { get; set; }
 
-        enum Slot {
+        private enum Slot {
             MainHand,
             OffHand,
             Head,
@@ -120,8 +120,8 @@ namespace NoSoliciting {
             RingR,
         }
 
-        static Slot? SlotFromItem(Item item) {
-            EquipSlotCategory cat = item.EquipSlotCategory.Value;
+        private static Slot? SlotFromItem(Item item) {
+            var cat = item.EquipSlotCategory.Value;
             if (cat == null) {
                 return null;
             }
@@ -190,34 +190,34 @@ namespace NoSoliciting {
                 throw new ArgumentNullException(nameof(data), "DataManager cannot be null");
             }
 
-            Dictionary<Slot, int> ilvls = new Dictionary<Slot, int>();
+            var ilvls = new Dictionary<Slot, int>();
 
-            foreach (Item item in data.GetExcelSheet<Item>()) {
-                Slot? slot = SlotFromItem(item);
+            foreach (var item in data.GetExcelSheet<Item>()) {
+                var slot = SlotFromItem(item);
                 if (slot == null) {
                     continue;
                 }
 
-                int itemLevel = 0;
-                ItemLevel ilvl = item.LevelItem.Value;
+                var itemLevel = 0;
+                var ilvl = item.LevelItem.Value;
                 if (ilvl != null) {
-                    itemLevel = (int)ilvl.RowId;
+                    itemLevel = (int) ilvl.RowId;
                 }
 
-                if (ilvls.TryGetValue((Slot)slot, out int currentMax) && currentMax > itemLevel) {
+                if (ilvls.TryGetValue((Slot) slot, out var currentMax) && currentMax > itemLevel) {
                     continue;
                 }
 
-                ilvls[(Slot)slot] = itemLevel;
+                ilvls[(Slot) slot] = itemLevel;
             }
 
-            MaxItemLevel = (int)ilvls.Values.Average();
+            MaxItemLevel = (int) ilvls.Values.Average();
 
             return MaxItemLevel;
         }
     }
 
-    public static class RMTExtensions {
+    public static class RmtExtensions {
         public static bool ContainsIgnoreCase(this string haystack, string needle) {
             return CultureInfo.InvariantCulture.CompareInfo.IndexOf(haystack, needle, CompareOptions.IgnoreCase) >= 0;
         }

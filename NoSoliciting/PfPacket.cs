@@ -1,24 +1,25 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace NoSoliciting {
     public static class PacketInfo {
-        public static readonly int packetSize = Marshal.SizeOf<PFPacket>();
+        public static readonly int PacketSize = Marshal.SizeOf<PfPacket>();
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct PFPacket {
+    public struct PfPacket {
         private readonly int unk0;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         private readonly byte[] padding1;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public PFListing[] listings;
+        public PfListing[] listings;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct PFListing {
+    public struct PfListing {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         private readonly byte[] header1;
 
@@ -39,7 +40,7 @@ namespace NoSoliciting {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         private readonly byte[] header4;
 
-        internal readonly ushort duty;
+        private readonly ushort duty;
         internal readonly byte dutyType;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 11)]
@@ -57,9 +58,9 @@ namespace NoSoliciting {
         internal readonly byte lootRules;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        internal readonly byte[] header7; // all zero in every pf I've examined
+        private readonly byte[] header7; // all zero in every pf I've examined
 
-        internal readonly uint lastPatchHotfixTimestamp; // last time the servers were restarted?
+        private readonly uint lastPatchHotfixTimestamp; // last time the servers were restarted?
         internal readonly ushort secondsRemaining;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
@@ -94,8 +95,8 @@ namespace NoSoliciting {
         // 160 (0xA0) with name (32 bytes/0x20)
         // 352 (0x160) with both (192 bytes/0xC0)
 
-        private static string HandleString(byte[] bytes) {
-            byte[] nonNull = bytes.TakeWhile(b => b != 0).ToArray();
+        private static string HandleString(IEnumerable<byte> bytes) {
+            var nonNull = bytes.TakeWhile(b => b != 0).ToArray();
             return Encoding.UTF8.GetString(nonNull);
         }
 

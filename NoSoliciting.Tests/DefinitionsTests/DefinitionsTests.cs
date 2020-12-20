@@ -19,7 +19,7 @@ namespace NoSoliciting.Tests.DefinitionsTests {
             var allDefs = defs.Chat
                 .Concat(defs.PartyFinder)
                 .Concat(defs.Global);
-            foreach (KeyValuePair<string, Definition> entry in allDefs) {
+            foreach (var entry in allDefs) {
                 entry.Value.Initialise(entry.Key);
             }
         }
@@ -37,7 +37,7 @@ namespace NoSoliciting.Tests.DefinitionsTests {
         }
 
         public override string ToString() {
-            string name = channel == ChatType.None ? "PF" : channel.ToString();
+            var name = channel == ChatType.None ? "PF" : channel.ToString();
             return $"[{name}] {this.content}";
         }
     }
@@ -49,7 +49,7 @@ namespace NoSoliciting.Tests.DefinitionsTests {
 
     internal static class DefinitionExt {
         internal static void Check(this Definition def, string message, CheckType type) {
-            TestMessage testMsg = new TestMessage(message);
+            var testMsg = new TestMessage(message);
 
             def.Check(testMsg, type);
         }

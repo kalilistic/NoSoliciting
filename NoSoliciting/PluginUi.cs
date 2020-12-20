@@ -13,19 +13,27 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace NoSoliciting {
-    public class PluginUI {
-        private readonly Plugin plugin;
-        private bool resizeWindow;
-        private ReportStatus lastReportStatus = ReportStatus.None;
+    public class PluginUi {
+        private Plugin Plugin { get; }
+        private bool _resizeWindow;
+        private ReportStatus LastReportStatus { get; set; } = ReportStatus.None;
 
         private bool _showSettings;
-        public bool ShowSettings { get => this._showSettings; set => this._showSettings = value; }
+
+        private bool ShowSettings {
+            get => this._showSettings;
+            set => this._showSettings = value;
+        }
 
         private bool _showReporting;
-        public bool ShowReporting { get => this._showReporting; set => this._showReporting = value; }
 
-        public PluginUI(Plugin plugin) {
-            this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
+        private bool ShowReporting {
+            get => this._showReporting;
+            set => this._showReporting = value;
+        }
+
+        public PluginUi(Plugin plugin) {
+            this.Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
         }
 
         public void OpenSettings(object sender, EventArgs e) {
@@ -42,125 +50,130 @@ namespace NoSoliciting {
             }
         }
 
-        public void DrawSettings() {
-            if (this.resizeWindow) {
-                this.resizeWindow = false;
-                ImGui.SetNextWindowSize(new Vector2(this.plugin.Config.AdvancedMode ? 650 : 0, 0));
+        private void DrawSettings() {
+            if (this._resizeWindow) {
+                this._resizeWindow = false;
+                ImGui.SetNextWindowSize(new Vector2(this.Plugin.Config.AdvancedMode ? 650 : 0, 0));
             } else {
                 ImGui.SetNextWindowSize(new Vector2(0, 0), ImGuiCond.FirstUseEver);
             }
 
-            if (ImGui.Begin($"{this.plugin.Name} settings", ref this._showSettings)) {
-                if (this.plugin.Config.AdvancedMode) {
-                    this.DrawAdvancedSettings();
-                } else {
-                    this.DrawBasicSettings();
-                }
-
-                ImGui.Separator();
-
-                bool advanced = this.plugin.Config.AdvancedMode;
-                if (ImGui.Checkbox("Advanced mode", ref advanced)) {
-                    this.plugin.Config.AdvancedMode = advanced;
-                    this.plugin.Config.Save();
-                    resizeWindow = true;
-                }
-
-                ImGui.SameLine();
-
-                if (ImGui.Button("Show reporting window")) {
-                    this.ShowReporting = true;
-                }
-
-                ImGui.End();
-            }
-        }
-
-        private void DrawBasicSettings() {
-            if (this.plugin.Definitions == null) {
+            if (!ImGui.Begin($"{this.Plugin.Name} settings", ref this._showSettings)) {
                 return;
             }
 
-            this.DrawCheckboxes(this.plugin.Definitions.Chat.Values, true, "chat");
+            if (this.Plugin.Config.AdvancedMode) {
+                this.DrawAdvancedSettings();
+            } else {
+                this.DrawBasicSettings();
+            }
 
             ImGui.Separator();
 
-            this.DrawCheckboxes(this.plugin.Definitions.PartyFinder.Values, true, "Party Finder");
+            var advanced = this.Plugin.Config.AdvancedMode;
+            if (ImGui.Checkbox("Advanced mode", ref advanced)) {
+                this.Plugin.Config.AdvancedMode = advanced;
+                this.Plugin.Config.Save();
+                this._resizeWindow = true;
+            }
 
-            bool filterHugeItemLevelPFs = this.plugin.Config.FilterHugeItemLevelPFs;
+            ImGui.SameLine();
+
+            if (ImGui.Button("Show reporting window")) {
+                this.ShowReporting = true;
+            }
+
+            ImGui.End();
+        }
+
+        private void DrawBasicSettings() {
+            if (this.Plugin.Definitions == null) {
+                return;
+            }
+
+            this.DrawCheckboxes(this.Plugin.Definitions.Chat.Values, true, "chat");
+
+            ImGui.Separator();
+
+            this.DrawCheckboxes(this.Plugin.Definitions.PartyFinder.Values, true, "Party Finder");
+
+            var filterHugeItemLevelPFs = this.Plugin.Config.FilterHugeItemLevelPFs;
+            // ReSharper disable once InvertIf
             if (ImGui.Checkbox("Filter PFs with item level above maximum", ref filterHugeItemLevelPFs)) {
-                this.plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
-                this.plugin.Config.Save();
+                this.Plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
+                this.Plugin.Config.Save();
             }
         }
 
         private void DrawAdvancedSettings() {
-            if (ImGui.BeginTabBar("##nosoliciting-tabs")) {
-                if (this.plugin.Definitions != null) {
-                    if (ImGui.BeginTabItem("Chat")) {
-                        this.DrawCheckboxes(this.plugin.Definitions.Chat.Values, false, "chat");
-
-                        bool customChat = this.plugin.Config.CustomChatFilter;
-                        if (ImGui.Checkbox("Enable custom chat filters", ref customChat)) {
-                            this.plugin.Config.CustomChatFilter = customChat;
-                            this.plugin.Config.Save();
-                        }
-
-                        if (this.plugin.Config.CustomChatFilter) {
-                            List<string> substrings = this.plugin.Config.ChatSubstrings;
-                            List<string> regexes = this.plugin.Config.ChatRegexes;
-                            this.DrawCustom("chat", ref substrings, ref regexes);
-                        }
-
-                        ImGui.EndTabItem();
-                    }
-
-                    if (ImGui.BeginTabItem("Party Finder")) {
-                        this.DrawCheckboxes(this.plugin.Definitions.PartyFinder.Values, false, "Party Finder");
-
-                        bool filterHugeItemLevelPFs = this.plugin.Config.FilterHugeItemLevelPFs;
-                        if (ImGui.Checkbox("Enable built-in maximum item level filter", ref filterHugeItemLevelPFs)) {
-                            this.plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
-                            this.plugin.Config.Save();
-                        }
-
-                        bool customPF = this.plugin.Config.CustomPFFilter;
-                        if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPF)) {
-                            this.plugin.Config.CustomPFFilter = customPF;
-                            this.plugin.Config.Save();
-                        }
-
-                        if (this.plugin.Config.CustomPFFilter) {
-                            List<string> substrings = this.plugin.Config.PFSubstrings;
-                            List<string> regexes = this.plugin.Config.PFRegexes;
-                            this.DrawCustom("pf", ref substrings, ref regexes);
-                        }
-
-                        ImGui.EndTabItem();
-                    }
-                }
-
-                if (ImGui.BeginTabItem("Definitions")) {
-                    if (this.plugin.Definitions != null) {
-                        ImGui.Text($"Version: {this.plugin.Definitions.Version}");
-                    }
-
-                    if (Definitions.LastUpdate != null) {
-                        ImGui.Text($"Last update: {Definitions.LastUpdate}");
-                    }
-
-                    string error = Definitions.LastError;
-                    if (error != null) {
-                        ImGui.Text($"Last error: {error}");
-                    }
-
-                    if (ImGui.Button("Update definitions")) {
-                        this.plugin.UpdateDefinitions();
-                    }
-                }
-
-                ImGui.EndTabBar();
+            if (!ImGui.BeginTabBar("##nosoliciting-tabs")) {
+                return;
             }
+
+            if (this.Plugin.Definitions != null) {
+                if (ImGui.BeginTabItem("Chat")) {
+                    this.DrawCheckboxes(this.Plugin.Definitions.Chat.Values, false, "chat");
+
+                    var customChat = this.Plugin.Config.CustomChatFilter;
+                    if (ImGui.Checkbox("Enable custom chat filters", ref customChat)) {
+                        this.Plugin.Config.CustomChatFilter = customChat;
+                        this.Plugin.Config.Save();
+                    }
+
+                    if (this.Plugin.Config.CustomChatFilter) {
+                        var substrings = this.Plugin.Config.ChatSubstrings;
+                        var regexes = this.Plugin.Config.ChatRegexes;
+                        this.DrawCustom("chat", ref substrings, ref regexes);
+                    }
+
+                    ImGui.EndTabItem();
+                }
+
+                if (ImGui.BeginTabItem("Party Finder")) {
+                    this.DrawCheckboxes(this.Plugin.Definitions.PartyFinder.Values, false, "Party Finder");
+
+                    var filterHugeItemLevelPFs = this.Plugin.Config.FilterHugeItemLevelPFs;
+                    if (ImGui.Checkbox("Enable built-in maximum item level filter", ref filterHugeItemLevelPFs)) {
+                        this.Plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
+                        this.Plugin.Config.Save();
+                    }
+
+                    var customPf = this.Plugin.Config.CustomPFFilter;
+                    if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPf)) {
+                        this.Plugin.Config.CustomPFFilter = customPf;
+                        this.Plugin.Config.Save();
+                    }
+
+                    if (this.Plugin.Config.CustomPFFilter) {
+                        var substrings = this.Plugin.Config.PFSubstrings;
+                        var regexes = this.Plugin.Config.PFRegexes;
+                        this.DrawCustom("pf", ref substrings, ref regexes);
+                    }
+
+                    ImGui.EndTabItem();
+                }
+            }
+
+            if (ImGui.BeginTabItem("Definitions")) {
+                if (this.Plugin.Definitions != null) {
+                    ImGui.Text($"Version: {this.Plugin.Definitions.Version}");
+                }
+
+                if (Definitions.LastUpdate != null) {
+                    ImGui.Text($"Last update: {Definitions.LastUpdate}");
+                }
+
+                var error = Definitions.LastError;
+                if (error != null) {
+                    ImGui.Text($"Last error: {error}");
+                }
+
+                if (ImGui.Button("Update definitions")) {
+                    this.Plugin.UpdateDefinitions();
+                }
+            }
+
+            ImGui.EndTabBar();
         }
 
         private void DrawCustom(string name, ref List<string> substrings, ref List<string> regexes) {
@@ -168,8 +181,8 @@ namespace NoSoliciting {
 
             ImGui.Text("Substrings to filter");
             if (ImGui.BeginChild($"##{name}-substrings", new Vector2(0, 175))) {
-                for (int i = 0; i < substrings.Count; i++) {
-                    string input = substrings[i];
+                for (var i = 0; i < substrings.Count; i++) {
+                    var input = substrings[i];
                     if (ImGui.InputText($"##{name}-substring-{i}", ref input, 1_000)) {
                         if (input.Length != 0) {
                             substrings[i] = input;
@@ -199,10 +212,10 @@ namespace NoSoliciting {
 
             ImGui.Text("Regular expressions to filter");
             if (ImGui.BeginChild($"##{name}-regexes", new Vector2(0, 175))) {
-                for (int i = 0; i < regexes.Count; i++) {
-                    string input = regexes[i];
+                for (var i = 0; i < regexes.Count; i++) {
+                    var input = regexes[i];
                     if (ImGui.InputText($"##{name}-regex-{i}", ref input, 1_000)) {
-                        bool valid = true;
+                        var valid = true;
                         try {
                             _ = new Regex(input);
                         } catch (ArgumentException) {
@@ -235,20 +248,22 @@ namespace NoSoliciting {
 
             ImGui.Columns(1);
 
+            // ReSharper disable once InvertIf
             if (ImGui.Button($"Save filters##{name}-save")) {
-                this.plugin.Config.Save();
-                this.plugin.Config.CompileRegexes();
+                this.Plugin.Config.Save();
+                this.Plugin.Config.CompileRegexes();
             }
         }
 
         private void DrawCheckboxes(IEnumerable<Definition> defs, bool basic, string labelFillIn) {
-            foreach (Definition def in defs) {
-                this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled);
-                string label = basic ? def.Option.Basic : def.Option.Advanced;
+            foreach (var def in defs) {
+                this.Plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled);
+                var label = basic ? def.Option.Basic : def.Option.Advanced;
                 label = label.Replace("{}", labelFillIn);
+                // ReSharper disable once InvertIf
                 if (ImGui.Checkbox(label, ref enabled)) {
-                    this.plugin.Config.FilterStatus[def.Id] = enabled;
-                    this.plugin.Config.Save();
+                    this.Plugin.Config.FilterStatus[def.Id] = enabled;
+                    this.Plugin.Config.Save();
                 }
             }
         }
@@ -262,8 +277,8 @@ namespace NoSoliciting {
 
             ImGui.Text("Click on one of the entries below to report it to the developer as miscategorised.");
 
-            if (this.lastReportStatus != ReportStatus.None) {
-                string status = this.lastReportStatus switch {
+            if (this.LastReportStatus != ReportStatus.None) {
+                var status = this.LastReportStatus switch {
                     ReportStatus.Failure => "failed to send",
                     ReportStatus.Successful => "sent successfully",
                     ReportStatus.InProgress => "sending",
@@ -285,12 +300,12 @@ namespace NoSoliciting {
                         AddColumn(maxSizes, "Timestamp", "Channel", "Reason", "Sender", "Message");
                         ImGui.Separator();
 
-                        foreach (Message message in this.plugin.MessageHistory) {
+                        foreach (var message in this.Plugin.MessageHistory) {
                             if (message.FilterReason != null) {
                                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
                             }
 
-                            string sender = message.Sender.Payloads
+                            var sender = message.Sender.Payloads
                                 .Where(payload => payload.Type == PayloadType.RawText)
                                 .Cast<TextPayload>()
                                 .Select(payload => payload.Text)
@@ -307,7 +322,7 @@ namespace NoSoliciting {
                             this.SetUpReportModal(message);
                         }
 
-                        for (int idx = 0; idx < maxSizes.Length; idx++) {
+                        for (var idx = 0; idx < maxSizes.Length; idx++) {
                             ImGui.SetColumnWidth(idx, maxSizes[idx] + ImGui.GetStyle().ItemSpacing.X * 2);
                         }
 
@@ -328,12 +343,12 @@ namespace NoSoliciting {
                         AddColumn(maxSizes, "Timestamp", "Reason", "Host", "Description");
                         ImGui.Separator();
 
-                        foreach (Message message in this.plugin.PartyFinderHistory) {
+                        foreach (var message in this.Plugin.PartyFinderHistory) {
                             if (message.FilterReason != null) {
                                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
                             }
 
-                            string sender = message.Sender.Payloads
+                            var sender = message.Sender.Payloads
                                 .Where(payload => payload.Type == PayloadType.RawText)
                                 .Cast<TextPayload>()
                                 .Select(payload => payload.Text)
@@ -350,7 +365,7 @@ namespace NoSoliciting {
                             this.SetUpReportModal(message);
                         }
 
-                        for (int idx = 0; idx < maxSizes.Length; idx++) {
+                        for (var idx = 0; idx < maxSizes.Length; idx++) {
                             ImGui.SetColumnWidth(idx, maxSizes[idx] + ImGui.GetStyle().ItemSpacing.X * 2);
                         }
 
@@ -397,12 +412,14 @@ namespace NoSoliciting {
                     Task.Run(async () => {
                         string resp = null;
                         try {
-                            using WebClient client = new WebClient();
-                            this.lastReportStatus = ReportStatus.InProgress;
-                            resp = await client.UploadStringTaskAsync(this.plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
-                        } catch (Exception) { }
+                            using var client = new WebClient();
+                            this.LastReportStatus = ReportStatus.InProgress;
+                            resp = await client.UploadStringTaskAsync(this.Plugin.Definitions.ReportUrl, message.ToJson()).ConfigureAwait(true);
+                        } catch (Exception) {
+                            // ignored
+                        }
 
-                        this.lastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
+                        this.LastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
                         PluginLog.Log($"Report sent. Response: {resp}");
                     });
                     ImGui.CloseCurrentPopup();
@@ -427,12 +444,12 @@ namespace NoSoliciting {
             InProgress = 2,
         }
 
-        private static bool AddColumn(float[] maxSizes, params string[] args) {
-            bool clicked = false;
+        private static bool AddColumn(IList<float> maxSizes, params string[] args) {
+            var clicked = false;
 
-            for (int i = 0; i < args.Length; i++) {
-                string arg = args[i];
-                bool last = i == args.Length - 1;
+            for (var i = 0; i < args.Length; i++) {
+                var arg = args[i];
+                var last = i == args.Length - 1;
 
                 if (last) {
                     ImGui.PushTextWrapPos();

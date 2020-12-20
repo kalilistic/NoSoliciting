@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSoliciting", "NoSoliciting\NoSoliciting.csproj", "{E4C12987-9064-4788-8783-BE418B2C0142}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C424003-6609-47D7-8D27-BF309C34E909}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSoliciting.Tests", "NoSoliciting.Tests\NoSoliciting.Tests.csproj", "{1962D91F-543A-4214-88FD-788BB7ACECE3}"
 EndProject
