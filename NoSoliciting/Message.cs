@@ -54,7 +54,7 @@ namespace NoSoliciting {
         }
 
         public string ToJson() {
-            JsonMessage msg = new JsonMessage {
+            var msg = new JsonMessage {
                 Id = this.Id,
                 DefinitionsVersion = this.DefinitionsVersion,
                 Timestamp = this.Timestamp,
@@ -156,15 +156,14 @@ namespace NoSoliciting {
     }
 
     public static class ChatTypeExt {
-        //private const ushort THRESHOLD = 127;
-        private const ushort CLEAR_7 = ~(~0 << 7);
+        private const ushort Clear7 = ~(~0 << 7);
 
         public static ChatType FromCode(ushort code) {
-            return (ChatType)(code & CLEAR_7);
+            return (ChatType)(code & Clear7);
         }
 
         public static ChatType FromDalamud(XivChatType type) {
-            return ChatTypeExt.FromCode((ushort)type);
+            return FromCode((ushort)type);
         }
 
         public static bool IsBattle(this ChatType type) {

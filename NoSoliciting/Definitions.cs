@@ -36,7 +36,7 @@ namespace NoSoliciting {
 
             Definitions defs = null;
 
-            Tuple<Definitions, string> download = await Download().ConfigureAwait(true);
+            var download = await Download().ConfigureAwait(true);
             if (download != null) {
                 defs = download.Item1;
 
@@ -52,7 +52,7 @@ namespace NoSoliciting {
         }
 
         public static Definitions Load(string text) {
-            IDeserializer de = new DeserializerBuilder()
+            var de = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .WithTypeConverter(new MatcherConverter())
                 .IgnoreUnmatchedProperties()
@@ -74,15 +74,15 @@ namespace NoSoliciting {
                 throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
             }
 
-            string pluginFolder = PluginFolder(plugin);
+            var pluginFolder = PluginFolder(plugin);
 
-            string cachedPath = Path.Combine(pluginFolder, "definitions.yaml");
+            var cachedPath = Path.Combine(pluginFolder, "definitions.yaml");
             if (!File.Exists(cachedPath)) {
                 goto LoadDefaults;
             }
 
             string text;
-            using (StreamReader file = File.OpenText(cachedPath)) {
+            using (var file = File.OpenText(cachedPath)) {
                 text = await file.ReadToEndAsync().ConfigureAwait(true);
             }
 
@@ -102,8 +102,8 @@ namespace NoSoliciting {
 
         private static async Task<Tuple<Definitions, string>> Download() {
             try {
-                using WebClient client = new WebClient();
-                string text = await client.DownloadStringTaskAsync(URL).ConfigureAwait(true);
+                using var client = new WebClient();
+                var text = await client.DownloadStringTaskAsync(URL).ConfigureAwait(true);
                 LastError = null;
                 return Tuple.Create(Load(text), text);
             } catch (Exception e) when (e is WebException || e is YamlException) {
@@ -115,33 +115,33 @@ namespace NoSoliciting {
         }
 
         private static async void UpdateCache(Plugin plugin, string defs) {
-            string pluginFolder = PluginFolder(plugin);
+            var pluginFolder = PluginFolder(plugin);
             Directory.CreateDirectory(pluginFolder);
-            string cachePath = Path.Combine(pluginFolder, "definitions.yaml");
+            var cachePath = Path.Combine(pluginFolder, "definitions.yaml");
 
-            byte[] b = Encoding.UTF8.GetBytes(defs);
+            var b = Encoding.UTF8.GetBytes(defs);
 
-            using FileStream file = File.OpenWrite(cachePath);
+            using var file = File.OpenWrite(cachePath);
             await file.WriteAsync(b, 0, b.Length).ConfigureAwait(true);
         }
 
         internal void Initialise(Plugin plugin) {
-            IEnumerable<KeyValuePair<string, Definition>> defs = this.Chat.Select(e => new KeyValuePair<string, Definition>($"chat.{e.Key}", e.Value))
+            var defs = this.Chat.Select(e => new KeyValuePair<string, Definition>($"chat.{e.Key}", e.Value))
                 .Concat(this.PartyFinder.Select(e => new KeyValuePair<string, Definition>($"party_finder.{e.Key}", e.Value)));
 
-            foreach (KeyValuePair<string, Definition> entry in defs) {
+            foreach (var entry in defs) {
                 entry.Value.Initialise(entry.Key);
                 if (!plugin.Config.FilterStatus.TryGetValue(entry.Key, out _)) {
                     plugin.Config.FilterStatus[entry.Key] = entry.Value.Default;
                 }
             }
 
-            foreach (KeyValuePair<string, Definition> entry in this.Global) {
-                Definition chat = entry.Value.Clone();
+            foreach (var entry in this.Global) {
+                var chat = entry.Value.Clone();
                 chat.Initialise($"chat.global.{entry.Key}");
                 this.Chat[$"global.{entry.Key}"] = chat;
 
-                Definition pf = entry.Value.Clone();
+                var pf = entry.Value.Clone();
                 pf.Initialise($"party_finder.global.{entry.Key}");
                 this.PartyFinder[$"global.{entry.Key}"] = pf;
 
@@ -184,11 +184,11 @@ namespace NoSoliciting {
                 return;
             }
 
-            IEnumerable<Matcher> allMatchers = this.LikelyMatchers
+            var allMatchers = this.LikelyMatchers
                 .Concat(this.RequiredMatchers)
                 .SelectMany(matchers => matchers);
 
-            foreach (Matcher matcher in allMatchers) {
+            foreach (var matcher in allMatchers) {
                 matcher.MakeIgnoreCase();
             }
         }
@@ -211,15 +211,15 @@ namespace NoSoliciting {
             }
 
             // ensure all required matchers match
-            bool allRequired = this.RequiredMatchers.All(matchers => matchers.Any(matcher => matcher.Matches(text)));
+            var allRequired = this.RequiredMatchers.All(matchers => matchers.Any(matcher => matcher.Matches(text)));
             if (!allRequired) {
                 return false;
             }
 
             // calculate likelihood
-            int likelihood = 0;
+            var likelihood = 0;
 
-            foreach (List<Matcher> matchers in this.LikelyMatchers) {
+            foreach (var matchers in this.LikelyMatchers) {
                 if (matchers.Any(matcher => matcher.Matches(text))) {
                     likelihood += 1;
                 }
@@ -302,7 +302,7 @@ namespace NoSoliciting {
                     throw new ArgumentException("matcher was an object but did not specify regex key");
                 }
 
-                Regex regex = new Regex(parser.Consume<Scalar>().Value, RegexOptions.Compiled);
+                var regex = new Regex(parser.Consume<Scalar>().Value, RegexOptions.Compiled);
                 matcher = new Matcher(regex);
 
                 parser.Consume<MappingEnd>();

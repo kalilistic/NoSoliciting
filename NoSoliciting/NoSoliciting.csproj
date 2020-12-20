@@ -81,11 +81,13 @@
     <Compile Include="Definitions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="Ml\Manifest.cs" />
+    <Compile Include="Ml\MlFilter.cs" />
     <Compile Include="PartyFinder.cs" />
-    <Compile Include="PFPacket.cs" />
+    <Compile Include="PfPacket.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginConfiguration.cs" />
-    <Compile Include="PluginUI.cs" />
+    <Compile Include="PluginUi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Filter.Chat.cs" />
     <Compile Include="Filter.cs" />

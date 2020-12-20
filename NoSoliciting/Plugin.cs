@@ -10,7 +10,7 @@ namespace NoSoliciting {
 
         public string Name => "NoSoliciting";
 
-        private PluginUI ui;
+        private PluginUi ui;
         private Filter filter;
 
         public DalamudPluginInterface Interface { get; private set; }
@@ -25,7 +25,7 @@ namespace NoSoliciting {
 
         public void Initialize(DalamudPluginInterface pluginInterface) {
             this.Interface = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
-            this.ui = new PluginUI(this);
+            this.ui = new PluginUi(this);
 
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
@@ -52,7 +52,7 @@ namespace NoSoliciting {
 
         internal void UpdateDefinitions() {
             Task.Run(async () => {
-                Definitions defs = await Definitions.UpdateAndCache(this).ConfigureAwait(true);
+                var defs = await Definitions.UpdateAndCache(this).ConfigureAwait(true);
                 // this shouldn't be possible, but what do I know
                 if (defs != null) {
                     defs.Initialise(this);

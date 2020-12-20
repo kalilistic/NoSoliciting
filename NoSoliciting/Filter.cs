@@ -21,8 +21,8 @@ namespace NoSoliciting {
         public Filter(Plugin plugin) {
             this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
 
-            IntPtr listingPtr = this.plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
-            IntPtr summaryPtr = this.plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 8B FA 48 8B F1 45 84 C0 74 ?? 0F B7 0A");
+            var listingPtr = this.plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
+            var summaryPtr = this.plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 8B FA 48 8B F1 45 84 C0 74 ?? 0F B7 0A");
             if (listingPtr == IntPtr.Zero || summaryPtr == IntPtr.Zero) {
                 PluginLog.Log("Party Finder filtering disabled because hook could not be created.");
                 return;
@@ -46,30 +46,30 @@ namespace NoSoliciting {
                 this.clearOnNext = false;
             }
 
-            IntPtr dataPtr = param_2 + 0x10;
+            var dataPtr = param_2 + 0x10;
 
             // parse the packet into a struct
-            PFPacket packet = Marshal.PtrToStructure<PFPacket>(dataPtr);
+            var packet = Marshal.PtrToStructure<PfPacket>(dataPtr);
 
-            for (int i = 0; i < packet.listings.Length; i++) {
-                PFListing listing = packet.listings[i];
+            for (var i = 0; i < packet.listings.Length; i++) {
+                var listing = packet.listings[i];
 
                 // only look at listings that aren't null
                 if (listing.IsNull()) {
                     continue;
                 }
 
-                string desc = listing.Description();
+                var desc = listing.Description();
 
                 string reason = null;
-                bool filter = false;
+                var filter = false;
 
                 filter = filter || (this.plugin.Config.FilterHugeItemLevelPFs
                     && listing.minimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.plugin.Interface.Data)
                     && SetReason(ref reason, "ilvl"));
 
-                foreach (Definition def in this.plugin.Definitions.PartyFinder.Values) {
-                    filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
+                foreach (var def in this.plugin.Definitions.PartyFinder.Values) {
+                    filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled)
                         && enabled
                         && def.Matches(XivChatType.None, desc)
                         && SetReason(ref reason, def.Id));
@@ -93,21 +93,21 @@ namespace NoSoliciting {
                 }
 
                 // replace the listing with an empty one
-                packet.listings[i] = new PFListing();
+                packet.listings[i] = new PfListing();
 
                 PluginLog.Log($"Filtered PF listing from {listing.Name()} ({reason}): {listing.Description()}");
             }
 
             // get some memory for writing to
-            byte[] newPacket = new byte[PacketInfo.packetSize];
-            GCHandle pinnedArray = GCHandle.Alloc(newPacket, GCHandleType.Pinned);
-            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+            var newPacket = new byte[PacketInfo.PacketSize];
+            var pinnedArray = GCHandle.Alloc(newPacket, GCHandleType.Pinned);
+            var pointer = pinnedArray.AddrOfPinnedObject();
 
             // write our struct into the memory (doing this directly crashes the game)
             Marshal.StructureToPtr(packet, pointer, false);
 
             // copy our new memory over the game's
-            Marshal.Copy(newPacket, 0, dataPtr, PacketInfo.packetSize);
+            Marshal.Copy(newPacket, 0, dataPtr, PacketInfo.PacketSize);
 
             // free memory
             pinnedArray.Free();
@@ -132,13 +132,13 @@ namespace NoSoliciting {
                 return;
             }
 
-            string text = message.TextValue;
+            var text = message.TextValue;
 
             string reason = null;
-            bool filter = false;
+            var filter = false;
 
-            foreach (Definition def in this.plugin.Definitions.Chat.Values) {
-                filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out bool enabled)
+            foreach (var def in this.plugin.Definitions.Chat.Values) {
+                filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled)
                     && enabled
                     && def.Matches(type, text)
                     && SetReason(ref reason, def.Id));
