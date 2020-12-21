@@ -9,7 +9,7 @@ namespace NoSoliciting {
                     throw new ArgumentNullException(nameof(config), "PluginConfiguration cannot be null");
                 }
 
-                if (!config.AdvancedMode || !config.CustomPFFilter) {
+                if (!config.CustomPFFilter) {
                     return false;
                 }
 

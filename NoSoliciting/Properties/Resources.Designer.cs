@@ -19,7 +19,7 @@ namespace NoSoliciting.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -75,9 +75,9 @@ namespace NoSoliciting.Properties {
         ///# Each subsection is a separate built-in filter that can be toggled on
         ///# and off. The option shown in the UI is defined [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string default_definitions {
+        internal static string DefaultDefinitions {
             get {
-                return ResourceManager.GetString("default_definitions", resourceCulture);
+                return ResourceManager.GetString("DefaultDefinitions", resourceCulture);
             }
         }
     }

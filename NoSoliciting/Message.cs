@@ -9,21 +9,17 @@ using System.Linq;
 
 namespace NoSoliciting {
     public class Message {
-        public Guid Id { get; private set; }
-        public uint DefinitionsVersion { get; private set; }
-        public DateTime Timestamp { get; private set; }
-        public ChatType ChatType { get; private set; }
-        public SeString Sender { get; private set; }
-        public SeString Content { get; private set; }
-        public string FilterReason { get; private set; }
+        public Guid Id { get; }
+        public uint DefinitionsVersion { get; }
+        public DateTime Timestamp { get; }
+        public ChatType ChatType { get; }
+        public SeString Sender { get; }
+        public SeString Content { get; }
+        public string? FilterReason { get; }
 
-        public Message(Definitions defs, ChatType type, SeString sender, SeString content, string reason) {
-            if (defs == null) {
-                throw new ArgumentNullException(nameof(defs), "Definitions cannot be null");
-            }
-
+        public Message(uint defsVersion, ChatType type, SeString sender, SeString content, string? reason) {
             this.Id = Guid.NewGuid();
-            this.DefinitionsVersion = defs.Version;
+            this.DefinitionsVersion = defsVersion;
             this.Timestamp = DateTime.Now;
             this.ChatType = type;
             this.Sender = sender;
@@ -31,8 +27,8 @@ namespace NoSoliciting {
             this.FilterReason = reason;
         }
 
-        public Message(Definitions defs, ChatType type, string sender, string content, string reason) : this(
-            defs,
+        public Message(uint defsVersion, ChatType type, string sender, string content, string? reason) : this(
+            defsVersion,
             type,
             new SeString(new Payload[] { new TextPayload(sender) }),
             new SeString(new Payload[] { new TextPayload(content) }),
@@ -50,7 +46,7 @@ namespace NoSoliciting {
             //       and I don't want to write a custom converter to overwrite their stupiditiy
             public List<byte> Sender { get; set; }
             public List<byte> Content { get; set; }
-            public string Reason { get; set; }
+            public string? Reason { get; set; }
         }
 
         public string ToJson() {
