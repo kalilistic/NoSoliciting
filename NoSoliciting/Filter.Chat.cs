@@ -9,7 +9,7 @@ namespace NoSoliciting {
                     throw new ArgumentNullException(nameof(config), "PluginConfiguration cannot be null");
                 }
 
-                if (!config.AdvancedMode || !config.CustomChatFilter) {
+                if (!config.CustomChatFilter) {
                     return false;
                 }
 

@@ -1,7 +1,4 @@
-﻿using Dalamud.Game.Chat;
-using Dalamud.Plugin;
-using NoSoliciting.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +6,9 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Dalamud.Game.Chat;
+using Dalamud.Plugin;
+using NoSoliciting.Properties;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Serialization;
@@ -16,25 +16,24 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace NoSoliciting {
     public class Definitions {
-        public static string LastError { get; private set; } = null;
-        public static DateTime? LastUpdate { get; set; } = null;
+        public static string? LastError { get; private set; }
+        public static DateTime? LastUpdate { get; set; }
 
-        private const string URL = "https://git.sr.ht/~jkcclemens/NoSoliciting/blob/master/NoSoliciting/definitions.yaml";
+        private const string Url = "https://git.sr.ht/~jkcclemens/NoSoliciting/blob/master/NoSoliciting/definitions.yaml";
 
         public uint Version { get; private set; }
         public Uri ReportUrl { get; private set; }
-        [YamlIgnore]
-        public int Count { get => this.Chat.Count + this.PartyFinder.Count + this.Global.Count; }
+
         public Dictionary<string, Definition> Chat { get; private set; }
         public Dictionary<string, Definition> PartyFinder { get; private set; }
         public Dictionary<string, Definition> Global { get; private set; }
 
         public static async Task<Definitions> UpdateAndCache(Plugin plugin) {
-#if DEBUG
+            #if DEBUG
             return LoadDefaults();
-#endif
+            #endif
 
-            Definitions defs = null;
+            Definitions? defs = null;
 
             var download = await Download().ConfigureAwait(true);
             if (download != null) {
@@ -43,7 +42,7 @@ namespace NoSoliciting {
                 try {
                     UpdateCache(plugin, download.Item2);
                 } catch (IOException e) {
-                    PluginLog.Log($"Could not update cache.");
+                    PluginLog.Log("Could not update cache.");
                     PluginLog.Log(e.ToString());
                 }
             }
@@ -60,21 +59,12 @@ namespace NoSoliciting {
             return de.Deserialize<Definitions>(text);
         }
 
-        private static string PluginFolder(Plugin plugin) {
-            return Path.Combine(new string[] {
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "XIVLauncher",
-                "pluginConfigs",
-                plugin.Name,
-            });
-        }
-
         private static async Task<Definitions> CacheOrDefault(Plugin plugin) {
             if (plugin == null) {
                 throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
             }
 
-            var pluginFolder = PluginFolder(plugin);
+            var pluginFolder = Util.PluginFolder(plugin);
 
             var cachedPath = Path.Combine(pluginFolder, "definitions.yaml");
             if (!File.Exists(cachedPath)) {
@@ -92,30 +82,30 @@ namespace NoSoliciting {
                 PluginLog.Log($"Could not load cached definitions: {e}. Loading defaults.");
             }
 
-        LoadDefaults:
+            LoadDefaults:
             return LoadDefaults();
         }
 
         private static Definitions LoadDefaults() {
-            return Load(Resources.default_definitions);
+            return Load(Resources.DefaultDefinitions);
         }
 
-        private static async Task<Tuple<Definitions, string>> Download() {
+        private static async Task<Tuple<Definitions, string>?> Download() {
             try {
                 using var client = new WebClient();
-                var text = await client.DownloadStringTaskAsync(URL).ConfigureAwait(true);
+                var text = await client.DownloadStringTaskAsync(Url).ConfigureAwait(true);
                 LastError = null;
                 return Tuple.Create(Load(text), text);
             } catch (Exception e) when (e is WebException || e is YamlException) {
-                PluginLog.Log($"Could not download newest definitions.");
+                PluginLog.Log("Could not download newest definitions.");
                 PluginLog.Log(e.ToString());
                 LastError = e.Message;
                 return null;
             }
         }
 
-        private static async void UpdateCache(Plugin plugin, string defs) {
-            var pluginFolder = PluginFolder(plugin);
+        private static async void UpdateCache(IDalamudPlugin plugin, string defs) {
+            var pluginFolder = Util.PluginFolder(plugin);
             Directory.CreateDirectory(pluginFolder);
             var cachePath = Path.Combine(pluginFolder, "definitions.yaml");
 
@@ -148,6 +138,7 @@ namespace NoSoliciting {
                 if (!plugin.Config.FilterStatus.TryGetValue(chat.Id, out _)) {
                     plugin.Config.FilterStatus[chat.Id] = chat.Default;
                 }
+
                 if (!plugin.Config.FilterStatus.TryGetValue(pf.Id, out _)) {
                     plugin.Config.FilterStatus[pf.Id] = pf.Default;
                 }
@@ -158,25 +149,26 @@ namespace NoSoliciting {
     }
 
     public class Definition {
-        private bool initialised = false;
+        private bool _initialised;
 
         [YamlIgnore]
         public string Id { get; private set; }
+
         public List<List<Matcher>> RequiredMatchers { get; private set; } = new List<List<Matcher>>();
         public List<List<Matcher>> LikelyMatchers { get; private set; } = new List<List<Matcher>>();
-        public int LikelihoodThreshold { get; private set; } = 0;
-        public bool IgnoreCase { get; private set; } = false;
+        public int LikelihoodThreshold { get; private set; }
+        public bool IgnoreCase { get; private set; }
         public bool Normalise { get; private set; } = true;
         public List<XivChatType> Channels { get; private set; } = new List<XivChatType>();
         public OptionNames Option { get; private set; }
-        public bool Default { get; private set; } = false;
+        public bool Default { get; private set; }
 
         public void Initialise(string id) {
-            if (this.initialised) {
+            if (this._initialised) {
                 return;
             }
 
-            this.initialised = true;
+            this._initialised = true;
 
             this.Id = id ?? throw new ArgumentNullException(nameof(id), "string cannot be null");
 
@@ -217,13 +209,7 @@ namespace NoSoliciting {
             }
 
             // calculate likelihood
-            var likelihood = 0;
-
-            foreach (var matchers in this.LikelyMatchers) {
-                if (matchers.Any(matcher => matcher.Matches(text))) {
-                    likelihood += 1;
-                }
-            }
+            var likelihood = this.LikelyMatchers.Count(matchers => matchers.Any(matcher => matcher.Matches(text)));
 
             // matches only if likelihood is greater than or equal the threshold
             return likelihood >= this.LikelihoodThreshold;
@@ -244,8 +230,8 @@ namespace NoSoliciting {
     }
 
     public class Matcher {
-        private string substring;
-        private Regex regex;
+        private string? substring;
+        private Regex? regex;
 
         public Matcher(string substring) {
             this.substring = substring ?? throw new ArgumentNullException(nameof(substring), "string cannot be null");
@@ -261,7 +247,7 @@ namespace NoSoliciting {
             }
 
             if (this.regex != null) {
-                this.regex = new Regex(this.regex.ToString(), regex.Options | RegexOptions.IgnoreCase);
+                this.regex = new Regex(this.regex.ToString(), this.regex.Options | RegexOptions.IgnoreCase);
             }
         }
 
@@ -271,7 +257,7 @@ namespace NoSoliciting {
             }
 
             if (this.substring != null) {
-                return text.Contains(substring);
+                return text.Contains(this.substring);
             }
 
             if (this.regex != null) {

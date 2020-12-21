@@ -2,52 +2,83 @@
 using Dalamud.Plugin;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
+using NoSoliciting.Ml;
 
 namespace NoSoliciting {
-    public partial class Plugin : IDalamudPlugin {
-        private bool disposedValue;
+    public class Plugin : IDalamudPlugin {
+        private bool _disposedValue;
 
         public string Name => "NoSoliciting";
 
-        private PluginUi ui;
-        private Filter filter;
+        private PluginUi Ui { get; set; } = null!;
+        private Filter Filter { get; set; } = null!;
 
-        public DalamudPluginInterface Interface { get; private set; }
-        public PluginConfiguration Config { get; private set; }
-        public Definitions Definitions { get; private set; }
+        public DalamudPluginInterface Interface { get; private set; } = null!;
+        public PluginConfiguration Config { get; private set; } = null!;
+        public Definitions? Definitions { get; private set; }
+        public MlFilter? MlFilter { get; set; }
+        public bool MlReady => this.Config.UseMachineLearning && this.MlFilter != null;
+        public bool DefsReady => !this.Config.UseMachineLearning && this.Definitions != null;
 
-        private readonly List<Message> messageHistory = new List<Message>();
-        public IEnumerable<Message> MessageHistory { get => this.messageHistory; }
+        private readonly List<Message> _messageHistory = new List<Message>();
+        public IEnumerable<Message> MessageHistory => this._messageHistory;
 
-        private readonly List<Message> partyFinderHistory = new List<Message>();
-        public IEnumerable<Message> PartyFinderHistory { get => this.partyFinderHistory; }
+        private readonly List<Message> _partyFinderHistory = new List<Message>();
+        public IEnumerable<Message> PartyFinderHistory => this._partyFinderHistory;
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        public string AssemblyLocation { get; private set; } = Assembly.GetExecutingAssembly().Location;
 
         public void Initialize(DalamudPluginInterface pluginInterface) {
+            // NOTE: THE SECRET IS TO DOWNGRADE System.Numerics.Vectors THAT'S INCLUDED WITH DALAMUD
+            //       CRY
+
+            string path = Environment.GetEnvironmentVariable("PATH")!;
+            string newPath = Path.GetDirectoryName(this.AssemblyLocation)!;
+            Environment.SetEnvironmentVariable("PATH", $"{path};{newPath}");
+
             this.Interface = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
-            this.ui = new PluginUi(this);
+            this.Ui = new PluginUi(this);
 
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
 
             this.UpdateDefinitions();
 
-            this.filter = new Filter(this);
+            this.Filter = new Filter(this);
+
+            if (this.Config.UseMachineLearning) {
+                this.InitialiseMachineLearning();
+            }
 
             // pre-compute the max ilvl to prevent stutter
             Task.Run(async () => {
                 while (!this.Interface.Data.IsDataReady) {
                     await Task.Delay(1_000).ConfigureAwait(true);
                 }
+
                 FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
             });
 
-            this.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.filter.OnChat;
-            this.Interface.UiBuilder.OnBuildUi += this.ui.Draw;
-            this.Interface.UiBuilder.OnOpenConfigUi += this.ui.OpenSettings;
-            this.Interface.CommandManager.AddHandler("/prmt", new CommandInfo(OnCommand) {
+            this.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.Filter.OnChat;
+            this.Interface.UiBuilder.OnBuildUi += this.Ui.Draw;
+            this.Interface.UiBuilder.OnOpenConfigUi += this.Ui.OpenSettings;
+            this.Interface.CommandManager.AddHandler("/prmt", new CommandInfo(this.OnCommand) {
                 HelpMessage = "Opens the NoSoliciting configuration",
             });
+        }
+
+        internal void InitialiseMachineLearning() {
+            if (this.MlFilter != null) {
+                return;
+            }
+
+            Task.Run(async () => { this.MlFilter = await MlFilter.Load(this); })
+                .ContinueWith(_ => PluginLog.Log("Machine learning model loaded"));
         }
 
         internal void UpdateDefinitions() {
@@ -62,45 +93,46 @@ namespace NoSoliciting {
             });
         }
 
-        public void OnCommand(string command, string args) {
-            this.ui.OpenSettings(null, null);
+        private void OnCommand(string command, string args) {
+            this.Ui.OpenSettings(null, null);
         }
 
         public void AddMessageHistory(Message message) {
-            this.messageHistory.Insert(0, message);
+            this._messageHistory.Insert(0, message);
 
-            while (this.messageHistory.Count > 250) {
-                this.messageHistory.RemoveAt(this.messageHistory.Count - 1);
+            while (this._messageHistory.Count > 250) {
+                this._messageHistory.RemoveAt(this._messageHistory.Count - 1);
             }
         }
 
         public void ClearPartyFinderHistory() {
-            this.partyFinderHistory.Clear();
+            this._partyFinderHistory.Clear();
         }
 
         public void AddPartyFinderHistory(Message message) {
-            this.partyFinderHistory.Add(message);
+            this._partyFinderHistory.Add(message);
         }
 
         protected virtual void Dispose(bool disposing) {
-            if (!this.disposedValue) {
-                if (disposing) {
-                    this.filter.Dispose();
-                    this.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.filter.OnChat;
-                    this.Interface.UiBuilder.OnBuildUi -= this.ui.Draw;
-                    this.Interface.UiBuilder.OnOpenConfigUi -= this.ui.OpenSettings;
-                    this.Interface.CommandManager.RemoveHandler("/prmt");
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
+            if (this._disposedValue) {
+                return;
             }
+
+            if (disposing) {
+                this.Filter.Dispose();
+                this.MlFilter?.Dispose();
+                this.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.Filter.OnChat;
+                this.Interface.UiBuilder.OnBuildUi -= this.Ui.Draw;
+                this.Interface.UiBuilder.OnOpenConfigUi -= this.Ui.OpenSettings;
+                this.Interface.CommandManager.RemoveHandler("/prmt");
+            }
+
+            this._disposedValue = true;
         }
 
         public void Dispose() {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
     }

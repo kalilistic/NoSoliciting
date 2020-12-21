@@ -4,49 +4,196 @@ using Dalamud.Hooking;
 using Dalamud.Plugin;
 using System;
 using System.Runtime.InteropServices;
+using NoSoliciting.Ml;
 
 namespace NoSoliciting {
     public partial class Filter : IDisposable {
-        private readonly Plugin plugin;
-        private bool clearOnNext = false;
+        private const uint MinWords = 4;
 
-        private delegate void HandlePFPacketDelegate(IntPtr param_1, IntPtr param_2);
-        private readonly Hook<HandlePFPacketDelegate> handlePacketHook;
+        public static readonly ChatType[] FilteredChatTypes = {
+            ChatType.Say,
+            ChatType.Yell,
+            ChatType.Shout,
+            ChatType.TellIncoming,
+            ChatType.Party,
+            ChatType.CrossParty,
+            ChatType.Alliance,
+            ChatType.FreeCompany,
+            ChatType.PvpTeam,
+            ChatType.CrossLinkshell1,
+            ChatType.CrossLinkshell2,
+            ChatType.CrossLinkshell3,
+            ChatType.CrossLinkshell4,
+            ChatType.CrossLinkshell5,
+            ChatType.CrossLinkshell6,
+            ChatType.CrossLinkshell7,
+            ChatType.CrossLinkshell8,
+            ChatType.Linkshell1,
+            ChatType.Linkshell2,
+            ChatType.Linkshell3,
+            ChatType.Linkshell4,
+            ChatType.Linkshell5,
+            ChatType.Linkshell6,
+            ChatType.Linkshell7,
+            ChatType.Linkshell8,
+            ChatType.NoviceNetwork,
+        };
 
-        private delegate long HandlePFSummary2Delegate(long param_1, long param_2, byte param_3);
-        private readonly Hook<HandlePFSummary2Delegate> handleSummaryHook;
+        private Plugin Plugin { get; }
+        private bool _clearOnNext;
 
-        private bool disposedValue;
+        private delegate void HandlePfPacketDelegate(IntPtr param1, IntPtr param2);
+
+        private readonly Hook<HandlePfPacketDelegate>? _handlePacketHook;
+
+        private delegate IntPtr HandlePfSummaryDelegate(IntPtr param1, IntPtr param2, byte param3);
+
+        private readonly Hook<HandlePfSummaryDelegate>? _handleSummaryHook;
+
+        private bool _disposedValue;
 
         public Filter(Plugin plugin) {
-            this.plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
+            this.Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
 
-            var listingPtr = this.plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
-            var summaryPtr = this.plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 8B FA 48 8B F1 45 84 C0 74 ?? 0F B7 0A");
-            if (listingPtr == IntPtr.Zero || summaryPtr == IntPtr.Zero) {
-                PluginLog.Log("Party Finder filtering disabled because hook could not be created.");
-                return;
-            }
+            var listingPtr = this.Plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
+            var summaryPtr = this.Plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 8B FA 48 8B F1 45 84 C0 74 ?? 0F B7 0A");
 
-            this.handlePacketHook = new Hook<HandlePFPacketDelegate>(listingPtr, new HandlePFPacketDelegate(this.HandlePFPacket));
-            this.handlePacketHook.Enable();
+            this._handlePacketHook = new Hook<HandlePfPacketDelegate>(listingPtr, new HandlePfPacketDelegate(this.TransformPfPacket));
+            this._handlePacketHook.Enable();
 
-            this.handleSummaryHook = new Hook<HandlePFSummary2Delegate>(summaryPtr, new HandlePFSummary2Delegate(this.HandleSummary));
-            this.handleSummaryHook.Enable();
+            this._handleSummaryHook = new Hook<HandlePfSummaryDelegate>(summaryPtr, new HandlePfSummaryDelegate(this.HandleSummary));
+            this._handleSummaryHook.Enable();
         }
 
-        private void HandlePFPacket(IntPtr param_1, IntPtr param_2) {
-            if (this.plugin.Definitions == null) {
-                this.handlePacketHook.Original(param_1, param_2);
+        public void OnChat(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
+            isHandled = isHandled || this.FilterMessage(type, sender, message);
+        }
+
+        private void TransformPfPacket(IntPtr param1, IntPtr data) {
+            if (data == IntPtr.Zero) {
+                goto Return;
+            }
+
+            if (this.Plugin.MlReady) {
+                this.MlTransformPfPacket(data);
+            } else if (this.Plugin.DefsReady) {
+                this.DefsTransformPfPacket(data);
+            }
+
+            Return:
+            this._handlePacketHook!.Original(param1, data);
+        }
+
+        private bool FilterMessage(XivChatType type, SeString sender, SeString message) {
+            if (message == null) {
+                throw new ArgumentNullException(nameof(message), "SeString cannot be null");
+            }
+
+            if (this.Plugin.MlReady) {
+                return this.MlFilterMessage(type, sender, message);
+            }
+
+            return this.Plugin.DefsReady && this.DefsFilterMessage(type, sender, message);
+        }
+
+        private bool MlFilterMessage(XivChatType type, SeString sender, SeString message) {
+            if (this.Plugin.MlFilter == null) {
+                return false;
+            }
+
+            var chatType = ChatTypeExt.FromDalamud(type);
+
+            // NOTE: don't filter on user-controlled chat types here because custom filters are supposed to check all
+            //       messages except battle messages
+            if (chatType.IsBattle()) {
+                return false;
+            }
+
+            var text = message.TextValue;
+
+            // only look at messages >= min words
+            if (text.Split(' ').Length < MinWords) {
+                return false;
+            }
+
+            string? reason = null;
+
+            // step 1. classify the message using the model
+            var category = this.Plugin.MlFilter.ClassifyMessage((ushort) chatType, text);
+
+            // step 1a. only filter if configured to act on this channel
+            var filter = category != MessageCategory.Normal
+                         && this.Plugin.Config.MlEnabledOn(category, chatType)
+                         && SetReason(out reason, category.Name());
+
+            // step 2. check for custom filters if enabled
+            filter = filter || this.Plugin.Config.CustomChatFilter
+                && Chat.MatchesCustomFilters(text, this.Plugin.Config)
+                && SetReason(out reason, "custom");
+
+            this.Plugin.AddMessageHistory(new Message(
+                this.Plugin.MlFilter.Version,
+                ChatTypeExt.FromDalamud(type),
+                sender,
+                message,
+                reason
+            ));
+
+            if (filter && this.Plugin.Config.LogFilteredChat) {
+                PluginLog.Log($"Filtered chat message ({reason}): {text}");
+            }
+
+            return filter;
+        }
+
+        private bool DefsFilterMessage(XivChatType type, SeString sender, SeString message) {
+            if (this.Plugin.Definitions == null || ChatTypeExt.FromDalamud(type).IsBattle()) {
+                return false;
+            }
+
+            var text = message.TextValue;
+
+            string? reason = null;
+            var filter = false;
+
+            foreach (var def in this.Plugin.Definitions.Chat.Values) {
+                filter = filter || this.Plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled)
+                    && enabled
+                    && def.Matches(type, text)
+                    && SetReason(out reason, def.Id);
+            }
+
+            // check for custom filters if enabled
+            filter = filter || this.Plugin.Config.CustomChatFilter
+                && Chat.MatchesCustomFilters(text, this.Plugin.Config)
+                && SetReason(out reason, "custom");
+
+            this.Plugin.AddMessageHistory(new Message(
+                this.Plugin.Definitions.Version,
+                ChatTypeExt.FromDalamud(type),
+                sender,
+                message,
+                reason
+            ));
+
+            if (filter && this.Plugin.Config.LogFilteredChat) {
+                PluginLog.Log($"Filtered chat message ({reason}): {text}");
+            }
+
+            return filter;
+        }
+
+        private void MlTransformPfPacket(IntPtr data) {
+            if (this.Plugin.MlFilter == null) {
                 return;
             }
 
-            if (this.clearOnNext) {
-                this.plugin.ClearPartyFinderHistory();
-                this.clearOnNext = false;
+            if (this._clearOnNext) {
+                this.Plugin.ClearPartyFinderHistory();
+                this._clearOnNext = false;
             }
 
-            var dataPtr = param_2 + 0x10;
+            var dataPtr = data + 0x10;
 
             // parse the packet into a struct
             var packet = Marshal.PtrToStructure<PfPacket>(dataPtr);
@@ -61,31 +208,39 @@ namespace NoSoliciting {
 
                 var desc = listing.Description();
 
-                string reason = null;
-                var filter = false;
-
-                filter = filter || (this.plugin.Config.FilterHugeItemLevelPFs
-                    && listing.minimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.plugin.Interface.Data)
-                    && SetReason(ref reason, "ilvl"));
-
-                foreach (var def in this.plugin.Definitions.PartyFinder.Values) {
-                    filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled)
-                        && enabled
-                        && def.Matches(XivChatType.None, desc)
-                        && SetReason(ref reason, def.Id));
+                // only look at pfs >= min words
+                if (desc.Split(' ').Length < MinWords) {
+                    continue;
                 }
 
-                // check for custom filters if enabled
-                filter = filter || (this.plugin.Config.CustomPFFilter
-                    && PartyFinder.MatchesCustomFilters(desc, this.plugin.Config)
-                    && SetReason(ref reason, "custom"));
+                string? reason = null;
 
-                this.plugin.AddPartyFinderHistory(new Message(
-                    defs: this.plugin.Definitions,
-                    type: ChatType.None,
-                    sender: listing.Name(),
-                    content: listing.Description(),
-                    reason: reason
+                // step 1. check if pf has an item level that's too high
+                var filter = this.Plugin.Config.FilterHugeItemLevelPFs
+                             && listing.minimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.Plugin.Interface.Data)
+                             && SetReason(out reason, "ilvl");
+
+                // step 2. check custom filters
+                filter = filter || this.Plugin.Config.CustomPFFilter
+                    && PartyFinder.MatchesCustomFilters(desc, this.Plugin.Config)
+                    && SetReason(out reason, "custom");
+
+                if (!filter) {
+                    // step 3. check the model's prediction
+                    var category = this.Plugin.MlFilter.ClassifyMessage((ushort) ChatType.None, desc);
+
+                    // step 3a. filter the message if configured to do so
+                    filter = category != MessageCategory.Normal
+                             && this.Plugin.Config.MlEnabledOn(category, ChatType.None)
+                             && SetReason(out reason, category.Name());
+                }
+
+                this.Plugin.AddPartyFinderHistory(new Message(
+                    this.Plugin.MlFilter.Version,
+                    ChatType.None,
+                    listing.Name(),
+                    listing.Description(),
+                    reason
                 ));
 
                 if (!filter) {
@@ -95,7 +250,9 @@ namespace NoSoliciting {
                 // replace the listing with an empty one
                 packet.listings[i] = new PfListing();
 
-                PluginLog.Log($"Filtered PF listing from {listing.Name()} ({reason}): {listing.Description()}");
+                if (this.Plugin.Config.LogFilteredPfs) {
+                    PluginLog.Log($"Filtered PF listing from {listing.Name()} ({reason}): {listing.Description()}");
+                }
             }
 
             // get some memory for writing to
@@ -111,79 +268,114 @@ namespace NoSoliciting {
 
             // free memory
             pinnedArray.Free();
-
-            // call original function
-            this.handlePacketHook.Original(param_1, param_2);
         }
 
-        private long HandleSummary(long param_1, long param_2, byte param_3) {
-            this.clearOnNext = true;
-
-            return this.handleSummaryHook.Original(param_1, param_2, param_3);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "fulfilling a delegate")]
-        public void OnChat(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
-            if (message == null) {
-                throw new ArgumentNullException(nameof(message), "SeString cannot be null");
-            }
-
-            if (this.plugin.Definitions == null || ChatTypeExt.FromDalamud(type).IsBattle()) {
+        private void DefsTransformPfPacket(IntPtr data) {
+            if (this.Plugin.Definitions == null) {
                 return;
             }
 
-            var text = message.TextValue;
-
-            string reason = null;
-            var filter = false;
-
-            foreach (var def in this.plugin.Definitions.Chat.Values) {
-                filter = filter || (this.plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled)
-                    && enabled
-                    && def.Matches(type, text)
-                    && SetReason(ref reason, def.Id));
+            if (this._clearOnNext) {
+                this.Plugin.ClearPartyFinderHistory();
+                this._clearOnNext = false;
             }
 
-            // check for custom filters if enabled
-            filter = filter || (this.plugin.Config.CustomChatFilter
-                && Chat.MatchesCustomFilters(text, this.plugin.Config)
-                && SetReason(ref reason, "custom"));
+            var dataPtr = data + 0x10;
 
-            this.plugin.AddMessageHistory(new Message(
-                defs: this.plugin.Definitions,
-                type: ChatTypeExt.FromDalamud(type),
-                sender: sender,
-                content: message,
-                reason: reason
-            ));
+            // parse the packet into a struct
+            var packet = Marshal.PtrToStructure<PfPacket>(dataPtr);
 
-            if (!filter) {
-                return;
+            for (var i = 0; i < packet.listings.Length; i++) {
+                var listing = packet.listings[i];
+
+                // only look at listings that aren't null
+                if (listing.IsNull()) {
+                    continue;
+                }
+
+                var desc = listing.Description();
+
+                string? reason = null;
+                var filter = false;
+
+                filter = filter || this.Plugin.Config.FilterHugeItemLevelPFs
+                    && listing.minimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.Plugin.Interface.Data)
+                    && SetReason(out reason, "ilvl");
+
+                foreach (var def in this.Plugin.Definitions.PartyFinder.Values) {
+                    filter = filter || this.Plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled)
+                        && enabled
+                        && def.Matches(XivChatType.None, desc)
+                        && SetReason(out reason, def.Id);
+                }
+
+                // check for custom filters if enabled
+                filter = filter || this.Plugin.Config.CustomPFFilter
+                    && PartyFinder.MatchesCustomFilters(desc, this.Plugin.Config)
+                    && SetReason(out reason, "custom");
+
+                this.Plugin.AddPartyFinderHistory(new Message(
+                    this.Plugin.Definitions.Version,
+                    ChatType.None,
+                    listing.Name(),
+                    listing.Description(),
+                    reason
+                ));
+
+                if (!filter) {
+                    continue;
+                }
+
+                // replace the listing with an empty one
+                packet.listings[i] = new PfListing();
+
+                if (this.Plugin.Config.LogFilteredPfs) {
+                    PluginLog.Log($"Filtered PF listing from {listing.Name()} ({reason}): {listing.Description()}");
+                }
             }
 
-            PluginLog.Log($"Filtered chat message ({reason}): {text}");
-            isHandled = true;
+            // get some memory for writing to
+            var newPacket = new byte[PacketInfo.PacketSize];
+            var pinnedArray = GCHandle.Alloc(newPacket, GCHandleType.Pinned);
+            var pointer = pinnedArray.AddrOfPinnedObject();
+
+            // write our struct into the memory (doing this directly crashes the game)
+            Marshal.StructureToPtr(packet, pointer, false);
+
+            // copy our new memory over the game's
+            Marshal.Copy(newPacket, 0, dataPtr, PacketInfo.PacketSize);
+
+            // free memory
+            pinnedArray.Free();
         }
 
-        private static bool SetReason(ref string reason, string value) {
+        private IntPtr HandleSummary(IntPtr param1, IntPtr param2, byte param3) {
+            this._clearOnNext = true;
+
+            return this._handleSummaryHook!.Original(param1, param2, param3);
+        }
+
+        private static bool SetReason(out string reason, string value) {
             reason = value;
             return true;
         }
 
-        protected virtual void Dispose(bool disposing) {
-            if (!disposedValue) {
-                if (disposing) {
-                    this.handlePacketHook?.Dispose();
-                    this.handleSummaryHook?.Dispose();
-                }
-
-                disposedValue = true;
+        private void Dispose(bool disposing) {
+            if (this._disposedValue) {
+                return;
             }
+
+            if (disposing) {
+                this._handlePacketHook?.Dispose();
+                this._handleSummaryHook?.Dispose();
+            }
+
+            this._disposedValue = true;
         }
 
         public void Dispose() {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
     }
