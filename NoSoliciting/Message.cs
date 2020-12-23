@@ -30,10 +30,11 @@ namespace NoSoliciting {
         public Message(uint defsVersion, ChatType type, string sender, string content, string? reason) : this(
             defsVersion,
             type,
-            new SeString(new Payload[] { new TextPayload(sender) }),
-            new SeString(new Payload[] { new TextPayload(content) }),
+            new SeString(new Payload[] {new TextPayload(sender)}),
+            new SeString(new Payload[] {new TextPayload(content)}),
             reason
-        ) { }
+        ) {
+        }
 
         [Serializable]
         [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
@@ -41,7 +42,9 @@ namespace NoSoliciting {
             public Guid Id { get; set; }
             public uint DefinitionsVersion { get; set; }
             public DateTime Timestamp { get; set; }
+
             public ushort Type { get; set; }
+
             // note: cannot use byte[] because Newtonsoft thinks it's a good idea to always base64 byte[]
             //       and I don't want to write a custom converter to overwrite their stupiditiy
             public List<byte> Sender { get; set; }
@@ -54,7 +57,7 @@ namespace NoSoliciting {
                 Id = this.Id,
                 DefinitionsVersion = this.DefinitionsVersion,
                 Timestamp = this.Timestamp,
-                Type = (ushort)this.ChatType,
+                Type = (ushort) this.ChatType,
                 Sender = this.Sender.Encode().ToList(),
                 Content = this.Content.Encode().ToList(),
                 Reason = this.FilterReason,
@@ -154,12 +157,17 @@ namespace NoSoliciting {
     public static class ChatTypeExt {
         private const ushort Clear7 = ~(~0 << 7);
 
+        public static byte LogKind(this ChatType type) => type switch {
+            ChatType.TellIncoming => (byte) ChatType.TellOutgoing,
+            _ => (byte) type,
+        };
+
         public static ChatType FromCode(ushort code) {
-            return (ChatType)(code & Clear7);
+            return (ChatType) (code & Clear7);
         }
 
         public static ChatType FromDalamud(XivChatType type) {
-            return FromCode((ushort)type);
+            return FromCode((ushort) type);
         }
 
         public static bool IsBattle(this ChatType type) {

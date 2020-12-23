@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Dalamud.Plugin;
-using Microsoft.ML;
-using NoSoliciting.Properties;
+using NoSoliciting.Interface;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -20,29 +18,37 @@ namespace NoSoliciting.Ml {
         private const string Url = "http://localhost:8000/manifest.yaml";
 
         public uint Version { get; }
-        private MLContext Context { get; }
-        private ITransformer Model { get; }
-        private DataViewSchema Schema { get; }
-        private PredictionEngine<MessageData, MessagePrediction> PredictionEngine { get; }
+        private IClassifier Classifier { get; }
 
-        private MlFilter(uint version, MLContext context, ITransformer model, DataViewSchema schema) {
+        private MlFilter(uint version, IClassifier classifier) {
             this.Version = version;
-            this.Context = context;
-            this.Model = model;
-            this.Schema = schema;
-            this.PredictionEngine = this.Context.Model.CreatePredictionEngine<MessageData, MessagePrediction>(this.Model, this.Schema);
+            this.Classifier = classifier;
         }
 
+        // private MLContext Context { get; }
+        // private ITransformer Model { get; }
+        // private DataViewSchema Schema { get; }
+        // private PredictionEngine<MessageData, MessagePrediction> PredictionEngine { get; }
+        //
+        // private MlFilter(uint version, MLContext context, ITransformer model, DataViewSchema schema) {
+        //     this.Version = version;
+        //     this.Context = context;
+        //     this.Model = model;
+        //     this.Schema = schema;
+        //     this.PredictionEngine = this.Context.Model.CreatePredictionEngine<MessageData, MessagePrediction>(this.Model, this.Schema);
+        // }
+
         public MessageCategory ClassifyMessage(ushort channel, string message) {
-            var data = new MessageData(channel, message);
-            var pred = this.PredictionEngine.Predict(data);
-            var category = MessageCategoryExt.FromString(pred.Category);
+            // var data = new MessageData(channel, message);
+            // var pred = this.PredictionEngine.Predict(data);
+            var rawCategory = this.Classifier.Classify(channel, message);
+            var category = MessageCategoryExt.FromString(rawCategory);
 
             if (category != null) {
                 return (MessageCategory) category;
             }
 
-            PluginLog.LogWarning($"Unknown message category: {pred.Category}");
+            PluginLog.LogWarning($"Unknown message category: {rawCategory}");
             return MessageCategory.Normal;
         }
 
@@ -72,11 +78,18 @@ namespace NoSoliciting.Ml {
             UpdateCachedFile(plugin, ModelName, data);
             UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Item2));
 
-            var context = new MLContext();
-            using var stream = new MemoryStream(data);
-            var model = context.Model.Load(stream, out var schema);
+            // var context = new MLContext();
+            // using var stream = new MemoryStream(data);
+            // var model = context.Model.Load(stream, out var schema);
 
-            return new MlFilter(manifest.Item1.Version, context, model, schema);
+            // return new MlFilter(manifest.Item1.Version, context, model, schema);
+
+            plugin.Classifier.Initialise(data);
+
+            return new MlFilter(
+                manifest.Item1.Version,
+                plugin.Classifier
+            );
         }
 
         private static async Task<byte[]?> DownloadModel(Uri url) {
@@ -150,7 +163,7 @@ namespace NoSoliciting.Ml {
         }
 
         public void Dispose() {
-            this.PredictionEngine.Dispose();
+            // this.PredictionEngine.Dispose();
         }
     }
 }
