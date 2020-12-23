@@ -2,16 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
-        <Nullable>enable</Nullable>
         <LangVersion>8</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <PlatformTarget>x64</PlatformTarget>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>x64</PlatformTarget>
+        <Nullable>enable</Nullable>
+        <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,6 +16,15 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.ML" Version="1.5.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="costura64\CpuMathNative.dll" />
+      <EmbeddedResource Include="costura64\CpuMathNative.dll" />
     </ItemGroup>
 
 </Project>

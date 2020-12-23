@@ -3,14 +3,7 @@
     <Costura>
         <ExcludeAssemblies>
             Costura
+            NoSoliciting.Interface
         </ExcludeAssemblies>
-        <Unmanaged64Assemblies>
-            CpuMathNative
-            LdaNative
-        </Unmanaged64Assemblies>
-        <PreloadOrder>
-            CpuMathNative
-            LdaNative
-        </PreloadOrder>
     </Costura>
 </Weavers>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
@@ -33,9 +34,20 @@ namespace NoSoliciting {
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public string AssemblyLocation { get; private set; } = Assembly.GetExecutingAssembly().Location;
 
+        private const string LibraryName = "NoSoliciting.CursedWorkaround";
+
+        private AppDomain InnerDomain { get; set; } = null!;
+
+        public IClassifier Classifier { get; private set; } = null!;
+
         public void Initialize(DalamudPluginInterface pluginInterface) {
-            // NOTE: THE SECRET IS TO DOWNGRADE System.Numerics.Vectors THAT'S INCLUDED WITH DALAMUD
-            //       CRY
+            // FIXME: eventually this cursed workaround for old System.Numerics.Vectors should be destroyed
+            this.InnerDomain = AppDomain.CreateDomain(LibraryName, AppDomain.CurrentDomain.Evidence, new AppDomainSetup {
+                ApplicationName = LibraryName,
+                ConfigurationFile = $"{LibraryName}.dll.config",
+                ApplicationBase = Path.GetDirectoryName(this.AssemblyLocation),
+            });
+            this.Classifier = (IClassifier) this.InnerDomain.CreateInstanceAndUnwrap(LibraryName, $"{LibraryName}.CursedWorkaround");
 
             string path = Environment.GetEnvironmentVariable("PATH")!;
             string newPath = Path.GetDirectoryName(this.AssemblyLocation)!;
@@ -78,7 +90,11 @@ namespace NoSoliciting {
             }
 
             Task.Run(async () => { this.MlFilter = await MlFilter.Load(this); })
-                .ContinueWith(_ => PluginLog.Log("Machine learning model loaded"));
+                .ContinueWith(e => {
+                    if (!e.IsFaulted) {
+                        PluginLog.Log("Machine learning model loaded");
+                    }
+                });
         }
 
         internal void UpdateDefinitions() {
@@ -125,6 +141,9 @@ namespace NoSoliciting {
                 this.Interface.UiBuilder.OnBuildUi -= this.Ui.Draw;
                 this.Interface.UiBuilder.OnOpenConfigUi -= this.Ui.OpenSettings;
                 this.Interface.CommandManager.RemoveHandler("/prmt");
+
+                // AppDomain.CurrentDomain.AssemblyResolve -= this.ResolveAssembly;
+                AppDomain.Unload(this.InnerDomain);
             }
 
             this._disposedValue = true;

@@ -11,6 +11,7 @@ using System.Net;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Lumina.Excel.GeneratedSheets;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
@@ -275,7 +276,13 @@ namespace NoSoliciting {
                 var types = this.Plugin.Config.MlFilters[category];
 
                 void DrawTypes(ChatType type) {
-                    var name = type == ChatType.None ? "Party Finder" : type.ToString();
+                    string name;
+                    if (type == ChatType.None) {
+                        name = "Party Finder";
+                    } else {
+                        var lf = this.Plugin.Interface.Data.GetExcelSheet<LogFilter>().FirstOrDefault(lf => lf.LogKind == type.LogKind());
+                        name = lf?.Name?.ToString() ?? type.ToString();
+                    }
 
                     var check = types.Contains(type);
                     if (!ImGui.Checkbox(name, ref check)) {
