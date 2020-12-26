@@ -15,7 +15,11 @@ namespace NoSoliciting.Ml {
 
         private const string ManifestName = "manifest.yaml";
         private const string ModelName = "model.zip";
+        #if DEBUG
+        private const string Url = "https://annaclemens.io/assets/nosol/ml/manifest.yaml";
+        #else
         private const string Url = "http://localhost:8000/manifest.yaml";
+        #endif
 
         public uint Version { get; }
         private IClassifier Classifier { get; }

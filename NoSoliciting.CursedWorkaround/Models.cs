@@ -8,6 +8,7 @@ namespace NoSoliciting.CursedWorkaround {
         private static readonly Regex WardRegex = new Regex(@"w.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex PlotRegex = new Regex(@"p.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static readonly string[] PlotWords = {
             "plot",
             "apartment",
@@ -17,11 +18,13 @@ namespace NoSoliciting.CursedWorkaround {
         private static readonly Regex NumbersRegex = new Regex(@"\d{1,2}.{0,2}\d{1,2}", RegexOptions.Compiled);
 
         private static readonly string[] TradeWords = {
-            "B>",
-            "S>",
+            "B> ",
+            "S> ",
             "buy",
             "sell",
         };
+
+        private static readonly Regex SketchUrlRegex = new Regex(@"\.com-\w+\.\w+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public string? Category { get; }
 
@@ -40,6 +43,8 @@ namespace NoSoliciting.CursedWorkaround {
         public bool ContainsHousingNumbers => NumbersRegex.IsMatch(this.Message);
 
         public bool ContainsTradeWords => TradeWords.Any(word => this.Message.ContainsIgnoreCase(word));
+
+        public bool ContainsSketchUrl => SketchUrlRegex.IsMatch(this.Message);
 
         public MessageData(uint channel, string message) {
             this.Channel = channel;

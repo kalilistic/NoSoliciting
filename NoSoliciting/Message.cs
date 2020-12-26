@@ -6,6 +6,8 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Data;
+using Lumina.Excel.GeneratedSheets;
 
 namespace NoSoliciting {
     public class Message {
@@ -161,6 +163,22 @@ namespace NoSoliciting {
             ChatType.TellIncoming => (byte) ChatType.TellOutgoing,
             _ => (byte) type,
         };
+
+        public static string Name(this ChatType type, DataManager data) {
+            switch (type) {
+                case ChatType.None:
+                    return "Party Finder";
+                case ChatType.TellIncoming:
+                    return "Tell (Incoming)";
+                case ChatType.TellOutgoing:
+                    return "Tell (Outgoing)";
+                case ChatType.CrossParty:
+                    return "Party (Cross-world)";
+            }
+
+            var lf = data.GetExcelSheet<LogFilter>().FirstOrDefault(lf => lf.LogKind == type.LogKind());
+            return lf?.Name?.ToString() ?? type.ToString();
+        }
 
         public static ChatType FromCode(ushort code) {
             return (ChatType) (code & Clear7);
