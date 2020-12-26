@@ -47,6 +47,7 @@ namespace NoSoliciting {
                 ConfigurationFile = $"{LibraryName}.dll.config",
                 ApplicationBase = Path.GetDirectoryName(this.AssemblyLocation),
             });
+            this.InnerDomain.InitializeLifetimeService();
             this.Classifier = (IClassifier) this.InnerDomain.CreateInstanceAndUnwrap(LibraryName, $"{LibraryName}.CursedWorkaround");
 
             string path = Environment.GetEnvironmentVariable("PATH")!;
@@ -110,6 +111,11 @@ namespace NoSoliciting {
         }
 
         private void OnCommand(string command, string args) {
+            if (args == "report") {
+                this.Ui.OpenReporting();
+                return;
+            }
+
             this.Ui.OpenSettings(null, null);
         }
 

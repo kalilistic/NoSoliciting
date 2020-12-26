@@ -11,6 +11,10 @@ namespace NoSoliciting.CursedWorkaround {
         private DataViewSchema Schema { get; set; } = null!;
         private PredictionEngine<MessageData, MessagePrediction> PredictionEngine { get; set; } = null!;
 
+        public override object? InitializeLifetimeService() {
+            return null;
+        }
+
         public void Initialise(byte[] data) {
             this.Context = new MLContext();
             using var stream = new MemoryStream(data);

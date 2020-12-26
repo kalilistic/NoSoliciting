@@ -17,7 +17,6 @@ using NoSoliciting.Ml;
 namespace NoSoliciting {
     public class PluginUi {
         private Plugin Plugin { get; }
-        private bool _resizeWindow;
         private ReportStatus LastReportStatus { get; set; } = ReportStatus.None;
 
         private bool _showSettings;
@@ -42,6 +41,10 @@ namespace NoSoliciting {
             this.ShowSettings = true;
         }
 
+        public void OpenReporting() {
+            this.ShowReporting = true;
+        }
+
         public void Draw() {
             if (this.ShowSettings) {
                 this.DrawSettings();
@@ -53,13 +56,6 @@ namespace NoSoliciting {
         }
 
         private void DrawSettings() {
-            if (this._resizeWindow) {
-                this._resizeWindow = false;
-                ImGui.SetNextWindowSize(new Vector2(this.Plugin.Config.AdvancedMode ? 650 : 0, 0));
-            } else {
-                ImGui.SetNextWindowSize(new Vector2(0, 0), ImGuiCond.FirstUseEver);
-            }
-
             if (!ImGui.Begin($"{this.Plugin.Name} settings", ref this._showSettings)) {
                 return;
             }
@@ -260,6 +256,11 @@ namespace NoSoliciting {
                 return;
             }
 
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(255f, 204f, 0f, 1f));
+            ImGui.TextUnformatted("Do not change advanced settings unless you know what you are doing.");
+            ImGui.TextUnformatted("The machine learning model was trained with certain channels in mind.");
+            ImGui.PopStyleColor();
+
             foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
                 if (category == MessageCategory.Normal) {
                     continue;
@@ -276,13 +277,7 @@ namespace NoSoliciting {
                 var types = this.Plugin.Config.MlFilters[category];
 
                 void DrawTypes(ChatType type) {
-                    string name;
-                    if (type == ChatType.None) {
-                        name = "Party Finder";
-                    } else {
-                        var lf = this.Plugin.Interface.Data.GetExcelSheet<LogFilter>().FirstOrDefault(lf => lf.LogKind == type.LogKind());
-                        name = lf?.Name?.ToString() ?? type.ToString();
-                    }
+                    var name = type.Name(this.Plugin.Interface.Data);
 
                     var check = types.Contains(type);
                     if (!ImGui.Checkbox(name, ref check)) {
@@ -451,7 +446,7 @@ namespace NoSoliciting {
                                 .Select(payload => payload.Text)
                                 .FirstOrDefault() ?? "";
 
-                            if (AddColumn(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.ToString(), message.FilterReason ?? "", sender, message.Content.TextValue)) {
+                            if (AddColumn(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? "", sender, message.Content.TextValue)) {
                                 ImGui.OpenPopup($"###modal-message-{message.Id}");
                             }
 
