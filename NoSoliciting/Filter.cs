@@ -112,7 +112,7 @@ namespace NoSoliciting {
             var text = message.TextValue;
 
             // only look at messages >= min words
-            if (text.Split(' ').Length < MinWords) {
+            if (text.Trim().Split(' ').Length < MinWords) {
                 return false;
             }
 
@@ -209,7 +209,7 @@ namespace NoSoliciting {
                 var desc = listing.Description();
 
                 // only look at pfs >= min words
-                if (desc.Split(' ').Length < MinWords) {
+                if (desc.Trim().Split(' ').Length < MinWords) {
                     continue;
                 }
 
