@@ -1,0 +1,15 @@
+﻿author: ascclemens
+name: NoSoliciting
+description: |-
+  Customisable chat and Party Finder filtering. In addition to letting you filter anything from chat and PF, it comes with built-in filters for the following:
+
+  - RMT (both gil and content)
+  - FC ads
+  - RP ads
+  - Phishing messages
+  - Static recruitment
+  - Trade ads
+  - Any PF with an item level over the max
+
+  Now with experimental machine learning!
+repo_url: https://git.sr.ht/~jkcclemens/NoSoliciting
