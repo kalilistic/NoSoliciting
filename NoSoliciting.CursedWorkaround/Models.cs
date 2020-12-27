@@ -22,6 +22,8 @@ namespace NoSoliciting.CursedWorkaround {
             "S> ",
             "buy",
             "sell",
+            "WTB",
+            "WTS",
         };
 
         private static readonly Regex SketchUrlRegex = new Regex(@"\.com-\w+\.\w+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
