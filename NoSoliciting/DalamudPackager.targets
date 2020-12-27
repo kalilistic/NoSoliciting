@@ -1,0 +1,11 @@
+﻿<Project>
+    <Target Name="PackagePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+        <DalamudPackager ProjectDir="$(ProjectDir)"
+                         OutputPath="$(OutputPath)"
+                         AssemblyName="$(AssemblyName)"
+                         VersionComponents="3"
+                         ManifestType="yaml"
+                         MakeZip="true"
+                         Include="NoSoliciting.json;NoSoliciting.dll;NoSoliciting.Interface.dll;NoSoliciting.CursedWorkaround.dll;YamlDotNet.dll"/>
+    </Target>
+</Project>
