@@ -1,7 +1,9 @@
 ﻿author: ascclemens
 name: NoSoliciting
 description: |-
-  Customisable chat and Party Finder filtering. In addition to letting you filter anything from chat and PF, it comes with built-in filters for the following:
+  Customisable chat and Party Finder filtering. In addition to letting
+  you filter anything from chat and PF, it comes with built-in filters
+  for the following:
 
   - RMT (both gil and content)
   - FC ads
