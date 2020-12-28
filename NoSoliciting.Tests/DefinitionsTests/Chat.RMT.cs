@@ -19,6 +19,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Chat {
             new TestMessage(ChatType.Say, "Buy Cheap gils on www,G/a/m/e/r/E/a/s/y.c0m, 8% code,FFXIV2020, 15 mins deliveryvnm15"),
             new TestMessage(ChatType.TellIncoming, "You're Invited To Our Clan's Final Giveaway Of 850M Gil Starting In 45Mins! Visit Our Discord For The Location Of The Giveaway: https://discord.gg/VtqY9tFyUb"),
             new TestMessage(ChatType.TellIncoming, "Quitting FFXIV, You're Invited To The Final Giveaway Of 850M Gil! Please Read The Rules And Location Of The Giveaway On The FFXIV Forum Post: https://www.squarenix.com-iy.ru/ffxiv/threads/6842918"),
+            new TestMessage(ChatType.Say, "5GOLD.COM--Cheapest ffxiv gil online-5 Min delivery-24/7 online service[5% OFF Code;GOLD].hfzcb"),
         });
 
         //public static object[][] DataNegatives => DefUtils.DataFromMessages(new TestMessage[] {

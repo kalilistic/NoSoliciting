@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 51
+version: 52
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -116,6 +116,7 @@ party_finder:
         - cheap
         - gil only
         - minmax # name of a RMT group because they thought to stop saying "sell" lul
+        - regex: 'm\s*i\s*n\s*m\s*a\s*x'
         - regex: 'pre.?order'
         - regex: '\boffer'
       # content
@@ -147,7 +148,7 @@ global:
         - apartment
         - apt
         - regex: 'p.{0,2}\d'
-        - regex: '\d{1,2}.{0,2}\d{1,2}'
+        - regex: '\d{1,2}[^\d]{1,2}\d{1,2}'
       # has a discord or website
       - - discord.gg
         - carrd.co

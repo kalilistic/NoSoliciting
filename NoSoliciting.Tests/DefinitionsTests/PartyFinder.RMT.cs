@@ -20,6 +20,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "Primal/Omega/E4S mounts Gil only at  https://rollraider.carrd.co/ or https://discord.gg/FfS5QnW",
             "「   TEA•UWU•UCOB =   $ 」→ Jealous#5404",
             "☀5.4 Pre-orders☀Savage☀Trials☀Ultimates☀BLU ｢ＤＩＳＣＯＲＤ｣⇒ Meliora#2500",
+            "●  ＭＩＮ Ｍ ＡＸ Ø | ❶ Loot & Mounts (New Savage, Ultimates etc.) ❷ Coaching & Logs | Instant delivery. Discord→ Enma#7777",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
