@@ -50,6 +50,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
             "«ToC» recruiting active members. Join the party, send me a /Tell or stop by the FC house (Goblet P13, W19) for more information.",
             "This new group I joined has some newer ultimate raiders in it, one of them hasn't cleared E8S. But I was surprised. We got through p1 of TEA in about 7-8 hours and now we're working on limit cut",
+            "Bard LF Static E9S-E12S reclears. Available Sun-Thu 8pm PST onwards, Fri-Sat 1pm PST onwards. Discord: Mountainwhale#0001",
         });
 
         [Theory]
