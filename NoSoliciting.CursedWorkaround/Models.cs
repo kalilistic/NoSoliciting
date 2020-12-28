@@ -34,6 +34,8 @@ namespace NoSoliciting.CursedWorkaround {
 
         public string Message { get; }
 
+        public float Weight { get; } = 1;
+
         public bool PartyFinder => this.Channel == 0;
 
         public bool Shout => this.Channel == 11 || this.Channel == 30;
