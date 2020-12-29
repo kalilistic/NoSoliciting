@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using ConsoleTables;
 using CsvHelper;
 using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
+using NoSoliciting.Interface;
 
 namespace NoSoliciting.Trainer {
     internal static class Program {
@@ -57,12 +55,12 @@ namespace NoSoliciting.Trainer {
 
             var ttd = ctx.Data.TrainTestSplit(df, 0.2, seed: 1);
 
-            void Compute(Data data, Data.Computed computed) {
-                data.Compute(computed, weights);
-            }
+            var compute = new Data.ComputeContext(weights);
+
+            ctx.ComponentCatalog.RegisterAssembly(typeof(Data).Assembly);
 
             var pipeline = ctx.Transforms.Conversion.MapValueToKey("Label", nameof(Data.Category))
-                .Append(ctx.Transforms.CustomMapping((Action<Data, Data.Computed>) Compute, "Compute"))
+                .Append(ctx.Transforms.CustomMapping((Action<Data, Data.Computed>) compute.Compute, "Compute"))
                 .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Message), keepPunctuations: false))
                 .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
                 // .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgTokens",
@@ -162,82 +160,6 @@ namespace NoSoliciting.Trainer {
                 }
             }
         }
-    }
-
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    internal class Data {
-        [LoadColumn(0), Index(0)]
-        public string? Category { get; set; }
-
-        [LoadColumn(1), Index(1)]
-        public uint Channel { get; set; }
-
-        [LoadColumn(2), Index(2)]
-        public string Message { get; set; }
-
-        #region computed
-
-        private static readonly Regex WardRegex = new Regex(@"w.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly Regex PlotRegex = new Regex(@"p.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly string[] PlotWords = {
-            "plot",
-            "apartment",
-            "apt",
-        };
-
-        private static readonly Regex NumbersRegex = new Regex(@"\d{1,2}.{0,2}\d{1,2}", RegexOptions.Compiled);
-
-        private static readonly string[] TradeWords = {
-            "B> ",
-            "S> ",
-            "buy",
-            "sell",
-            "WTB",
-            "WTS",
-        };
-
-        private static readonly Regex SketchUrlRegex = new Regex(@"\.com-\w+\.\w+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        internal class Computed {
-            public float Weight { get; set; }
-
-            public bool PartyFinder { get; set; }
-
-            public bool Shout { get; set; }
-
-            public bool ContainsWard { get; set; }
-
-            public bool ContainsPlot { get; set; }
-
-            public bool ContainsHousingNumbers { get; set; }
-
-            public bool ContainsTradeWords { get; set; }
-
-            public bool ContainsSketchUrl { get; set; }
-        }
-
-        internal void Compute(Computed output, Dictionary<string, float> weights) {
-            output.Weight = this.Category == null ? 1 : weights[this.Category];
-            output.PartyFinder = this.Channel == 0;
-            output.Shout = this.Channel == 11 || this.Channel == 30;
-            output.ContainsWard = this.Message.ContainsIgnoreCase("ward") || WardRegex.IsMatch(this.Message);
-            output.ContainsPlot = PlotWords.Any(word => this.Message.ContainsIgnoreCase(word)) || PlotRegex.IsMatch(this.Message);
-            output.ContainsHousingNumbers = NumbersRegex.IsMatch(this.Message);
-            output.ContainsTradeWords = TradeWords.Any(word => this.Message.ContainsIgnoreCase(word));
-            output.ContainsSketchUrl = SketchUrlRegex.IsMatch(this.Message);
-        }
-
-        #endregion
-    }
-
-    internal class Prediction {
-        [ColumnName("PredictedLabel")]
-        public string Category { get; set; }
-
-        [ColumnName("Score")]
-        public float[] Probabilities { get; set; }
     }
 
     internal static class Ext {
