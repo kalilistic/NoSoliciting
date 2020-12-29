@@ -9,7 +9,7 @@ namespace NoSoliciting.CursedWorkaround {
         private MLContext Context { get; set; } = null!;
         private ITransformer Model { get; set; } = null!;
         private DataViewSchema Schema { get; set; } = null!;
-        private PredictionEngine<MessageData, MessagePrediction> PredictionEngine { get; set; } = null!;
+        private PredictionEngine<Data, Prediction> PredictionEngine { get; set; } = null!;
 
         public override object? InitializeLifetimeService() {
             return null;
@@ -17,15 +17,16 @@ namespace NoSoliciting.CursedWorkaround {
 
         public void Initialise(byte[] data) {
             this.Context = new MLContext();
+            this.Context.ComponentCatalog.RegisterAssembly(typeof(Data).Assembly);
             using var stream = new MemoryStream(data);
             var model = this.Context.Model.Load(stream, out var schema);
             this.Model = model;
             this.Schema = schema;
-            this.PredictionEngine = this.Context.Model.CreatePredictionEngine<MessageData, MessagePrediction>(this.Model, this.Schema);
+            this.PredictionEngine = this.Context.Model.CreatePredictionEngine<Data, Prediction>(this.Model, this.Schema);
         }
 
         public string Classify(ushort channel, string message) {
-            return this.PredictionEngine.Predict(new MessageData(channel, message)).Category;
+            return this.PredictionEngine.Predict(new Data(channel, message)).Category;
         }
 
         public void Dispose() {
