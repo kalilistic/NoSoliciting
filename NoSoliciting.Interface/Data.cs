@@ -41,7 +41,7 @@ namespace NoSoliciting.Interface {
                 this.Weights = weights;
             }
 
-            public void Compute(Data data, Computed computed) {
+            private void Compute(Data data, Computed computed) {
                 data.Compute(computed, this.Weights);
             }
 
