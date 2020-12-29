@@ -60,7 +60,7 @@ namespace NoSoliciting.Trainer {
             ctx.ComponentCatalog.RegisterAssembly(typeof(Data).Assembly);
 
             var pipeline = ctx.Transforms.Conversion.MapValueToKey("Label", nameof(Data.Category))
-                .Append(ctx.Transforms.CustomMapping((Action<Data, Data.Computed>) compute.Compute, "Compute"))
+                .Append(ctx.Transforms.CustomMapping(compute.GetMapping(), "Compute"))
                 .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Message), keepPunctuations: false))
                 .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
                 // .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgTokens",
@@ -95,7 +95,7 @@ namespace NoSoliciting.Trainer {
 
             var model = pipeline.Fit(train);
 
-            ctx.Model.Save(model, df.Schema, @"../../../model.zip");
+            ctx.Model.Save(model, train.Schema, @"../../../model.zip");
 
             var testPredictions = model.Transform(ttd.TestSet);
             var eval = ctx.MulticlassClassification.Evaluate(testPredictions);

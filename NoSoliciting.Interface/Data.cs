@@ -95,6 +95,7 @@ namespace NoSoliciting.Interface {
             if (this.Category != null && weights.TryGetValue(this.Category, out var weight)) {
                 output.Weight = weight;
             }
+
             output.PartyFinder = this.Channel == 0;
             output.Shout = this.Channel == 11 || this.Channel == 30;
             output.ContainsWard = this.Message.ContainsIgnoreCase("ward") || WardRegex.IsMatch(this.Message);
