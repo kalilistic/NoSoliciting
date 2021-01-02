@@ -11,7 +11,6 @@ using System.Net;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Lumina.Excel.GeneratedSheets;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
