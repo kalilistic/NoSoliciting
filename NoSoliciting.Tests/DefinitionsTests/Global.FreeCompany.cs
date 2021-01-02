@@ -46,6 +46,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("LF new LGBT friends to chill with in Eorzea! Join up, let's chat, and hang out. I have discord as well :)"),
             new TestMessage("(Bored)Lovely Au Ra woman [Famfrit] available to be RP girlfriend/wife for long term or short term. Send tell if in need."),
             new TestMessage("7/8 mC looking for Tank/Heal 4.4 Discord required//pm Hiro#0000 or here Tues/Fri 8:30-10:30 pm EST Sat 8:30-11:30 pm EST"),
+            new TestMessage("Lonely bun looking for friends and more! Join and chat while I decorate my sad, empty house? :D"),
         });
 
         [Theory]

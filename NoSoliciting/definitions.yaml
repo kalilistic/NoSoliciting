@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 52
+version: 53
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -129,7 +129,6 @@ party_finder:
         - content
         - ucob
         - regex: '\bex\b'
-        - regex: '\bmount\b'
         - regex: e[1-9][0-2]?
 
 global:
@@ -261,8 +260,6 @@ global:
         - friendly
         - buff
         - event
-        - house
-        - mansion
         - level
         - raid
         - hunt
