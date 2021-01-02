@@ -3,7 +3,7 @@
 namespace NoSoliciting.Tests.DefinitionsTests.Chat {
     public class RMT : DefinitionTest {
         public RMT(DefinitionsFixture fixture) {
-            this.Def = fixture.defs.Chat["rmt"];
+            this.Def = fixture.Defs.Chat["rmt"];
         }
 
         public static object[][] DataPositives => DefUtils.DataFromMessages(new[] {

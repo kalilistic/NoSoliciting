@@ -3,7 +3,7 @@
 namespace NoSoliciting.Tests.DefinitionsTests.Global {
     public class Roleplay : DefinitionTest {
         public Roleplay(DefinitionsFixture fixture) {
-            this.Def = fixture.defs.Global["roleplay"];
+            this.Def = fixture.Defs.Global["roleplay"];
         }
 
         public static object[][] DataPositives => DefUtils.DataFromStrings(new[] {
