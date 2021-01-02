@@ -34,7 +34,9 @@ namespace NoSoliciting.Trainer {
             }
 
             using (var fileStream = new FileStream("../../../data.csv", FileMode.Create)) {
-                using var stream = new StreamWriter(fileStream);
+                using var stream = new StreamWriter(fileStream) {
+                    NewLine = "\n",
+                };
                 using var csv = new CsvWriter(stream, new CsvConfiguration(CultureInfo.InvariantCulture));
                 csv.WriteRecords(records);
             }
