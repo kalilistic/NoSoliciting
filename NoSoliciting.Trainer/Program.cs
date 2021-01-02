@@ -95,7 +95,9 @@ namespace NoSoliciting.Trainer {
 
             var model = pipeline.Fit(train);
 
-            ctx.Model.Save(model, train.Schema, @"../../../model.zip");
+            if (full) {
+                ctx.Model.Save(model, train.Schema, @"../../../model.zip");
+            }
 
             var testPredictions = model.Transform(ttd.TestSet);
             var eval = ctx.MulticlassClassification.Evaluate(testPredictions);
