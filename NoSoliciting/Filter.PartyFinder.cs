@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NoSoliciting {
     public partial class Filter {
-        public static class PartyFinder {
+        private static class PartyFinder {
             public static bool MatchesCustomFilters(string msg, PluginConfiguration config) {
                 if (config == null) {
                     throw new ArgumentNullException(nameof(config), "PluginConfiguration cannot be null");
