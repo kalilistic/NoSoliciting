@@ -3,7 +3,7 @@
 namespace NoSoliciting.Tests.DefinitionsTests.Global {
     public class FreeCompany : DefinitionTest {
         public FreeCompany(DefinitionsFixture fixture) {
-            this.Def = fixture.defs.Global["free_company"];
+            this.Def = fixture.Defs.Global["free_company"];
         }
 
         public static object[][] DataPositives => DefUtils.DataFromMessages(new[] {

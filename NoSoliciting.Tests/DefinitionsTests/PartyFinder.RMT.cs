@@ -3,7 +3,7 @@
 namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
     public class RMT : DefinitionTest {
         public RMT(DefinitionsFixture fixture) {
-            this.Def = fixture.defs.PartyFinder["rmt"];
+            this.Def = fixture.Defs.PartyFinder["rmt"];
         }
 
         public static object[][] DataPositives => DefUtils.DataFromStrings(new[] {
