@@ -18,13 +18,27 @@ namespace NoSoliciting.Trainer {
 
             var ctx = new MLContext(1);
 
-            using var fileStream = new FileStream("../../../data.csv", FileMode.Open);
-            using var stream = new StreamReader(fileStream);
-            using var csv = new CsvReader(stream, new CsvConfiguration(CultureInfo.InvariantCulture) {
-                HeaderValidated = null,
-            });
+            List<Data> records;
 
-            var records = csv.GetRecords<Data>().ToList();
+            using (var fileStream = new FileStream("../../../data.csv", FileMode.Open)) {
+                using var stream = new StreamReader(fileStream);
+                using var csv = new CsvReader(stream, new CsvConfiguration(CultureInfo.InvariantCulture) {
+                    HeaderValidated = null,
+                });
+                records = csv
+                    .GetRecords<Data>()
+                    .OrderBy(rec => rec.Category)
+                    .ThenBy(rec => rec.Channel)
+                    .ThenBy(rec => rec.Message)
+                    .ToList();
+            }
+
+            using (var fileStream = new FileStream("../../../data.csv", FileMode.Create)) {
+                using var stream = new StreamWriter(fileStream);
+                using var csv = new CsvWriter(stream, new CsvConfiguration(CultureInfo.InvariantCulture));
+                csv.WriteRecords(records);
+            }
+
             var classes = new Dictionary<string, uint>();
 
             foreach (var record in records) {
