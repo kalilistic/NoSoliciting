@@ -111,25 +111,23 @@ namespace NoSoliciting {
 
             var text = message.TextValue;
 
-            // only look at messages >= min words
-            if (text.Trim().Split(' ').Length < MinWords) {
-                return false;
-            }
-
             string? reason = null;
 
-            // step 1. classify the message using the model
-            var category = this.Plugin.MlFilter.ClassifyMessage((ushort) chatType, text);
-
-            // step 1a. only filter if configured to act on this channel
-            var filter = category != MessageCategory.Normal
-                         && this.Plugin.Config.MlEnabledOn(category, chatType)
-                         && SetReason(out reason, category.Name());
-
-            // step 2. check for custom filters if enabled
-            filter = filter || this.Plugin.Config.CustomChatFilter
+            // step 1. check for custom filters if enabled
+            var filter = this.Plugin.Config.CustomChatFilter
                 && Chat.MatchesCustomFilters(text, this.Plugin.Config)
                 && SetReason(out reason, "custom");
+
+            // only look at ml if message >= min words
+            if (!filter && text.Trim().Split(' ').Length >= MinWords) {
+                // step 2. classify the message using the model
+                var category = this.Plugin.MlFilter.ClassifyMessage((ushort) chatType, text);
+
+                // step 2a. only filter if configured to act on this channel
+                filter = category != MessageCategory.Normal
+                             && this.Plugin.Config.MlEnabledOn(category, chatType)
+                             && SetReason(out reason, category.Name());
+            }
 
             this.Plugin.AddMessageHistory(new Message(
                 this.Plugin.MlFilter.Version,
@@ -208,11 +206,6 @@ namespace NoSoliciting {
 
                 var desc = listing.Description();
 
-                // only look at pfs >= min words
-                if (desc.Trim().Split(' ').Length < MinWords) {
-                    continue;
-                }
-
                 string? reason = null;
 
                 // step 1. check if pf has an item level that's too high
@@ -225,7 +218,8 @@ namespace NoSoliciting {
                     && PartyFinder.MatchesCustomFilters(desc, this.Plugin.Config)
                     && SetReason(out reason, "custom");
 
-                if (!filter) {
+                // only look at ml for pfs >= min words
+                if (!filter && desc.Trim().Split(' ').Length >= MinWords) {
                     // step 3. check the model's prediction
                     var category = this.Plugin.MlFilter.ClassifyMessage((ushort) ChatType.None, desc);
 
