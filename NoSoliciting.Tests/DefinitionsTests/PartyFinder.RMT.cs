@@ -24,6 +24,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "【SALES】EDENS PROMISE※ULTIMATES※BLU 【PRICE MATCH】【DISCORD】⇔ akise#8096",
             "  ＭＩＮ Ｍ ＡＸ Ø →  +  +  +  → Instant Delivery & Most Trusted. Discord → Enma#7777 ",
             " WorthyLegendsØ 【2021 Discount for everyone】  ❶ 『EDEN 9S-12S！ALL LOOT』  一  Delivery Now. Discord → Dawn#4022",
+            "[LALAKUZA] Eden's Promise Savage i530/535 loot, BLU Morbol, UWU,UCOB,TEA Ultimates, Trials. Discord: Lalakuza#1157",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
