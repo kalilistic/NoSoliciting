@@ -116,7 +116,8 @@ party_finder:
         - cheap
         - gil only
         - minmax # name of a RMT group because they thought to stop saying "sell" lul
-        - delivery
+        - deliver
+        - regex: '\bi\d{3}.+loot\b'
         - regex: 'm\s*i\s*n\s*m\s*a\s*x'
         - regex: 'pre.?order'
         - regex: '\boffer'
