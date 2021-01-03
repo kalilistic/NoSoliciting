@@ -23,6 +23,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "●  ＭＩＮ Ｍ ＡＸ Ø | ❶ Loot & Mounts (New Savage, Ultimates etc.) ❷ Coaching & Logs | Instant delivery. Discord→ Enma#7777",
             "【SALES】EDENS PROMISE※ULTIMATES※BLU 【PRICE MATCH】【DISCORD】⇔ akise#8096",
             "  ＭＩＮ Ｍ ＡＸ Ø →  +  +  +  → Instant Delivery & Most Trusted. Discord → Enma#7777 ",
+            " WorthyLegendsØ 【2021 Discount for everyone】  ❶ 『EDEN 9S-12S！ALL LOOT』  一  Delivery Now. Discord → Dawn#4022",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
