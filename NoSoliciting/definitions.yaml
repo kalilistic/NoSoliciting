@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 54
+version: 55
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -116,6 +116,7 @@ party_finder:
         - cheap
         - gil only
         - minmax # name of a RMT group because they thought to stop saying "sell" lul
+        - lalakuza # another group because I'm lazy
         - deliver
         - regex: '\bi\d{3}.+loot\b'
         - regex: 'm\s*i\s*n\s*m\s*a\s*x'
