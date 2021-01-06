@@ -431,7 +431,7 @@ namespace NoSoliciting {
                     if (ImGui.BeginChild("##chat-messages", new Vector2(-1, -1))) {
                         ImGui.Columns(5);
 
-                        AddColumn(maxSizes, "Timestamp", "Channel", "Reason", "Sender", "Message");
+                        AddRow(maxSizes, "Timestamp", "Channel", "Reason", "Sender", "Message");
                         ImGui.Separator();
 
                         foreach (var message in this.Plugin.MessageHistory) {
@@ -445,7 +445,7 @@ namespace NoSoliciting {
                                 .Select(payload => payload.Text)
                                 .FirstOrDefault() ?? "";
 
-                            if (AddColumn(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? "", sender, message.Content.TextValue)) {
+                            if (AddRow(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? "", sender, message.Content.TextValue)) {
                                 ImGui.OpenPopup($"###modal-message-{message.Id}");
                             }
 
@@ -474,7 +474,7 @@ namespace NoSoliciting {
                     if (ImGui.BeginChild("##pf-messages", new Vector2(-1, -1))) {
                         ImGui.Columns(4);
 
-                        AddColumn(maxSizes, "Timestamp", "Reason", "Host", "Description");
+                        AddRow(maxSizes, "Timestamp", "Reason", "Host", "Description");
                         ImGui.Separator();
 
                         foreach (var message in this.Plugin.PartyFinderHistory) {
@@ -488,7 +488,7 @@ namespace NoSoliciting {
                                 .Select(payload => payload.Text)
                                 .FirstOrDefault() ?? "";
 
-                            if (AddColumn(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.FilterReason ?? "", sender, message.Content.TextValue)) {
+                            if (AddRow(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.FilterReason ?? "", sender, message.Content.TextValue)) {
                                 ImGui.OpenPopup($"###modal-message-{message.Id}");
                             }
 
@@ -560,6 +560,12 @@ namespace NoSoliciting {
                 ImGui.SameLine();
             }
 
+            if (ImGui.Button("Copy to clipboard")) {
+                ImGui.SetClipboardText(message.Content.TextValue);
+            }
+
+            ImGui.SameLine();
+
             if (ImGui.Button("Cancel")) {
                 ImGui.CloseCurrentPopup();
             }
@@ -576,7 +582,7 @@ namespace NoSoliciting {
             InProgress = 2,
         }
 
-        private static bool AddColumn(IList<float> maxSizes, params string[] args) {
+        private static bool AddRow(IList<float> maxSizes, params string[] args) {
             var clicked = false;
 
             for (var i = 0; i < args.Length; i++) {
