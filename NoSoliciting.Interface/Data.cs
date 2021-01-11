@@ -50,14 +50,16 @@ namespace NoSoliciting.Interface {
             }
         }
 
-        private static readonly Regex WardRegex = new Regex(@"w.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex[] PlotWords = {
+            new Regex(@"\bplot\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new Regex(@"\bapartment\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new Regex(@"\bapt\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new Regex(@"p.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+        };
 
-        private static readonly Regex PlotRegex = new Regex(@"p.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly string[] PlotWords = {
-            "plot",
-            "apartment",
-            "apt",
+        private static readonly Regex[] WardWords = {
+            new Regex(@"\bward\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new Regex(@"w.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
         private static readonly Regex NumbersRegex = new Regex(@"\d{1,2}.{0,2}\d{1,2}", RegexOptions.Compiled);
@@ -98,8 +100,8 @@ namespace NoSoliciting.Interface {
 
             output.PartyFinder = this.Channel == 0;
             output.Shout = this.Channel == 11 || this.Channel == 30;
-            output.ContainsWard = this.Message.ContainsIgnoreCase("ward") || WardRegex.IsMatch(this.Message);
-            output.ContainsPlot = PlotWords.Any(word => this.Message.ContainsIgnoreCase(word)) || PlotRegex.IsMatch(this.Message);
+            output.ContainsWard = WardWords.Any(word => word.IsMatch(this.Message));
+            output.ContainsPlot = PlotWords.Any(word => word.IsMatch(this.Message));
             output.ContainsHousingNumbers = NumbersRegex.IsMatch(this.Message);
             output.ContainsTradeWords = TradeWords.Any(word => this.Message.ContainsIgnoreCase(word));
             output.ContainsSketchUrl = SketchUrlRegex.IsMatch(this.Message);
