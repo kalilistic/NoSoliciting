@@ -3,8 +3,7 @@
   <PropertyGroup>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.5.4</AssemblyVersion>
-    <FileVersion>1.5.4</FileVersion>
+    <Version>1.5.4</Version>
     <TargetFramework>net48</TargetFramework>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <PlatformTarget>x64</PlatformTarget>
