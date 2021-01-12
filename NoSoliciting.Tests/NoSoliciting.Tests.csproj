@@ -12,7 +12,7 @@
         <ProjectReference Include="..\NoSoliciting\NoSoliciting.csproj"/>
     </ItemGroup>
     <ItemGroup>
-        <Reference Include="Dalamud, Version=5.2.1.1, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="Dalamud, Version=5.2.2.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>$(AppData)\XIVLauncher\addon\Hooks\Dalamud.dll</HintPath>
         </Reference>
     </ItemGroup>
