@@ -35,8 +35,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="1.0.1" />
-    <PackageReference Include="YamlDotNet" Version="9.1.0" />
+    <PackageReference Include="DalamudPackager" Version="1.2.0" />
+    <PackageReference Include="YamlDotNet" Version="9.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
