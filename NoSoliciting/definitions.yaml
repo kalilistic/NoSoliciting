@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 57
+version: 58
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -247,7 +247,6 @@ global:
       # contains a call to action
       - - join
         - apply
-        - /t
         - dm
         - pm
         - whisper

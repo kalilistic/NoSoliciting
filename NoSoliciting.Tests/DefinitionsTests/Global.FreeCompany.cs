@@ -48,6 +48,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("7/8 mC looking for Tank/Heal 4.4 Discord required//pm Hiro#0000 or here Tues/Fri 8:30-10:30 pm EST Sat 8:30-11:30 pm EST"),
             new TestMessage("Lonely bun looking for friends and more! Join and chat while I decorate my sad, empty house? :D"),
             new TestMessage("let's go, lesbians! join the primal sapphics community to meet other wlw <3 https://discord.gg/T8yKAPGEHC"),
+            new TestMessage("p2 advanced relativity/triple apoc. Hopefully a kill. p1 logs required. 0-1-2 chest helpers very welcome."),
         });
 
         [Theory]

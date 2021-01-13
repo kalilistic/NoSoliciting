@@ -26,6 +26,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             " WorthyLegendsØ 【2021 Discount for everyone】  ❶ 『EDEN 9S-12S！ALL LOOT』  一  Delivery Now. Discord → Dawn#4022",
             "[LALAKUZA] Eden's Promise Savage i530/535 loot, BLU Morbol, UWU,UCOB,TEA Ultimates, Trials. Discord: Lalakuza#1157",
             "[LALAKUZA] Eden's Promise Savage, BLU Morbol mount, UWU,UCOB,TEA Ultimate, Raids, Trials. Discord: Lalakuza#1157",
+            "「」™Eden's Promise, E9-E12s, Primals, Ultimates, All",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
