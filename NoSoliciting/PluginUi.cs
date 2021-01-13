@@ -537,6 +537,12 @@ namespace NoSoliciting {
 
             ImGui.Separator();
 
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
+            ImGui.TextUnformatted("NoSoliciting only works for English messages. Do not report non-English messages.");
+            ImGui.PopStyleColor();
+
+            ImGui.Separator();
+
             if (message.FilterReason == "custom") {
                 ImGui.TextColored(new Vector4(1f, 0f, 0f, 1f), "You cannot report messages filtered because of a custom filter.");
             } else {
