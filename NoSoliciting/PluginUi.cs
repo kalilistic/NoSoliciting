@@ -93,6 +93,22 @@ namespace NoSoliciting {
 
             this.DrawOtherFilters();
 
+            if (ImGui.BeginTabItem("Other")) {
+                var logFilteredPfs = this.Plugin.Config.LogFilteredPfs;
+                if (ImGui.Checkbox("Log filtered PFs", ref logFilteredPfs)) {
+                    this.Plugin.Config.LogFilteredPfs = logFilteredPfs;
+                    this.Plugin.Config.Save();
+                }
+
+                var logFilteredMessages = this.Plugin.Config.LogFilteredChat;
+                if (ImGui.Checkbox("Log filtered messages", ref logFilteredMessages)) {
+                    this.Plugin.Config.LogFilteredChat = logFilteredMessages;
+                    this.Plugin.Config.Save();
+                }
+
+                ImGui.EndTabItem();
+            }
+
             ImGui.EndTabBar();
 
             ImGui.Separator();
