@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 58
+version: 59
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -119,6 +119,7 @@ party_finder:
         - lalakuza # another group because I'm lazy
         - legacy # group that also thought they were clever
         - deliver
+        - '#1'
         - regex: '\bi\d{3}.+loot\b'
         - regex: 'm\s*i\s*n\s*m\s*a\s*x'
         - regex: 'pre.?order'
