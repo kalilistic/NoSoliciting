@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 60
+version: 61
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -147,7 +147,7 @@ global:
     likelihood_threshold: 3
     likely_matchers:
       # mentions housing wards
-      - - ward
+      - - regex: '\bward'
         - regex: 'w.{0,2}\d'
       # mentions housing plots
       - - plot

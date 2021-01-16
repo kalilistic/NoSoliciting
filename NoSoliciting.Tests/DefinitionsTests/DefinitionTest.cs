@@ -24,6 +24,8 @@ namespace NoSoliciting.Tests.DefinitionsTests {
             new TestMessage(ChatType.Yell, "Wedding starting at 3:00pm est, pst for an invite. You will get pets. pst"),
             new TestMessage(ChatType.Shout, "LOCAL ShB Train! Spend your nuts & seals. Let’s go kill things and be savages. This hunt is brought to you by ★VIII - The Double Infinity Free Company! ♥∞"),
             new TestMessage(ChatType.Shout, "☆☆Shadowbringers Hunt Train • A Rank☆☆ Starting at  《Instance》  → Lakeland ( 27.6  , 15.3 )"),
+
+            new TestMessage(ChatType.LootNotice, "A bonus of 11,850 gil has been awarded for being an adventurer in need."),
         });
 
         [Theory]
