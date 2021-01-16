@@ -28,6 +28,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "[LALAKUZA] Eden's Promise Savage, BLU Morbol mount, UWU,UCOB,TEA Ultimate, Raids, Trials. Discord: Lalakuza#1157",
             "「」™Eden's Promise, E9-E12s, Primals, Ultimates, All",
             "「  」™  Eden's Promise E9-12S, Ultimates, Primals, BLU Morbol!  World # TEAMS  Discord: ari#4896",
+            "「  」Service Eden Savage E9-12S ― • Ucob/UwU/TEA ― • Primals ― • BLU # TEAMS | Discord: ari#4896",
+            "「」 all Ultimates,  all Savage raids,Blue, Primals and more!  AFK |  Info Discord: LunaC#3950. Fast and reliable.",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
