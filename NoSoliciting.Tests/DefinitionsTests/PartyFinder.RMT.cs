@@ -30,6 +30,8 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "「  」™  Eden's Promise E9-12S, Ultimates, Primals, BLU Morbol!  World # TEAMS  Discord: ari#4896",
             "「  」Service Eden Savage E9-12S ― • Ucob/UwU/TEA ― • Primals ― • BLU # TEAMS | Discord: ari#4896",
             "「」 all Ultimates,  all Savage raids,Blue, Primals and more!  AFK |  Info Discord: LunaC#3950. Fast and reliable.",
+            "「 Shot」≪Savage --Ultimates--Mounts: GER/ENG.≫ Satisfaction guaranteed: Discord → stella#2179",
+            "「1stClass」™Eden's Promise, E9-E12s, Primals, Ultimates, All old content, Best Teams, Best Help!Discord: Cid#7000",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
@@ -41,6 +43,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "#1 NA WHOLESALER! NEO SET-660K! i490 SET-1.5M(w/DISCOUNT OPTIONS)! BUYING PHANTAS ANY AMOUNT 3K! JOIN PARTY!!!",
             "1/2 chest Lootmaster for sam weap. If weap drops then coffer is rolled on. KB uptime. Ilya. If you just want a page or to help.",
             "Selling ufiti mount for 1.1 mil\nits cheaper then the MB ",
+            "Static LF AST/SCH raid days: TUE/THRS 19:00st SAT 14:00st currently progging E11S join for more info. If AFK: Floof#1342",
         });
 
         [Theory]

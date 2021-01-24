@@ -45,6 +45,9 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "\"A Grave Affair\", party on Cactuar, Goblet, W6P6! Costume contest w/ prizes, raffle, and more! https://discord.gg/6X24tx6v",
             "Come pull up to the Bread Bank and buy some bread\nIn the Adamantoise Goblet, Ward 20, plot 40",
             "Come to The House Of Seoul and enjoy Jazz with eastern influence. Relax, eat, or drink. Vibe is a must. Faerie Shiro 24 24",
+            "(18+) The Silver Moogle is open 1030pm to 2am ET. Come dance the night away with us or pick a shadow to mingle with!",
+            "Beep Beep The Velvet Room Crew Party Bus JUST Landed at | Bottoms Up Nightlife W24p16 shiro ADAM | Come chill with us <3",
+            "★★ Bring all your bodacious bods for 80's night tonight! Mal - Mist - W21 P15! Leave the chill pill at home!",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
