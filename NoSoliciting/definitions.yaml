@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 61
+version: 62
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -120,8 +120,11 @@ party_finder:
         - lalakuza
         - legacy
         - sk7
+        # more keywords
         - deliver
-        - '#1'
+        - best team
+        - satisfaction
+        - regex: '\s#1'
         - regex: '\bi\d{3}.+loot\b'
         - regex: 'm\s*i\s*n\s*m\s*a\s*x'
         - regex: 'pre.?order'
@@ -194,6 +197,8 @@ global:
         - bazaar
         - nook
         - jazz
+        - nightlife
+        - regex: '\bnight\b'
         - regex: '\bden\b'
       # mentions services/activities
       - - entertainment
