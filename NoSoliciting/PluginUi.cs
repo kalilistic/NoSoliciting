@@ -182,37 +182,18 @@ namespace NoSoliciting {
         }
 
         private void DrawDefsAdvancedSettings() {
-            if (this.Plugin.Definitions != null) {
-                if (ImGui.BeginTabItem("Chat")) {
-                    this.DrawCheckboxes(this.Plugin.Definitions.Chat.Values, false, "chat");
-
-                    ImGui.EndTabItem();
-                }
-
-                if (ImGui.BeginTabItem("Party Finder")) {
-                    this.DrawCheckboxes(this.Plugin.Definitions.PartyFinder.Values, false, "Party Finder");
-
-                    ImGui.EndTabItem();
-                }
+            if (this.Plugin.Definitions == null) {
+                return;
             }
 
-            if (ImGui.BeginTabItem("Definitions")) {
-                if (this.Plugin.Definitions != null) {
-                    ImGui.Text($"Version: {this.Plugin.Definitions.Version}");
-                }
+            if (ImGui.BeginTabItem("Chat")) {
+                this.DrawCheckboxes(this.Plugin.Definitions.Chat.Values, false, "chat");
 
-                if (Definitions.LastUpdate != null) {
-                    ImGui.Text($"Last update: {Definitions.LastUpdate}");
-                }
+                ImGui.EndTabItem();
+            }
 
-                var error = Definitions.LastError;
-                if (error != null) {
-                    ImGui.Text($"Last error: {error}");
-                }
-
-                if (ImGui.Button("Update definitions")) {
-                    this.Plugin.UpdateDefinitions();
-                }
+            if (ImGui.BeginTabItem("Party Finder")) {
+                this.DrawCheckboxes(this.Plugin.Definitions.PartyFinder.Values, false, "Party Finder");
 
                 ImGui.EndTabItem();
             }
@@ -324,6 +305,33 @@ namespace NoSoliciting {
             } else {
                 this.DrawDefsBasicSettings();
             }
+
+            this.DrawDefinitionsTab();
+        }
+
+        private void DrawDefinitionsTab() {
+            if (!ImGui.BeginTabItem("Definitions")) {
+                return;
+            }
+
+            if (this.Plugin.Definitions != null) {
+                ImGui.Text($"Version: {this.Plugin.Definitions.Version}");
+            }
+
+            if (Definitions.LastUpdate != null) {
+                ImGui.Text($"Last update: {Definitions.LastUpdate}");
+            }
+
+            var error = Definitions.LastError;
+            if (error != null) {
+                ImGui.Text($"Last error: {error}");
+            }
+
+            if (ImGui.Button("Update definitions")) {
+                this.Plugin.UpdateDefinitions();
+            }
+
+            ImGui.EndTabItem();
         }
 
         private void DrawCustom(string name, ref List<string> substrings, ref List<string> regexes) {
