@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 63
+version: 64
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -125,6 +125,8 @@ party_finder:
         - deliver
         - best team
         - satisfaction
+        - coaching
+        - reliable
         - regex: '\s#1'
         - regex: '\bi\d{3}.+loot\b'
         - regex: 'm\s*i\s*n\s*m\s*a\s*x'
@@ -232,6 +234,7 @@ global:
         - masquerade
         - costume
         - bread
+        - performance
         - regex: '\ball.inclusive'
         - regex: 'serve\b'
       # specific RP names
@@ -281,7 +284,6 @@ global:
       - - family
         - veteran
         - seasoned
-        - casual
         - help
         - player
         - new player
