@@ -17,23 +17,26 @@ namespace NoSoliciting {
         public ChatType ChatType { get; }
         public SeString Sender { get; }
         public SeString Content { get; }
+        public bool Ml { get; }
         public string? FilterReason { get; }
 
-        public Message(uint defsVersion, ChatType type, SeString sender, SeString content, string? reason) {
+        public Message(uint defsVersion, ChatType type, SeString sender, SeString content, bool ml, string? reason) {
             this.Id = Guid.NewGuid();
             this.DefinitionsVersion = defsVersion;
             this.Timestamp = DateTime.Now;
             this.ChatType = type;
             this.Sender = sender;
             this.Content = content;
+            this.Ml = ml;
             this.FilterReason = reason;
         }
 
-        public Message(uint defsVersion, ChatType type, string sender, string content, string? reason) : this(
+        public Message(uint defsVersion, ChatType type, string sender, string content, bool ml, string? reason) : this(
             defsVersion,
             type,
             new SeString(new Payload[] {new TextPayload(sender)}),
             new SeString(new Payload[] {new TextPayload(content)}),
+            ml,
             reason
         ) {
         }

@@ -134,6 +134,7 @@ namespace NoSoliciting {
                 ChatTypeExt.FromDalamud(type),
                 sender,
                 message,
+                true,
                 reason
             ));
 
@@ -171,6 +172,7 @@ namespace NoSoliciting {
                 ChatTypeExt.FromDalamud(type),
                 sender,
                 message,
+                false,
                 reason
             ));
 
@@ -234,6 +236,7 @@ namespace NoSoliciting {
                     ChatType.None,
                     listing.Name(),
                     listing.Description(),
+                    true,
                     reason
                 ));
 
@@ -313,6 +316,7 @@ namespace NoSoliciting {
                     ChatType.None,
                     listing.Name(),
                     listing.Description(),
+                    false,
                     reason
                 ));
 
