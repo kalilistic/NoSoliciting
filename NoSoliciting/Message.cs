@@ -54,6 +54,7 @@ namespace NoSoliciting {
             //       and I don't want to write a custom converter to overwrite their stupiditiy
             public List<byte> Sender { get; set; }
             public List<byte> Content { get; set; }
+            public bool Ml { get; set; }
             public string? Reason { get; set; }
         }
 
@@ -65,6 +66,7 @@ namespace NoSoliciting {
                 Type = (ushort) this.ChatType,
                 Sender = this.Sender.Encode().ToList(),
                 Content = this.Content.Encode().ToList(),
+                Ml = this.Ml,
                 Reason = this.FilterReason,
             };
 
