@@ -32,6 +32,10 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "「」 all Ultimates,  all Savage raids,Blue, Primals and more!  AFK |  Info Discord: LunaC#3950. Fast and reliable.",
             "「 Shot」≪Savage --Ultimates--Mounts: GER/ENG.≫ Satisfaction guaranteed: Discord → stella#2179",
             "「1stClass」™Eden's Promise, E9-E12s, Primals, Ultimates, All old content, Best Teams, Best Help!Discord: Cid#7000",
+            "[Helping] E9S-E12S! ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts ❹ Blu ≫ Discord → ashlar#6021",
+            "「 FlashØ」 ≪ ❶ Savages 一 ❷ Ultimates 一 ❸ Mounts 一 ❹ BLU 一 ❺ POTD/HOH 一 ❻ Coaching≫  Discord → azrael#1010",
+            "<Savage ※ Ultimates ※ BLU ※ Primals ※ Coaching> 一 Present#0148 ★★★★★",
+            "「 SHØ T 」 ≪ Eden Savage E9-12s • Ucob/UwU/TEA • Primals •  Mounts ≫ Fast & Reliable | Discord→ yu#7494",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {

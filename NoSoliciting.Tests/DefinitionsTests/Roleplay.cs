@@ -48,6 +48,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             "(18+) The Silver Moogle is open 1030pm to 2am ET. Come dance the night away with us or pick a shadow to mingle with!",
             "Beep Beep The Velvet Room Crew Party Bus JUST Landed at | Bottoms Up Nightlife W24p16 shiro ADAM | Come chill with us <3",
             "★★ Bring all your bodacious bods for 80's night tonight! Mal - Mist - W21 P15! Leave the chill pill at home!",
+            "｢  ｣ Lookin for a chill rp spot, with Open Stage Performance and some possible Criminal Undertones? TALLEY MARKS OPEN N",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
