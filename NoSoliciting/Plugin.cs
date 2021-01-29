@@ -69,13 +69,7 @@ namespace NoSoliciting {
             }
 
             // pre-compute the max ilvl to prevent stutter
-            Task.Run(async () => {
-                while (!this.Interface.Data.IsDataReady) {
-                    await Task.Delay(1_000).ConfigureAwait(true);
-                }
-
-                FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
-            });
+            FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
 
             this.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.Filter.OnChat;
             this.Interface.UiBuilder.OnBuildUi += this.Ui.Draw;
@@ -90,7 +84,7 @@ namespace NoSoliciting {
                 return;
             }
 
-            Task.Run(async () => { this.MlFilter = await MlFilter.Load(this); })
+            Task.Run(async () => this.MlFilter = await MlFilter.Load(this))
                 .ContinueWith(e => {
                     if (!e.IsFaulted) {
                         PluginLog.Log("Machine learning model loaded");
