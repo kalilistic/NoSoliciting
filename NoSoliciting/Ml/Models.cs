@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Microsoft.ML.Data;
 
 namespace NoSoliciting.Ml {
     public enum MessageCategory {

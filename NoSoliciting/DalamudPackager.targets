@@ -5,6 +5,6 @@
                          AssemblyName="$(AssemblyName)"
                          VersionComponents="3"
                          MakeZip="true"
-                         Include="NoSoliciting.json;NoSoliciting.dll;NoSoliciting.Interface.dll;NoSoliciting.CursedWorkaround.dll;YamlDotNet.dll"/>
+                         Include="NoSoliciting.json;NoSoliciting.dll;NoSoliciting.pdb"/>
     </Target>
 </Project>
