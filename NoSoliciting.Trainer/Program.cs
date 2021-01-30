@@ -9,7 +9,7 @@ using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
-using NoSoliciting.Interface;
+using NoSoliciting.Internal.Interface;
 
 namespace NoSoliciting.Trainer {
     internal static class Program {
@@ -36,7 +36,7 @@ namespace NoSoliciting.Trainer {
             using (var fileStream = new FileStream("../../../data.csv", FileMode.Create)) {
                 using var stream = new StreamWriter(fileStream);
                 using var csv = new CsvWriter(stream, new CsvConfiguration(CultureInfo.InvariantCulture) {
-                    NewLine = NewLine.LF,
+                    NewLine = "\n",
                 });
                 csv.WriteRecords(records);
             }
@@ -177,12 +177,6 @@ namespace NoSoliciting.Trainer {
                     Console.WriteLine($"    {names[i]}: {pred.Probabilities[i] * 100}");
                 }
             }
-        }
-    }
-
-    internal static class Ext {
-        public static bool ContainsIgnoreCase(this string haystack, string needle) {
-            return CultureInfo.InvariantCulture.CompareInfo.IndexOf(haystack, needle, CompareOptions.IgnoreCase) >= 0;
         }
     }
 }

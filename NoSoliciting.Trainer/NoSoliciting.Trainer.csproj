@@ -3,17 +3,18 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="ConsoleTables" Version="2.4.2" />
-      <PackageReference Include="CsvHelper" Version="19.0.0" />
+      <PackageReference Include="CsvHelper" Version="21.3.1" />
       <PackageReference Include="Microsoft.ML" Version="1.5.4" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj" />
+      <ProjectReference Include="..\NoSoliciting.Internal.Interface\NoSoliciting.Internal.Interface.csproj" />
     </ItemGroup>
 
 </Project>

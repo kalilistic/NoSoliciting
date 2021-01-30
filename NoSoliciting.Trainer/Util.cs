@@ -4,7 +4,7 @@ using System.Text;
 
 namespace NoSoliciting.Trainer {
     public static class Util {
-        private static readonly Dictionary<char, string> Replacements = new Dictionary<char, string> {
+        private static readonly Dictionary<char, string> Replacements = new() {
             // numerals
             ['\ue055'] = "1",
             ['\ue056'] = "2",

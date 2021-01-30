@@ -7,8 +7,11 @@ using System.Text.RegularExpressions;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 
-namespace NoSoliciting.Interface {
+namespace NoSoliciting.Internal.Interface {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public class Data {
         [LoadColumn(0)]
         public string? Category { get; set; }
@@ -30,6 +33,7 @@ namespace NoSoliciting.Interface {
         #region computed
 
         [CustomMappingFactoryAttribute("Compute")]
+        [SuppressMessage("ReSharper", "UnusedType.Global")]
         public class ComputeContext : CustomMappingFactory<Data, Computed> {
             private Dictionary<string, float> Weights { get; }
 
@@ -51,18 +55,18 @@ namespace NoSoliciting.Interface {
         }
 
         private static readonly Regex[] PlotWords = {
-            new Regex(@"\bplot\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
-            new Regex(@"\bapartment\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
-            new Regex(@"\bapt\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
-            new Regex(@"p.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new(@"\bplot\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new(@"\bapartment\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new(@"\bapt\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new(@"p.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
         private static readonly Regex[] WardWords = {
-            new Regex(@"\bward\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
-            new Regex(@"w.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new(@"\bward\b", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+            new(@"w.{0,2}\d", RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
-        private static readonly Regex NumbersRegex = new Regex(@"\d{1,2}.{0,2}\d{1,2}", RegexOptions.Compiled);
+        private static readonly Regex NumbersRegex = new(@"\d{1,2}.{0,2}\d{1,2}", RegexOptions.Compiled);
 
         private static readonly string[] TradeWords = {
             "B> ",
@@ -73,8 +77,9 @@ namespace NoSoliciting.Interface {
             "WTS",
         };
 
-        private static readonly Regex SketchUrlRegex = new Regex(@"\.com-\w+\.\w+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex SketchUrlRegex = new(@"\.com-\w+\.\w+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public class Computed {
             public float Weight { get; set; } = 1;
 
@@ -110,12 +115,14 @@ namespace NoSoliciting.Interface {
         #endregion
     }
 
+    [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class Prediction {
         [ColumnName("PredictedLabel")]
-        public string Category { get; set; }
+        public string Category { get; set; } = "UNKNOWN";
 
         [ColumnName("Score")]
-        public float[] Probabilities { get; set; }
+        public float[] Probabilities { get; set; } = new float[0];
     }
 
     internal static class Ext {

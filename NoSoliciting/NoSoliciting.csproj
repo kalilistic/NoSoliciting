@@ -36,7 +36,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DalamudPackager" Version="1.2.0" />
-    <PackageReference Include="YamlDotNet" Version="9.1.1" />
+    <PackageReference Include="Fody" Version="6.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+    <PackageReference Include="JKang.IpcServiceFramework.Client.NamedPipe" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all" />
+    <PackageReference Include="YamlDotNet" Version="9.1.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -50,8 +58,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\NoSoliciting.MessageClassifier\bin\Release\net48\NoSoliciting.MessageClassifier.exe" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NoSoliciting.CursedWorkaround\NoSoliciting.CursedWorkaround.csproj" />
+    <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj" />
   </ItemGroup>
 </Project>

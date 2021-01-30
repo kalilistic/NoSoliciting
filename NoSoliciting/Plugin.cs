@@ -41,15 +41,6 @@ namespace NoSoliciting {
         public IClassifier Classifier { get; private set; } = null!;
 
         public void Initialize(DalamudPluginInterface pluginInterface) {
-            // FIXME: eventually this cursed workaround for old System.Numerics.Vectors should be destroyed
-            this.InnerDomain = AppDomain.CreateDomain(LibraryName, AppDomain.CurrentDomain.Evidence, new AppDomainSetup {
-                ApplicationName = LibraryName,
-                ConfigurationFile = $"{LibraryName}.dll.config",
-                ApplicationBase = Path.GetDirectoryName(this.AssemblyLocation),
-            });
-            this.InnerDomain.InitializeLifetimeService();
-            this.Classifier = (IClassifier) this.InnerDomain.CreateInstanceAndUnwrap(LibraryName, $"{LibraryName}.CursedWorkaround");
-
             string path = Environment.GetEnvironmentVariable("PATH")!;
             string newPath = Path.GetDirectoryName(this.AssemblyLocation)!;
             Environment.SetEnvironmentVariable("PATH", $"{path};{newPath}");
@@ -141,9 +132,6 @@ namespace NoSoliciting {
                 this.Interface.UiBuilder.OnBuildUi -= this.Ui.Draw;
                 this.Interface.UiBuilder.OnOpenConfigUi -= this.Ui.OpenSettings;
                 this.Interface.CommandManager.RemoveHandler("/prmt");
-
-                // AppDomain.CurrentDomain.AssemblyResolve -= this.ResolveAssembly;
-                AppDomain.Unload(this.InnerDomain);
             }
 
             this._disposedValue = true;

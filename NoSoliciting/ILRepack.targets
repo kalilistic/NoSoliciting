@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="ILRepacker" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+
+        <ItemGroup>
+            <InputAssemblies Include="$(OutputPath)\NoSoliciting.dll"/>
+            <InputAssemblies Include="$(OutputPath)\NoSoliciting.Interface.dll"/>
+            <InputAssemblies Include="$(OutputPath)\J*.dll"/>
+            <InputAssemblies Include="$(OutputPath)\M*.dll"/>
+            <InputAssemblies Include="$(OutputPath)\S*.dll"/>
+            <InputAssemblies Include="$(OutputPath)\Y*.dll"/>
+        </ItemGroup>
+        <ILRepack
+                Parallel="true"
+                Internalize="true"
+                InputAssemblies="@(InputAssemblies)"
+                LibraryPath="$(OutputPath)"
+                TargetKind="Dll"
+                OutputFile="$(OutputPath)\$(AssemblyName).dll"
+        />
+
+    </Target>
+</Project>

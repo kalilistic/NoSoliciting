@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Dalamud.Plugin;
+using JKang.IpcServiceFramework.Client;
+using Microsoft.Extensions.DependencyInjection;
 using NoSoliciting.Interface;
+using Resourcer;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -22,37 +26,25 @@ namespace NoSoliciting.Ml {
         #endif
 
         public uint Version { get; }
-        private IClassifier Classifier { get; }
 
-        private MlFilter(uint version, IClassifier classifier) {
-            this.Version = version;
+        private Process Process { get; }
+        private IIpcClient<IClassifier> Classifier { get; }
+
+        private MlFilter(uint version, Process process, IIpcClient<IClassifier> classifier) {
+            this.Process = process;
             this.Classifier = classifier;
+            this.Version = version;
         }
 
-        // private MLContext Context { get; }
-        // private ITransformer Model { get; }
-        // private DataViewSchema Schema { get; }
-        // private PredictionEngine<MessageData, MessagePrediction> PredictionEngine { get; }
-        //
-        // private MlFilter(uint version, MLContext context, ITransformer model, DataViewSchema schema) {
-        //     this.Version = version;
-        //     this.Context = context;
-        //     this.Model = model;
-        //     this.Schema = schema;
-        //     this.PredictionEngine = this.Context.Model.CreatePredictionEngine<MessageData, MessagePrediction>(this.Model, this.Schema);
-        // }
-
         public MessageCategory ClassifyMessage(ushort channel, string message) {
-            // var data = new MessageData(channel, message);
-            // var pred = this.PredictionEngine.Predict(data);
-            var rawCategory = this.Classifier.Classify(channel, message);
-            var category = MessageCategoryExt.FromString(rawCategory);
+            var prediction = this.Classifier.InvokeAsync(classifier => classifier.Classify(channel, message)).Result;
+            var category = MessageCategoryExt.FromString(prediction);
 
             if (category != null) {
                 return (MessageCategory) category;
             }
 
-            PluginLog.LogWarning($"Unknown message category: {rawCategory}");
+            PluginLog.LogWarning($"Unknown message category: {prediction}");
             return MessageCategory.Normal;
         }
 
@@ -82,18 +74,33 @@ namespace NoSoliciting.Ml {
             UpdateCachedFile(plugin, ModelName, data);
             UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Item2));
 
-            // var context = new MLContext();
-            // using var stream = new MemoryStream(data);
-            // var model = context.Model.Load(stream, out var schema);
+            using var exe = Resource.AsStream("NoSoliciting.NoSoliciting.MessageClassifier.exe");
+            var pluginFolder = Util.PluginFolder(plugin);
+            Directory.CreateDirectory(pluginFolder);
+            var exePath = Path.Combine(pluginFolder, "NoSoliciting.MessageClassifier.exe");
+            using (var exeFile = File.Create(exePath)) {
+                await exe.CopyToAsync(exeFile);
+            }
 
-            // return new MlFilter(manifest.Item1.Version, context, model, schema);
+            var startInfo = new ProcessStartInfo(exePath) {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+            };
+            var process = Process.Start(startInfo);
 
-            plugin.Classifier.Initialise(data);
+            var serviceProvider = new ServiceCollection()
+                .AddNamedPipeIpcClient<IClassifier>("client", (_, options) => {
+                    options.PipeName = "NoSoliciting.MessageClassifier";
+                    options.Serializer = new BetterIpcSerialiser();
+                })
+                .BuildServiceProvider();
 
-            return new MlFilter(
-                manifest.Item1.Version,
-                plugin.Classifier
-            );
+            var clientFactory = serviceProvider.GetRequiredService<IIpcClientFactory<IClassifier>>();
+            var client = clientFactory.CreateClient("client");
+
+            await client.InvokeAsync(classifier => classifier.Initialise(data));
+
+            return new MlFilter(manifest.Item1.Version, process!, client);
         }
 
         private static async Task<byte[]?> DownloadModel(Uri url) {
@@ -167,7 +174,8 @@ namespace NoSoliciting.Ml {
         }
 
         public void Dispose() {
-            // this.PredictionEngine.Dispose();
+            this.Process.Kill();
+            this.Process.Dispose();
         }
     }
 }
