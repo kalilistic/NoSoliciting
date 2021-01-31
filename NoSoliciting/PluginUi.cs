@@ -214,6 +214,7 @@ namespace NoSoliciting {
                 }
 
                 if (ImGui.Button("Update model")) {
+                    this.Plugin.MlFilter?.Dispose();
                     this.Plugin.MlFilter = null;
                     this.Plugin.InitialiseMachineLearning();
                 }
