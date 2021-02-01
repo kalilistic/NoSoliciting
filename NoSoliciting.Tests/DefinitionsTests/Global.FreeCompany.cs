@@ -50,6 +50,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.Global {
             new TestMessage("let's go, lesbians! join the primal sapphics community to meet other wlw <3 https://discord.gg/T8yKAPGEHC"),
             new TestMessage("p2 advanced relativity/triple apoc. Hopefully a kill. p1 logs required. 0-1-2 chest helpers very welcome."),
             new TestMessage("7/8 Casual static looking for 1 healer sundays and mondays 7-10 pm est clear the tier and future raids join pf"),
+            new TestMessage("Leveling new class feel free to join and grind dungeons"),
         });
 
         [Theory]
