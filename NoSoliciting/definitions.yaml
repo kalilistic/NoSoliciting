@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 64
+version: 65
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -294,7 +294,6 @@ global:
         - looking for member
         - looking for people
         - lonely
-        - level
         - active member
         - regex: '\bold\b'
         - regex: '\bvets?\b'
