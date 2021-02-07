@@ -36,6 +36,9 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "「 FlashØ」 ≪ ❶ Savages 一 ❷ Ultimates 一 ❸ Mounts 一 ❹ BLU 一 ❺ POTD/HOH 一 ❻ Coaching≫  Discord → azrael#1010",
             "<Savage ※ Ultimates ※ BLU ※ Primals ※ Coaching> 一 Present#0148 ★★★★★",
             "「 SHØ T 」 ≪ Eden Savage E9-12s • Ucob/UwU/TEA • Primals •  Mounts ≫ Fast & Reliable | Discord→ yu#7494",
+            "「&」 Help with  ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts ❹ Blu ≫ Discord → ashlar#6021",
+            " We can run you through E9S-E12S/EX and give you loot. We'll also do your taxes! Plus we have a lawyer --- mith#0177 for more info",
+            "Fast and easy help with  ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts ❹ Blu ≫ Discord → ashlar#6021",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {

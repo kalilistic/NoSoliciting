@@ -48,7 +48,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 65
+version: 66
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -120,7 +120,10 @@ party_finder:
         - lalakuza
         - legacy
         - sk7
+        - 'fast&easy'
+        - fast and easy help
         - '[helping]'
+        - lawyer
         # more keywords
         - deliver
         - best team
