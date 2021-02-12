@@ -105,9 +105,12 @@ namespace NoSoliciting.Ml {
         }
 
         private static Process StartClassifier(string exePath, string pidPath) {
+            var game = Process.GetCurrentProcess();
+
             var startInfo = new ProcessStartInfo(exePath) {
                 CreateNoWindow = true,
                 UseShellExecute = false,
+                Arguments = $"{game.Id} \"{game.ProcessName}\"",
             };
             var process = Process.Start(startInfo);
             File.WriteAllText(pidPath, process!.Id.ToString());
@@ -135,6 +138,10 @@ namespace NoSoliciting.Ml {
 
             try {
                 var old = Process.GetProcessById(pid);
+                if (old.ProcessName != "NoSoliciting.MessageClassifier.exe") {
+                    return;
+                }
+
                 old.Kill();
                 old.WaitForExit();
             } catch (ArgumentException) {
@@ -213,8 +220,12 @@ namespace NoSoliciting.Ml {
         }
 
         public void Dispose() {
-            this.Process.Kill();
-            this.Process.Dispose();
+            try {
+                this.Process.Kill();
+                this.Process.Dispose();
+            } catch (Exception) {
+                // ignored
+            }
         }
     }
 }
