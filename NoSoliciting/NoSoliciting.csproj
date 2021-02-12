@@ -3,7 +3,7 @@
   <PropertyGroup>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
-    <Version>1.5.7</Version>
+    <Version>1.5.8</Version>
     <TargetFramework>net48</TargetFramework>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <PlatformTarget>x64</PlatformTarget>
