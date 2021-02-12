@@ -5,6 +5,7 @@
         <TargetFramework>net48</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+        <Version>1.1.0</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,7 +23,7 @@
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
       <PackageReference Include="Microsoft.ML" Version="1.5.4" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <EmbeddedResource Include="costura64\*.dll" />
     </ItemGroup>

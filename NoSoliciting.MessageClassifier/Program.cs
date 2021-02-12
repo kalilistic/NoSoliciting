@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using JKang.IpcServiceFramework.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,8 +11,15 @@ using NoSoliciting.Internal.Interface;
 
 namespace NoSoliciting.MessageClassifier {
     internal static class Program {
-        private static void Main() {
-            Host.CreateDefaultBuilder()
+        private static void Main(string[] args) {
+            if (!int.TryParse(args[0], out var gamePid)) {
+                Console.WriteLine("No game PID provided.");
+                return;
+            }
+
+            var gameName = args[1];
+
+            var host = Host.CreateDefaultBuilder()
                 .ConfigureServices(services => {
                     services.AddSingleton<IClassifier, ClassifierService>();
                 })
@@ -20,8 +29,28 @@ namespace NoSoliciting.MessageClassifier {
                         options.Serializer = new BetterIpcSerialiser();
                     });
                 })
-                .Build()
-                .Run();
+                .Build();
+
+            Task.Run(async () => {
+                while (true) {
+                    Process process;
+                    try {
+                        process = Process.GetProcessById(gamePid);
+                    } catch (Exception) {
+                        await host.StopAsync();
+                        return;
+                    }
+
+                    if (process.ProcessName != gameName) {
+                        await host.StopAsync();
+                        return;
+                    }
+
+                    await Task.Delay(5_000);
+                }
+            });
+
+            host.Run();
         }
     }
 
