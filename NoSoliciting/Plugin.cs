@@ -62,7 +62,6 @@ namespace NoSoliciting {
             // pre-compute the max ilvl to prevent stutter
             FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
 
-            this.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.Filter.OnChat;
             this.Interface.UiBuilder.OnBuildUi += this.Ui.Draw;
             this.Interface.UiBuilder.OnOpenConfigUi += this.Ui.OpenSettings;
             this.Interface.CommandManager.AddHandler("/prmt", new CommandInfo(this.OnCommand) {
@@ -128,7 +127,6 @@ namespace NoSoliciting {
             if (disposing) {
                 this.Filter.Dispose();
                 this.MlFilter?.Dispose();
-                this.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.Filter.OnChat;
                 this.Interface.UiBuilder.OnBuildUi -= this.Ui.Draw;
                 this.Interface.UiBuilder.OnOpenConfigUi -= this.Ui.OpenSettings;
                 this.Interface.CommandManager.RemoveHandler("/prmt");
