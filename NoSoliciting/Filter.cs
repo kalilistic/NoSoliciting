@@ -55,6 +55,8 @@ namespace NoSoliciting {
         public Filter(Plugin plugin) {
             this.Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
 
+            this.Plugin.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.OnChat;
+
             var listingPtr = this.Plugin.Interface.TargetModuleScanner.ScanText("40 53 41 57 48 83 EC 28 48 8B D9");
             var summaryPtr = this.Plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 8B FA 48 8B F1 45 84 C0 74 ?? 0F B7 0A");
 
@@ -74,10 +76,14 @@ namespace NoSoliciting {
                 goto Return;
             }
 
-            if (this.Plugin.MlReady) {
-                this.MlTransformPfPacket(data);
-            } else if (this.Plugin.DefsReady) {
-                this.DefsTransformPfPacket(data);
+            try {
+                if (this.Plugin.MlReady) {
+                    this.MlTransformPfPacket(data);
+                } else if (this.Plugin.DefsReady) {
+                    this.DefsTransformPfPacket(data);
+                }
+            } catch (Exception ex) {
+                PluginLog.LogError($"Error in PF hook: {ex}");
             }
 
             Return:
@@ -364,6 +370,7 @@ namespace NoSoliciting {
             }
 
             if (disposing) {
+                this.Plugin.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.OnChat;
                 this._handlePacketHook?.Dispose();
                 this._handleSummaryHook?.Dispose();
             }
