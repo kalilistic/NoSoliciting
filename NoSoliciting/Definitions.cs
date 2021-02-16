@@ -154,12 +154,12 @@ namespace NoSoliciting {
         [YamlIgnore]
         public string Id { get; private set; }
 
-        public List<List<Matcher>> RequiredMatchers { get; private set; } = new List<List<Matcher>>();
-        public List<List<Matcher>> LikelyMatchers { get; private set; } = new List<List<Matcher>>();
+        public List<List<Matcher>> RequiredMatchers { get; private set; } = new();
+        public List<List<Matcher>> LikelyMatchers { get; private set; } = new();
         public int LikelihoodThreshold { get; private set; }
         public bool IgnoreCase { get; private set; }
         public bool Normalise { get; private set; } = true;
-        public List<XivChatType> Channels { get; private set; } = new List<XivChatType>();
+        public List<XivChatType> Channels { get; private set; } = new();
         public OptionNames Option { get; private set; }
         public bool Default { get; private set; }
 
@@ -216,7 +216,7 @@ namespace NoSoliciting {
         }
 
         public Definition Clone() {
-            return new Definition {
+            return new() {
                 RequiredMatchers = this.RequiredMatchers,
                 LikelyMatchers = this.LikelyMatchers,
                 LikelihoodThreshold = this.LikelihoodThreshold,
