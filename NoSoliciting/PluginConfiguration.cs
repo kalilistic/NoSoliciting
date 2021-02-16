@@ -10,7 +10,7 @@ using NoSoliciting.Ml;
 namespace NoSoliciting {
     [Serializable]
     public class PluginConfiguration : IPluginConfiguration {
-        public static readonly PluginConfiguration Default = new PluginConfiguration();
+        public static readonly PluginConfiguration Default = new();
 
         [NonSerialized]
         private DalamudPluginInterface pi;
@@ -32,34 +32,34 @@ namespace NoSoliciting {
         [Obsolete("Use FilterStatus")]
         public bool FilterPartyFinderRPAds { get; set; } = false;
 
-        public Dictionary<string, bool> FilterStatus { get; private set; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> FilterStatus { get; private set; } = new();
 
         public bool AdvancedMode { get; set; }
 
         public bool CustomChatFilter { get; set; }
-        public List<string> ChatSubstrings { get; } = new List<string>();
-        public List<string> ChatRegexes { get; } = new List<string>();
+        public List<string> ChatSubstrings { get; } = new();
+        public List<string> ChatRegexes { get; } = new();
 
         [JsonIgnore]
-        public List<Regex> CompiledChatRegexes { get; private set; } = new List<Regex>();
+        public List<Regex> CompiledChatRegexes { get; private set; } = new();
 
         public bool CustomPFFilter { get; set; }
-        public List<string> PFSubstrings { get; } = new List<string>();
-        public List<string> PFRegexes { get; } = new List<string>();
+        public List<string> PFSubstrings { get; } = new();
+        public List<string> PFRegexes { get; } = new();
 
         [JsonIgnore]
-        public List<Regex> CompiledPFRegexes { get; private set; } = new List<Regex>();
+        public List<Regex> CompiledPFRegexes { get; private set; } = new();
 
         public bool FilterHugeItemLevelPFs { get; set; }
 
         public bool UseMachineLearning { get; set; }
 
-        public HashSet<MessageCategory> BasicMlFilters { get; set; } = new HashSet<MessageCategory> {
+        public HashSet<MessageCategory> BasicMlFilters { get; set; } = new() {
             MessageCategory.RmtGil,
             MessageCategory.RmtContent,
             MessageCategory.Phishing,
         };
-        public Dictionary<MessageCategory, HashSet<ChatType>> MlFilters { get; set; } = new Dictionary<MessageCategory, HashSet<ChatType>> {
+        public Dictionary<MessageCategory, HashSet<ChatType>> MlFilters { get; set; } = new() {
             [MessageCategory.RmtGil] = new HashSet<ChatType> {
                 ChatType.Say,
             },

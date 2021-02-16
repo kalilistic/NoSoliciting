@@ -24,10 +24,10 @@ namespace NoSoliciting {
         public bool MlReady => this.Config.UseMachineLearning && this.MlFilter != null;
         public bool DefsReady => !this.Config.UseMachineLearning && this.Definitions != null;
 
-        private readonly List<Message> _messageHistory = new List<Message>();
+        private readonly List<Message> _messageHistory = new();
         public IEnumerable<Message> MessageHistory => this._messageHistory;
 
-        private readonly List<Message> _partyFinderHistory = new List<Message>();
+        private readonly List<Message> _partyFinderHistory = new();
         public IEnumerable<Message> PartyFinderHistory => this._partyFinderHistory;
 
         // ReSharper disable once MemberCanBePrivate.Global
