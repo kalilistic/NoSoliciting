@@ -147,6 +147,12 @@ namespace NoSoliciting {
                     this.Plugin.Config.Save();
                 }
 
+                var considerPrivate = this.Plugin.Config.ConsiderPrivatePfs;
+                if (ImGui.Checkbox("Apply filters to private Party Finder listings", ref considerPrivate)) {
+                    this.Plugin.Config.ConsiderPrivatePfs = considerPrivate;
+                    this.Plugin.Config.Save();
+                }
+
                 var customPf = this.Plugin.Config.CustomPFFilter;
                 if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPf)) {
                     this.Plugin.Config.CustomPFFilter = customPf;

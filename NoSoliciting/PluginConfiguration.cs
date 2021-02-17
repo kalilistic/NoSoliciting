@@ -59,6 +59,7 @@ namespace NoSoliciting {
             MessageCategory.RmtContent,
             MessageCategory.Phishing,
         };
+
         public Dictionary<MessageCategory, HashSet<ChatType>> MlFilters { get; set; } = new() {
             [MessageCategory.RmtGil] = new HashSet<ChatType> {
                 ChatType.Say,
@@ -90,6 +91,8 @@ namespace NoSoliciting {
 
         public bool LogFilteredPfs { get; set; } = true;
         public bool LogFilteredChat { get; set; } = true;
+
+        public bool ConsiderPrivatePfs { get; set; }
 
         public void Initialise(DalamudPluginInterface pi) {
             this.pi = pi ?? throw new ArgumentNullException(nameof(pi), "DalamudPluginInterface cannot be null");
