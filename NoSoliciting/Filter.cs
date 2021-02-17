@@ -212,6 +212,11 @@ namespace NoSoliciting {
                     continue;
                 }
 
+                // ignore private listings if configured
+                if (!this.Plugin.Config.ConsiderPrivatePfs && (listing.searchArea & (1 << 1)) != 0) {
+                    continue;
+                }
+
                 var desc = listing.Description();
 
                 string? reason = null;
