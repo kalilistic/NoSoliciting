@@ -9,6 +9,7 @@ using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
+using NoSoliciting.Interface;
 using NoSoliciting.Internal.Interface;
 
 namespace NoSoliciting.Trainer {
@@ -45,7 +46,7 @@ namespace NoSoliciting.Trainer {
 
             foreach (var record in records) {
                 // normalise the message
-                record.Message = Util.Normalise(record.Message);
+                record.Message = NoSolUtil.Normalise(record.Message, true);
 
                 // keep track of how many message of each category we have
                 if (!classes.ContainsKey(record.Category!)) {
@@ -79,19 +80,15 @@ namespace NoSoliciting.Trainer {
                 .Append(ctx.Transforms.CustomMapping(compute.GetMapping(), "Compute"))
                 .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Message), keepPunctuations: false))
                 .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
-                // .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgTokens",
-                //     "the",
-                //     "a",
-                //     "of",
-                //     "in",
-                //     "for",
-                //     "from",
-                //     "and",
-                //     "discord"
-                // ))
                 .Append(ctx.Transforms.Text.RemoveDefaultStopWords("MsgNoDefStop", "MsgTokens"))
                 .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgNoDefStop",
-                    "discord"
+                    "discord",
+                    "lgbt",
+                    "lgbtq",
+                    "lgbtqia",
+                    "http",
+                    "https",
+                    "18"
                 ))
                 .Append(ctx.Transforms.Conversion.MapValueToKey("MsgKey", "MsgNoStop"))
                 .Append(ctx.Transforms.Text.ProduceNgrams("MsgNgrams", "MsgKey", weighting: NgramExtractingEstimator.WeightingCriteria.Tf))
@@ -167,7 +164,7 @@ namespace NoSoliciting.Trainer {
                 var input = new Data {
                     Channel = channel,
                     // PartyFinder = channel == 0,
-                    Message = parts[1],
+                    Message = NoSolUtil.Normalise(parts[1], true),
                 };
 
                 var pred = predEngine.Predict(input);

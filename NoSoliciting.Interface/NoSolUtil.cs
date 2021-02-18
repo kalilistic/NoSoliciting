@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace NoSoliciting.Trainer {
-    public static class Util {
+namespace NoSoliciting.Interface {
+    public static class NoSolUtil {
         private static readonly Dictionary<char, string> Replacements = new() {
             // numerals
             ['\ue055'] = "1",
@@ -46,7 +47,21 @@ namespace NoSoliciting.Trainer {
 
         private const char LowestReplacement = '\ue022';
 
-        public static string Normalise(string input) {
+        private static readonly char[] SpaceSymbols = {
+            '/', '|',
+            '(', ')',
+            '[', ']',
+            '<', '>',
+            '=', '+',
+            '.', ',',
+            '~', '-',
+        };
+
+        private static string Spacify(string input) {
+            return SpaceSymbols.Aggregate(input, (current, sym) => current.Replace(sym, ' '));
+        }
+
+        public static string Normalise(string input, bool spacify = false) {
             if (input == null) {
                 throw new ArgumentNullException(nameof(input), "input cannot be null");
             }
@@ -95,7 +110,10 @@ namespace NoSoliciting.Trainer {
             input = builder.ToString();
 
             // NFKD unicode normalisation
-            return input.Normalize(NormalizationForm.FormKD);
+            var normalised = input.Normalize(NormalizationForm.FormKD);
+
+            // replace several symbols with spaces instead
+            return spacify ? Spacify(normalised) : normalised;
         }
     }
 }
