@@ -37,6 +37,7 @@ namespace NoSoliciting.Ml {
         }
 
         public MessageCategory ClassifyMessage(ushort channel, string message) {
+            message = NoSolUtil.Normalise(message, true);
             var prediction = this.Classifier.InvokeAsync(classifier => classifier.Classify(channel, message)).Result;
             var category = MessageCategoryExt.FromString(prediction);
 

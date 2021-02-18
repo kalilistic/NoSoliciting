@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoSoliciting.Interface;
 
 namespace NoSoliciting {
     public partial class Filter {
@@ -13,7 +14,7 @@ namespace NoSoliciting {
                     return false;
                 }
 
-                msg = FilterUtil.Normalise(msg);
+                msg = NoSolUtil.Normalise(msg);
 
                 return config.PFSubstrings.Any(needle => msg.ContainsIgnoreCase(needle))
                     || config.CompiledPFRegexes.Any(needle => needle.IsMatch(msg));

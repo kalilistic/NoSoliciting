@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj" />
       <ProjectReference Include="..\NoSoliciting.Internal.Interface\NoSoliciting.Internal.Interface.csproj" />
     </ItemGroup>
 

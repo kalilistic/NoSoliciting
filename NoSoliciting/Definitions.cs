@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dalamud.Game.Chat;
 using Dalamud.Plugin;
+using NoSoliciting.Interface;
 using NoSoliciting.Properties;
 using YamlDotNet.Core;
 using YamlDotNet.Core.Events;
@@ -195,7 +196,7 @@ namespace NoSoliciting {
             }
 
             if (this.Normalise) {
-                text = FilterUtil.Normalise(text);
+                text = NoSolUtil.Normalise(text);
             }
 
             if (this.IgnoreCase) {
