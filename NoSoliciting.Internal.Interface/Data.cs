@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
+using NoSoliciting.Interface;
 
 namespace NoSoliciting.Internal.Interface {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -29,6 +30,26 @@ namespace NoSoliciting.Internal.Interface {
             this.Channel = channel;
             this.Message = message;
         }
+
+        #region normalisation
+
+        [CustomMappingFactoryAttribute("Normalise")]
+        [SuppressMessage("ReSharper", "UnusedType.Global")]
+        public class Normalise : CustomMappingFactory<Data, Normalise.Normalised> {
+            public override Action<Data, Normalised> GetMapping() {
+                return Convert;
+            }
+
+            private static void Convert(Data data, Normalised normalised) {
+                normalised.NormalisedMessage = NoSolUtil.Normalise(data.Message, true);
+            }
+
+            public class Normalised {
+                public string? NormalisedMessage { get; set; }
+            }
+        }
+
+        #endregion
 
         #region computed
 
@@ -103,13 +124,15 @@ namespace NoSoliciting.Internal.Interface {
                 output.Weight = weight;
             }
 
+            var normalised = NoSolUtil.Normalise(this.Message);
+
             output.PartyFinder = this.Channel == 0;
             output.Shout = this.Channel == 11 || this.Channel == 30;
-            output.ContainsWard = WardWords.Any(word => word.IsMatch(this.Message));
-            output.ContainsPlot = PlotWords.Any(word => word.IsMatch(this.Message));
-            output.ContainsHousingNumbers = NumbersRegex.IsMatch(this.Message);
-            output.ContainsTradeWords = TradeWords.Any(word => this.Message.ContainsIgnoreCase(word));
-            output.ContainsSketchUrl = SketchUrlRegex.IsMatch(this.Message);
+            output.ContainsWard = WardWords.Any(word => word.IsMatch(normalised));
+            output.ContainsPlot = PlotWords.Any(word => word.IsMatch(normalised));
+            output.ContainsHousingNumbers = NumbersRegex.IsMatch(normalised);
+            output.ContainsTradeWords = TradeWords.Any(word => normalised.ContainsIgnoreCase(word));
+            output.ContainsSketchUrl = SketchUrlRegex.IsMatch(normalised);
         }
 
         #endregion

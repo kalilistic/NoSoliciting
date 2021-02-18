@@ -45,9 +45,6 @@ namespace NoSoliciting.Trainer {
             var classes = new Dictionary<string, uint>();
 
             foreach (var record in records) {
-                // normalise the message
-                record.Message = NoSolUtil.Normalise(record.Message, true);
-
                 // keep track of how many message of each category we have
                 if (!classes.ContainsKey(record.Category!)) {
                     classes[record.Category] = 0;
@@ -73,12 +70,14 @@ namespace NoSoliciting.Trainer {
             var ttd = ctx.Data.TrainTestSplit(df, 0.2, seed: 1);
 
             var compute = new Data.ComputeContext(weights);
+            var normalise = new Data.Normalise();
 
             ctx.ComponentCatalog.RegisterAssembly(typeof(Data).Assembly);
 
             var pipeline = ctx.Transforms.Conversion.MapValueToKey("Label", nameof(Data.Category))
                 .Append(ctx.Transforms.CustomMapping(compute.GetMapping(), "Compute"))
-                .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Message), keepPunctuations: false))
+                .Append(ctx.Transforms.CustomMapping(normalise.GetMapping(), "Normalise"))
+                .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Normalise.Normalised.NormalisedMessage), keepPunctuations: false))
                 .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
                 .Append(ctx.Transforms.Text.RemoveDefaultStopWords("MsgNoDefStop", "MsgTokens"))
                 .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgNoDefStop",
@@ -161,12 +160,7 @@ namespace NoSoliciting.Trainer {
 
                 ushort.TryParse(parts[0], out var channel);
 
-                var input = new Data {
-                    Channel = channel,
-                    // PartyFinder = channel == 0,
-                    Message = NoSolUtil.Normalise(parts[1], true),
-                };
-
+                var input = new Data(channel, parts[1]);
                 var pred = predEngine.Predict(input);
 
                 Console.WriteLine(pred.Category);
