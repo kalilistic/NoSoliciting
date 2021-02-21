@@ -39,6 +39,7 @@ namespace NoSoliciting.Tests.DefinitionsTests.PartyFinder {
             "「&」 Help with  ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts ❹ Blu ≫ Discord → ashlar#6021",
             " We can run you through E9S-E12S/EX and give you loot. We'll also do your taxes! Plus we have a lawyer --- mith#0177 for more info",
             "Fast and easy help with  ≪ ❶ Savage 一 ❷ Ultimates 一 ❸ Mounts ❹ Blu ≫ Discord → ashlar#6021",
+            "「Restocker」Services 》TEA, BLU content, Eden Savage, Ultimates UwU & UCoB, Primals! Discord: Restocker#8778.",
         });
 
         public static object[][] DataNegatives => DefUtils.DataFromStrings(new[] {
