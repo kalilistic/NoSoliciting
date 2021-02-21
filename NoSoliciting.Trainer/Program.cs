@@ -9,11 +9,20 @@ using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
-using NoSoliciting.Interface;
 using NoSoliciting.Internal.Interface;
 
 namespace NoSoliciting.Trainer {
     internal static class Program {
+        private static readonly string[] StopWords = {
+            "discord",
+            "lgbt",
+            "lgbtq",
+            "lgbtqia",
+            "http",
+            "https",
+            "18",
+        };
+
         private static void Main(string[] args) {
             var full = args[0] == "create";
 
@@ -80,15 +89,7 @@ namespace NoSoliciting.Trainer {
                 .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Normalise.Normalised.NormalisedMessage), keepPunctuations: false))
                 .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
                 .Append(ctx.Transforms.Text.RemoveDefaultStopWords("MsgNoDefStop", "MsgTokens"))
-                .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgNoDefStop",
-                    "discord",
-                    "lgbt",
-                    "lgbtq",
-                    "lgbtqia",
-                    "http",
-                    "https",
-                    "18"
-                ))
+                .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgNoDefStop", StopWords))
                 .Append(ctx.Transforms.Conversion.MapValueToKey("MsgKey", "MsgNoStop"))
                 .Append(ctx.Transforms.Text.ProduceNgrams("MsgNgrams", "MsgKey", weighting: NgramExtractingEstimator.WeightingCriteria.Tf))
                 .Append(ctx.Transforms.NormalizeLpNorm("FeaturisedMessage", "MsgNgrams"))
