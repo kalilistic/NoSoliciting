@@ -21,6 +21,8 @@ namespace NoSoliciting.Trainer {
             "http",
             "https",
             "18",
+            "come",
+            "join",
         };
 
         private static void Main(string[] args) {
