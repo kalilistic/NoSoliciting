@@ -39,6 +39,13 @@ namespace NoSoliciting.Trainer {
                 });
                 records = csv
                     .GetRecords<Data>()
+                    .Select(rec => {
+                        rec.Message = rec.Message
+                            .Replace("\r\n", " ")
+                            .Replace("\r", " ")
+                            .Replace("\n", " ");
+                        return rec;
+                    })
                     .OrderBy(rec => rec.Category)
                     .ThenBy(rec => rec.Channel)
                     .ThenBy(rec => rec.Message)
