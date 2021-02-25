@@ -226,15 +226,20 @@ namespace NoSoliciting {
 
             if (ImGui.BeginTabItem("Model")) {
                 ImGui.TextUnformatted($"Version: {this.Plugin.MlFilter?.Version}");
+                ImGui.TextUnformatted($"Model status: {this.Plugin.MlStatus.Description()}");
                 var lastError = MlFilter.LastError;
                 if (lastError != null) {
                     ImGui.TextUnformatted($"Last error: {lastError}");
                 }
 
                 if (ImGui.Button("Update model")) {
-                    this.Plugin.MlFilter?.Dispose();
-                    this.Plugin.MlFilter = null;
-                    this.Plugin.InitialiseMachineLearning();
+                    // prevent issues when people spam the button
+                    if (this.Plugin.MlStatus == MlFilterStatus.Uninitialised || this.Plugin.MlStatus == MlFilterStatus.Initialised) {
+                        this.Plugin.MlFilter?.Dispose();
+                        this.Plugin.MlFilter = null;
+                        this.Plugin.MlStatus = MlFilterStatus.Uninitialised;
+                        this.Plugin.InitialiseMachineLearning();
+                    }
                 }
 
                 ImGui.EndTabItem();
