@@ -27,7 +27,6 @@ namespace NoSoliciting {
 
         public Dictionary<string, Definition> Chat { get; private set; }
         public Dictionary<string, Definition> PartyFinder { get; private set; }
-        public Dictionary<string, Definition> Global { get; private set; }
 
         public static async Task<Definitions> UpdateAndCache(Plugin plugin) {
             #if DEBUG
@@ -127,24 +126,6 @@ namespace NoSoliciting {
                 }
             }
 
-            foreach (var entry in this.Global) {
-                var chat = entry.Value.Clone();
-                chat.Initialise($"chat.global.{entry.Key}");
-                this.Chat[$"global.{entry.Key}"] = chat;
-
-                var pf = entry.Value.Clone();
-                pf.Initialise($"party_finder.global.{entry.Key}");
-                this.PartyFinder[$"global.{entry.Key}"] = pf;
-
-                if (!plugin.Config.FilterStatus.TryGetValue(chat.Id, out _)) {
-                    plugin.Config.FilterStatus[chat.Id] = chat.Default;
-                }
-
-                if (!plugin.Config.FilterStatus.TryGetValue(pf.Id, out _)) {
-                    plugin.Config.FilterStatus[pf.Id] = pf.Default;
-                }
-            }
-
             plugin.Config.Save();
         }
     }
@@ -214,19 +195,6 @@ namespace NoSoliciting {
 
             // matches only if likelihood is greater than or equal the threshold
             return likelihood >= this.LikelihoodThreshold;
-        }
-
-        public Definition Clone() {
-            return new() {
-                RequiredMatchers = this.RequiredMatchers,
-                LikelyMatchers = this.LikelyMatchers,
-                LikelihoodThreshold = this.LikelihoodThreshold,
-                IgnoreCase = this.IgnoreCase,
-                Normalise = this.Normalise,
-                Channels = this.Channels,
-                Option = this.Option,
-                Default = this.Default,
-            };
         }
     }
 

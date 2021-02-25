@@ -72,12 +72,12 @@ namespace NoSoliciting {
             }
 
             var modes = new[] {
-                "Definition matchers (default)",
-                "Machine learning (experimental)",
+                "Machine learning (default)",
+                "Definition matchers (obsolete)",
             };
-            var modeIndex = this.Plugin.Config.UseMachineLearning ? 1 : 0;
+            var modeIndex = this.Plugin.Config.UseMachineLearning ? 0 : 1;
             if (ImGui.Combo("Filter mode", ref modeIndex, modes, modes.Length)) {
-                this.Plugin.Config.UseMachineLearning = modeIndex == 1;
+                this.Plugin.Config.UseMachineLearning = modeIndex == 0;
                 this.Plugin.Config.Save();
 
                 if (this.Plugin.Config.UseMachineLearning) {
@@ -568,15 +568,21 @@ namespace NoSoliciting {
 
             ImGui.PushTextWrapPos();
 
-            ImGui.Text("Reporting this message will let the developer know that you think this message was incorrectly classified.");
+            if (!message.Ml) {
+                ImGui.TextUnformatted("You cannot report messages filtered by definitions. Please switch to machine learning mode.");
 
-            ImGui.Text(message.FilterReason != null
+                goto EndPopup;
+            }
+
+            ImGui.TextUnformatted("Reporting this message will let the developer know that you think this message was incorrectly classified.");
+
+            ImGui.TextUnformatted(message.FilterReason != null
                 ? "Specifically, this message WAS filtered but shouldn't have been."
                 : "Specifically, this message WAS NOT filtered but should have been.");
 
             ImGui.Separator();
 
-            ImGui.Text(message.Content.TextValue);
+            ImGui.TextUnformatted(message.Content.TextValue);
 
             ImGui.Separator();
 
@@ -587,7 +593,9 @@ namespace NoSoliciting {
             ImGui.Separator();
 
             if (message.FilterReason == "custom") {
-                ImGui.TextColored(new Vector4(1f, 0f, 0f, 1f), "You cannot report messages filtered because of a custom filter.");
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
+                ImGui.TextUnformatted("You cannot report messages filtered because of a custom filter.");
+                ImGui.PopStyleColor();
             } else {
                 if (ImGui.Button("Report")) {
                     Task.Run(async () => {
@@ -595,13 +603,18 @@ namespace NoSoliciting {
                         try {
                             using var client = new WebClient();
                             this.LastReportStatus = ReportStatus.InProgress;
-                            resp = await client.UploadStringTaskAsync(this.Plugin.Definitions!.ReportUrl, message.ToJson()).ConfigureAwait(true);
+                            var reportUrl = this.Plugin.MlFilter?.ReportUrl;
+                            if (reportUrl != null) {
+                                resp = await client.UploadStringTaskAsync(reportUrl, message.ToJson()).ConfigureAwait(true);
+                            }
                         } catch (Exception) {
                             // ignored
                         }
 
                         this.LastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
-                        PluginLog.Log($"Report sent. Response: {resp}");
+                        PluginLog.Log(resp == null
+                            ? "Report not sent. ML model not set."
+                            : $"Report sent. Response: {resp}");
                     });
                     ImGui.CloseCurrentPopup();
                 }
@@ -615,6 +628,7 @@ namespace NoSoliciting {
 
             ImGui.SameLine();
 
+            EndPopup:
             if (ImGui.Button("Cancel")) {
                 ImGui.CloseCurrentPopup();
             }

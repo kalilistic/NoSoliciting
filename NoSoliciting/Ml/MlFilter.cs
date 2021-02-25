@@ -26,14 +26,16 @@ namespace NoSoliciting.Ml {
         #endif
 
         public uint Version { get; }
+        public Uri ReportUrl { get; }
 
         private Process Process { get; }
         private IIpcClient<IClassifier> Classifier { get; }
 
-        private MlFilter(uint version, Process process, IIpcClient<IClassifier> classifier) {
+        private MlFilter(uint version, Uri reportUrl, Process process, IIpcClient<IClassifier> classifier) {
             this.Process = process;
             this.Classifier = classifier;
             this.Version = version;
+            this.ReportUrl = reportUrl;
         }
 
         public MessageCategory ClassifyMessage(ushort channel, string message) {
@@ -86,7 +88,12 @@ namespace NoSoliciting.Ml {
             var process = StartClassifier(exePath, pidPath);
             var client = await CreateClassifierClient(data);
 
-            return new MlFilter(manifest.Item1.Version, process!, client);
+            return new MlFilter(
+                manifest.Item1.Version,
+                manifest.Item1.ReportUrl,
+                process!,
+                client
+            );
         }
 
         private static async Task<IIpcClient<IClassifier>> CreateClassifierClient(byte[] data) {
