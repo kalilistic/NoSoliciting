@@ -12,8 +12,6 @@ description: |-
   - Static recruitment
   - Trade ads
   - Any PF with an item level over the max
-
-  Now with experimental machine learning!
 repo_url: https://git.sr.ht/~jkcclemens/NoSoliciting
 # Use higher priority to filter messages before other plugins get them.
-priority: 10
+priority: 100
