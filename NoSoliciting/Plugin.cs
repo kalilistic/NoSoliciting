@@ -19,6 +19,7 @@ namespace NoSoliciting {
         public PluginUi Ui { get; private set; } = null!;
         public Commands Commands { get; private set; } = null!;
         public Definitions? Definitions { get; private set; }
+        public MlFilterStatus MlStatus { get; set; } = MlFilterStatus.Uninitialised;
         public MlFilter? MlFilter { get; set; }
         public bool MlReady => this.Config.UseMachineLearning && this.MlFilter != null;
         public bool DefsReady => !this.Config.UseMachineLearning && this.Definitions != null;
@@ -79,9 +80,13 @@ namespace NoSoliciting {
 
             Task.Run(async () => this.MlFilter = await MlFilter.Load(this))
                 .ContinueWith(e => {
-                    if (!e.IsFaulted) {
-                        PluginLog.Log("Machine learning model loaded");
+                    if (e.IsFaulted) {
+                        this.MlStatus = MlFilterStatus.Uninitialised;
+                        return;
                     }
+
+                    this.MlStatus = MlFilterStatus.Initialised;
+                    PluginLog.Log("Machine learning model loaded");
                 });
         }
 

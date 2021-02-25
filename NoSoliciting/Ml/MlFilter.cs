@@ -51,30 +51,41 @@ namespace NoSoliciting.Ml {
         }
 
         public static async Task<MlFilter?> Load(Plugin plugin) {
+            plugin.MlStatus = MlFilterStatus.DownloadingManifest;
+
             var manifest = await DownloadManifest();
             if (manifest == null) {
-                return null;
+                PluginLog.LogWarning("Could not download manifest. Will attempt to fall back on cached version.");
             }
 
             byte[]? data = null;
 
             var localManifest = LoadCachedManifest(plugin);
-            if (localManifest != null && localManifest.Version == manifest.Item1.Version) {
+            if (localManifest != null && (manifest?.Item1 == null || localManifest.Version == manifest.Item1.Version)) {
                 try {
                     data = File.ReadAllBytes(CachedFilePath(plugin, ModelName));
+                    manifest ??= Tuple.Create(localManifest, string.Empty);
                 } catch (IOException) {
                     // ignored
                 }
             }
 
-            data ??= await DownloadModel(manifest.Item1.ModelUrl);
+            if (!string.IsNullOrEmpty(manifest?.Item2)) {
+                plugin.MlStatus = MlFilterStatus.DownloadingModel;
+                data ??= await DownloadModel(manifest!.Item1!.ModelUrl);
+            }
 
             if (data == null) {
+                plugin.MlStatus = MlFilterStatus.Uninitialised;
                 return null;
             }
 
-            UpdateCachedFile(plugin, ModelName, data);
-            UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Item2));
+            plugin.MlStatus = MlFilterStatus.Initialising;
+
+            if (!string.IsNullOrEmpty(manifest!.Item2)) {
+                UpdateCachedFile(plugin, ModelName, data);
+                UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Item2));
+            }
 
             var pluginFolder = Util.PluginFolder(plugin);
 
@@ -89,8 +100,8 @@ namespace NoSoliciting.Ml {
             var client = await CreateClassifierClient(data);
 
             return new MlFilter(
-                manifest.Item1.Version,
-                manifest.Item1.ReportUrl,
+                manifest.Item1!.Version,
+                manifest.Item1!.ReportUrl,
                 process!,
                 client
             );
@@ -233,6 +244,29 @@ namespace NoSoliciting.Ml {
             } catch (Exception) {
                 // ignored
             }
+        }
+    }
+
+    public enum MlFilterStatus {
+        Uninitialised,
+        Preparing,
+        DownloadingManifest,
+        DownloadingModel,
+        Initialising,
+        Initialised,
+    }
+
+    public static class MlFilterStatusExt {
+        public static string Description(this MlFilterStatus status) {
+            return status switch {
+                MlFilterStatus.Uninitialised => "Uninitialised",
+                MlFilterStatus.Preparing => "Preparing to update model",
+                MlFilterStatus.DownloadingManifest => "Downloading model manifest",
+                MlFilterStatus.DownloadingModel => "Downloading model",
+                MlFilterStatus.Initialising => "Initialising model and classifier",
+                MlFilterStatus.Initialised => "Initialised",
+                _ => status.ToString(),
+            };
         }
     }
 }
