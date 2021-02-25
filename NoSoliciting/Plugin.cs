@@ -1,11 +1,9 @@
-﻿using Dalamud.Game.Command;
-using Dalamud.Plugin;
+﻿using Dalamud.Plugin;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
@@ -14,11 +12,12 @@ namespace NoSoliciting {
 
         public string Name => "NoSoliciting";
 
-        private PluginUi Ui { get; set; } = null!;
         private Filter Filter { get; set; } = null!;
 
         public DalamudPluginInterface Interface { get; private set; } = null!;
         public PluginConfiguration Config { get; private set; } = null!;
+        public PluginUi Ui { get; private set; } = null!;
+        public Commands Commands { get; private set; } = null!;
         public Definitions? Definitions { get; private set; }
         public MlFilter? MlFilter { get; set; }
         public bool MlReady => this.Config.UseMachineLearning && this.MlFilter != null;
@@ -34,12 +33,6 @@ namespace NoSoliciting {
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public string AssemblyLocation { get; private set; } = Assembly.GetExecutingAssembly().Location;
 
-        private const string LibraryName = "NoSoliciting.CursedWorkaround";
-
-        private AppDomain InnerDomain { get; set; } = null!;
-
-        public IClassifier Classifier { get; private set; } = null!;
-
         public void Initialize(DalamudPluginInterface pluginInterface) {
             string path = Environment.GetEnvironmentVariable("PATH")!;
             string newPath = Path.GetDirectoryName(this.AssemblyLocation)!;
@@ -47,6 +40,7 @@ namespace NoSoliciting {
 
             this.Interface = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
             this.Ui = new PluginUi(this);
+            this.Commands = new Commands(this);
 
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
@@ -61,12 +55,21 @@ namespace NoSoliciting {
 
             // pre-compute the max ilvl to prevent stutter
             FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
+        }
 
-            this.Interface.UiBuilder.OnBuildUi += this.Ui.Draw;
-            this.Interface.UiBuilder.OnOpenConfigUi += this.Ui.OpenSettings;
-            this.Interface.CommandManager.AddHandler("/prmt", new CommandInfo(this.OnCommand) {
-                HelpMessage = "Opens the NoSoliciting configuration",
-            });
+        protected virtual void Dispose(bool disposing) {
+            if (this._disposedValue) {
+                return;
+            }
+
+            if (disposing) {
+                this.Filter.Dispose();
+                this.MlFilter?.Dispose();
+                this.Commands.Dispose();
+                this.Ui.Dispose();
+            }
+
+            this._disposedValue = true;
         }
 
         internal void InitialiseMachineLearning() {
@@ -94,15 +97,6 @@ namespace NoSoliciting {
             });
         }
 
-        private void OnCommand(string command, string args) {
-            if (args == "report") {
-                this.Ui.OpenReporting();
-                return;
-            }
-
-            this.Ui.OpenSettings(null, null);
-        }
-
         public void AddMessageHistory(Message message) {
             this._messageHistory.Insert(0, message);
 
@@ -117,22 +111,6 @@ namespace NoSoliciting {
 
         public void AddPartyFinderHistory(Message message) {
             this._partyFinderHistory.Add(message);
-        }
-
-        protected virtual void Dispose(bool disposing) {
-            if (this._disposedValue) {
-                return;
-            }
-
-            if (disposing) {
-                this.Filter.Dispose();
-                this.MlFilter?.Dispose();
-                this.Interface.UiBuilder.OnBuildUi -= this.Ui.Draw;
-                this.Interface.UiBuilder.OnOpenConfigUi -= this.Ui.OpenSettings;
-                this.Interface.CommandManager.RemoveHandler("/prmt");
-            }
-
-            this._disposedValue = true;
         }
 
         public void Dispose() {

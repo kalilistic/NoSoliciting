@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
-    public class PluginUi {
+    public class PluginUi : IDisposable {
         private Plugin Plugin { get; }
         private ReportStatus LastReportStatus { get; set; } = ReportStatus.None;
 
@@ -33,18 +33,30 @@ namespace NoSoliciting {
         }
 
         public PluginUi(Plugin plugin) {
-            this.Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
+            this.Plugin = plugin;
+
+            this.Plugin.Interface.UiBuilder.OnBuildUi += this.Draw;
+            this.Plugin.Interface.UiBuilder.OnOpenConfigUi += this.OpenSettings;
         }
 
-        public void OpenSettings(object? sender, EventArgs? e) {
+        public void Dispose() {
+            this.Plugin.Interface.UiBuilder.OnOpenConfigUi -= this.OpenSettings;
+            this.Plugin.Interface.UiBuilder.OnBuildUi -= this.Draw;
+        }
+
+        private void OpenSettings(object? sender, EventArgs? e) {
             this.ShowSettings = true;
         }
 
-        public void OpenReporting() {
-            this.ShowReporting = true;
+        public void ToggleSettings() {
+            this.ShowSettings = !this.ShowSettings;
         }
 
-        public void Draw() {
+        public void ToggleReporting() {
+            this.ShowReporting = !this.ShowReporting;
+        }
+
+        private void Draw() {
             if (this.ShowSettings) {
                 this.DrawSettings();
             }
