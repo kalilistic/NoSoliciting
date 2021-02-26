@@ -1,19 +1,19 @@
+# THIS FILE IS DEPRECATED AND WILL NO LONGER RECEIVE UPDATES. Please
+# see the file called data.csv in NoSoliciting.Trainer for how to
+# update the new machine learning model that has replaced this file.
+
 # This file defines the filters that NoSoliciting will use for
 # built-in filters.
 
 # The version should be incremented for each commit including changes
 # to this file.
 
-# There are three main sections: chat, party_finder, and global. The
-# chat and party_finder sections are for their respective areas (the
-# chat log and the Party Finder window), and the global section
-# applies to both.
+# There are two main sections: chat and party_finder. The chat and
+# party_finder sections are for their respective areas (the chat log
+# and the Party Finder window).
 
 # Each subsection is a separate built-in filter that can be toggled on
-# and off. The option shown in the UI is defined in the
-# subsection. For global subsections, {} can be inserted into the
-# option name to substitute either "chat" or "Party Finder" as
-# appropriate.
+# and off. The option shown in the UI is defined in the subsection.
 
 # Subsections can have ignore_case (defaults to false) and normalise
 # (defaults to true) set. ignore_case will ignore casing for matching
@@ -28,8 +28,9 @@
 # channel is always None. An empty list (or missing channels key) will
 # ignore the channel.
 
-# Each subsection may specify whether it is enabled by default with the
-# default key. This should be used sparingly. This defaults to false.
+# Each subsection may specify whether it is enabled by default with
+# the default key. This should be used sparingly. This defaults to
+# false.
 
 # The real meat of the file is the matchers. There are two types of
 # matchers: required and likely. Both types have categories of strings
@@ -48,7 +49,7 @@
 # slower but more flexible, and they are specified by using a regex
 # key, as can be seen below.
 
-version: 67
+version: 68
 
 # This is the URL the plugin will POST reports to.
 report_url: https://nosol.annaclemens.io/report
@@ -147,161 +148,3 @@ party_finder:
         - ucob
         - regex: '\bex\b'
         - regex: e[1-9][0-2]?
-
-global:
-  roleplay:
-    option:
-      basic: 'Filter RP advertisements from {}'
-      advanced: 'Enable built-in {} RP filter'
-    ignore_case: true
-    likelihood_threshold: 3
-    likely_matchers:
-      # mentions housing wards
-      - - regex: '\bward'
-        - regex: 'w.{0,2}\d'
-      # mentions housing plots
-      - - plot
-        - apartment
-        - apt
-        - regex: 'p.{0,2}\d'
-        - regex: '\d{1,2}[^\d]{1,2}\d{1,2}'
-      # has a discord or website
-      - - discord.gg
-        - carrd.co
-        - discord.io
-        - tinyurl.com
-      # mentions roleplaying
-      - - rp
-        - roleplay
-        - role play
-      # mentions fairly rp-only keywords
-      - - sfw # also catches nsfw
-        - '18+'
-        - '18 +'
-        - open
-        - event
-        - venue
-        - hosting
-        - hiring
-      # has venue type
-      - - venue
-        - cafe
-        - café
-        - bar
-        - lounge
-        - brothel
-        - casino
-        - cabaret
-        - restaurant
-        - library
-        - bookstore
-        - book store
-        - hostel
-        - club
-        - bath
-        - frat
-        - sorority
-        - bazaar
-        - nook
-        - jazz
-        - nightlife
-        - regex: '\bnight\b'
-        - regex: '\bden\b'
-      # mentions services/activities
-      - - entertainment
-        - live
-        - raffle
-        - menu
-        - atmosphere
-        - drink
-        - food
-        - eat
-        - dance
-        - dancing
-        - music
-        - karaoke
-        - contest
-        - giveaway
-        - gambling
-        - cosplay
-        - bounty
-        - bounties
-        - adventur # adventuring, adventure, adventurer, etc.
-        - courtesan
-        - rp night
-        - maid
-        - cowboy
-        - merry
-        - girlfriend
-        - wife
-        - sleepover
-        - masquerade
-        - costume
-        - bread
-        - performance
-        - regex: '\ball.inclusive'
-        - regex: 'serve\b'
-      # specific RP names
-      - - Lucky Sevens
-  free_company:
-    option:
-      basic: 'Filter FC recruitments from {}'
-      advanced: 'Enable built-in {} FC recruitment filter'
-    ignore_case: true
-    channels:
-      - none
-      - shout
-      - yell
-      - tellincoming
-    likelihood_threshold: 3
-    likely_matchers:
-      # mentions free company
-      - - fc
-        - free company
-        - recruiting
-        - regex: '[<«][\w\-]+[>»]'
-      # contains a call to action
-      - - join
-        - apply
-        - dm
-        - pm
-        - whisper
-        - accept
-        - regex: '\btell'
-        - regex: '[ie]nquire'
-      # mentions benefits
-      - - discord
-        - map
-        - rank
-        - active
-        - weekly
-        - social
-        - friendly
-        - buff
-        - event
-        - level
-        - raid
-        - hunt
-        - trial
-        - dungeon
-      # has common keywords
-      - - family
-        - veteran
-        - seasoned
-        - help
-        - player
-        - new player
-        - new member
-        - new people
-        - new face
-        - characters
-        - looking for member
-        - looking for people
-        - lonely
-        - active member
-        - regex: '\bold\b'
-        - regex: '\bvets?\b'
-      # has common keywords 2
-      - - welcom
-        - invite
-        - ranked
