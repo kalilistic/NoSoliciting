@@ -23,6 +23,7 @@ namespace NoSoliciting.Trainer {
             "18",
             "come",
             "join",
+            "blu",
         };
 
         private static void Main(string[] args) {
