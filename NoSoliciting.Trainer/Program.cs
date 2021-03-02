@@ -174,7 +174,11 @@ namespace NoSoliciting.Trainer {
                 var row = new object[1 + confuse.Count];
                 row[0] = name;
                 for (var j = 0; j < confuse.Count; j++) {
-                    row[j + 1] = confuse[j];
+                    if (i == j) {
+                        row[j + 1] = $"= {confuse[j]} =";
+                    } else {
+                        row[j + 1] = confuse[j];
+                    }
                 }
 
                 table.AddRow(row);
