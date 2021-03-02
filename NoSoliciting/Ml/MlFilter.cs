@@ -134,8 +134,13 @@ namespace NoSoliciting.Ml {
             using var exe = Resource.AsStream("NoSoliciting.NoSoliciting.MessageClassifier.exe");
             Directory.CreateDirectory(pluginFolder);
             var exePath = Path.Combine(pluginFolder, "NoSoliciting.MessageClassifier.exe");
-            using var exeFile = File.Create(exePath);
-            await exe.CopyToAsync(exeFile);
+
+            try {
+                using var exeFile = File.Create(exePath);
+                await exe.CopyToAsync(exeFile);
+            } catch (IOException ex) {
+                PluginLog.LogWarning($"Could not update classifier. Continuing as normal.\n{ex}");
+            }
 
             return exePath;
         }
