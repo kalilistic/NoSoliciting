@@ -18,6 +18,7 @@ namespace NoSoliciting.MessageClassifier {
             }
 
             var gameName = args[1];
+            var pipeId = args[2];
 
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices(services => {
@@ -25,7 +26,7 @@ namespace NoSoliciting.MessageClassifier {
                 })
                 .ConfigureIpcHost(builder => {
                     builder.AddNamedPipeEndpoint<IClassifier>(options => {
-                        options.PipeName = "NoSoliciting.MessageClassifier";
+                        options.PipeName = $"NoSoliciting.MessageClassifier-{pipeId}";
                         options.Serializer = new BetterIpcSerialiser();
                     });
                 })
