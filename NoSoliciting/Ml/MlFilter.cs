@@ -89,15 +89,12 @@ namespace NoSoliciting.Ml {
 
             var pluginFolder = Util.PluginFolder(plugin);
 
-            var pidPath = Path.Combine(pluginFolder, "classifier.pid");
-
-            // close the old classifier if it's still open
-            CloseOldClassifier(pidPath);
-
             var exePath = await ExtractClassifier(pluginFolder);
 
-            var process = StartClassifier(exePath, pidPath);
-            var client = await CreateClassifierClient(data);
+            var pipeId = Guid.NewGuid();
+
+            var process = StartClassifier(exePath, pipeId);
+            var client = await CreateClassifierClient(pipeId, data);
 
             return new MlFilter(
                 manifest.Item1!.Version,
@@ -107,10 +104,10 @@ namespace NoSoliciting.Ml {
             );
         }
 
-        private static async Task<IIpcClient<IClassifier>> CreateClassifierClient(byte[] data) {
+        private static async Task<IIpcClient<IClassifier>> CreateClassifierClient(Guid pipeId, byte[] data) {
             var serviceProvider = new ServiceCollection()
                 .AddNamedPipeIpcClient<IClassifier>("client", (_, options) => {
-                    options.PipeName = "NoSoliciting.MessageClassifier";
+                    options.PipeName = $"NoSoliciting.MessageClassifier-{pipeId}";
                     options.Serializer = new BetterIpcSerialiser();
                 })
                 .BuildServiceProvider();
@@ -122,17 +119,15 @@ namespace NoSoliciting.Ml {
             return client;
         }
 
-        private static Process StartClassifier(string exePath, string pidPath) {
+        private static Process StartClassifier(string exePath, Guid pipeId) {
             var game = Process.GetCurrentProcess();
 
             var startInfo = new ProcessStartInfo(exePath) {
                 CreateNoWindow = true,
                 UseShellExecute = false,
-                Arguments = $"{game.Id} \"{game.ProcessName}\"",
+                Arguments = $"\"{game.Id}\" \"{game.ProcessName}\" \"{pipeId}\"",
             };
-            var process = Process.Start(startInfo);
-            File.WriteAllText(pidPath, process!.Id.ToString());
-            return process;
+            return Process.Start(startInfo)!;
         }
 
         private static async Task<string> ExtractClassifier(string pluginFolder) {
@@ -143,28 +138,6 @@ namespace NoSoliciting.Ml {
             await exe.CopyToAsync(exeFile);
 
             return exePath;
-        }
-
-        private static void CloseOldClassifier(string pidPath) {
-            if (!File.Exists(pidPath)) {
-                return;
-            }
-
-            if (!int.TryParse(File.ReadAllText(pidPath).Trim(), out var pid)) {
-                return;
-            }
-
-            try {
-                var old = Process.GetProcessById(pid);
-                if (old.ProcessName != "NoSoliciting.MessageClassifier.exe") {
-                    return;
-                }
-
-                old.Kill();
-                old.WaitForExit();
-            } catch (ArgumentException) {
-                // ignore
-            }
         }
 
         private static async Task<byte[]?> DownloadModel(Uri url) {
