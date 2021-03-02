@@ -73,7 +73,7 @@ namespace NoSoliciting.Trainer {
                     .ToList();
             }
 
-            using (var fileStream = new FileStream("../../../data.csv", FileMode.Create)) {
+            using (var fileStream = new FileStream(path, FileMode.Create)) {
                 using var stream = new StreamWriter(fileStream);
                 using var csv = new CsvWriter(stream, new CsvConfiguration(CultureInfo.InvariantCulture) {
                     NewLine = "\n",
