@@ -1,0 +1,17 @@
+image: fedora
+packages:
+  - dotnet
+sources:
+  - git@git.sr.ht:~jkcclemens/NoSoliciting
+tasks:
+  - build: |
+      cd NoSoliciting/NoSoliciting.Trainer
+      dotnet build -c Release
+  - test: |
+      cd NoSoliciting/NoSoliciting.Trainer
+      ./bin/Release/net5/NoSoliciting.Trainer test data.csv
+  - create-model: |
+      cd NoSoliciting/NoSoliciting.Trainer
+      ./bin/Release/net5/NoSoliciting.Trainer create-model data.csv
+artifacts:
+  - NoSoliciting/NoSoliciting.Trainer/model.zip
