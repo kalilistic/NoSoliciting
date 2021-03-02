@@ -10,6 +10,7 @@ namespace NoSoliciting.Ml {
         RmtGil,
         Roleplaying,
         Static,
+        Community,
     }
 
     public static class MessageCategoryExt {
@@ -22,6 +23,7 @@ namespace NoSoliciting.Ml {
             "RMT_G" => MessageCategory.RmtGil,
             "RP" => MessageCategory.Roleplaying,
             "STATIC" => MessageCategory.Static,
+            "COMMUNITY" => MessageCategory.Community,
             _ => null,
         };
 
@@ -34,6 +36,20 @@ namespace NoSoliciting.Ml {
             MessageCategory.RmtGil => "RMT (gil)",
             MessageCategory.Roleplaying => "Roleplaying ads",
             MessageCategory.Static => "Static recruitment",
+            MessageCategory.Community => "Community ads",
+            _ => throw new ArgumentException("Invalid category", nameof(category)),
+        };
+
+        public static string Description(this MessageCategory category) => category switch {
+            MessageCategory.Trade => "Messages advertising trading items or services for gil, such as omnicrafters looking for work or people selling rare items off the market board",
+            MessageCategory.FreeCompany => "Advertisements for Free Companies",
+            MessageCategory.Normal => "Normal messages that should not be filtered",
+            MessageCategory.Phishing => "Messages trying to trick you into revealing your account details in order to steal your account",
+            MessageCategory.RmtContent => "Real-money trade involving content (also known as content sellers)",
+            MessageCategory.RmtGil => "Real-money trade involving gil or items (also known as RMT bots)",
+            MessageCategory.Roleplaying => "Advertisements for personal RP, RP communities, venues, or anything else related to roleplaying",
+            MessageCategory.Static => "Statics looking for members or members looking for a static",
+            MessageCategory.Community => "Advertisements for general-purpose communities, generally Discord servers",
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
     }

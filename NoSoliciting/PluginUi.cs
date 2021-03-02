@@ -268,6 +268,16 @@ namespace NoSoliciting {
 
                     this.Plugin.Config.Save();
                 }
+
+                if (!ImGui.IsItemHovered()) {
+                    continue;
+                }
+
+                ImGui.BeginTooltip();
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 24);
+                ImGui.TextUnformatted(category.Description());
+                ImGui.PopTextWrapPos();
+                ImGui.EndTooltip();
             }
 
             ImGui.EndTabItem();
