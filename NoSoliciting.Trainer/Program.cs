@@ -26,8 +26,21 @@ namespace NoSoliciting.Trainer {
             "blu",
         };
 
+        private enum Mode {
+            Test,
+            CreateModel,
+            Interactive,
+            InteractiveFull,
+        }
+
         private static void Main(string[] args) {
-            var full = args[0] == "create";
+            var mode = args[0] switch {
+                "test" => Mode.Test,
+                "create-model" => Mode.CreateModel,
+                "interactive" => Mode.Interactive,
+                "interactive-full" => Mode.InteractiveFull,
+                _ => throw new ArgumentException("invalid argument"),
+            };
             var path = "../../../data.csv";
 
             if (args.Length > 1) {
@@ -121,11 +134,16 @@ namespace NoSoliciting.Trainer {
                 .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight"))
                 .Append(ctx.Transforms.Conversion.MapKeyToValue("PredictedLabel"));
 
-            var train = full ? df : ttd.TrainSet;
+            var train = mode switch {
+                Mode.Test => ttd.TrainSet,
+                Mode.CreateModel => df,
+                Mode.Interactive => ttd.TrainSet,
+                Mode.InteractiveFull => df,
+            };
 
             var model = pipeline.Fit(train);
 
-            if (full) {
+            if (mode == Mode.CreateModel) {
                 var savePath = Path.Join(parentDir.FullName, "model.zip");
                 ctx.Model.Save(model, train.Schema, savePath);
             }
@@ -168,8 +186,10 @@ namespace NoSoliciting.Trainer {
             Console.WriteLine($"Macro acc: {eval.MacroAccuracy * 100}");
             Console.WriteLine($"Micro acc: {eval.MicroAccuracy * 100}");
 
-            if (full) {
-                return;
+            switch (mode) {
+                case Mode.Test:
+                case Mode.CreateModel:
+                    return;
             }
 
             while (true) {
