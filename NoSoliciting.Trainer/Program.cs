@@ -28,12 +28,19 @@ namespace NoSoliciting.Trainer {
 
         private static void Main(string[] args) {
             var full = args[0] == "create";
+            var path = "../../../data.csv";
+
+            if (args.Length > 1) {
+                path = args[1];
+            }
+
+            var parentDir = Directory.GetParent(path);
 
             var ctx = new MLContext(1);
 
             List<Data> records;
 
-            using (var fileStream = new FileStream("../../../data.csv", FileMode.Open)) {
+            using (var fileStream = new FileStream(path, FileMode.Open)) {
                 using var stream = new StreamReader(fileStream);
                 using var csv = new CsvReader(stream, new CsvConfiguration(CultureInfo.InvariantCulture) {
                     HeaderValidated = null,
@@ -119,7 +126,8 @@ namespace NoSoliciting.Trainer {
             var model = pipeline.Fit(train);
 
             if (full) {
-                ctx.Model.Save(model, train.Schema, @"../../../model.zip");
+                var savePath = Path.Join(parentDir.FullName, "model.zip");
+                ctx.Model.Save(model, train.Schema, savePath);
             }
 
             var testPredictions = model.Transform(ttd.TestSet);
