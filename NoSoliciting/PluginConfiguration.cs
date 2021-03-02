@@ -87,6 +87,9 @@ namespace NoSoliciting {
             [MessageCategory.Trade] = new HashSet<ChatType> {
                 ChatType.None,
             },
+            [MessageCategory.Community] = new HashSet<ChatType> {
+                ChatType.None,
+            },
         };
 
         public bool LogFilteredPfs { get; set; } = true;
@@ -120,10 +123,12 @@ namespace NoSoliciting {
                     return false;
                 }
             } else {
+                // check to see if the user has this category filtered
                 if (!this.BasicMlFilters.Contains(category)) {
                     return false;
                 }
 
+                // get the chat types that this category is enabled on by default
                 if (!Default.MlFilters.TryGetValue(category, out filtered)) {
                     return false;
                 }
