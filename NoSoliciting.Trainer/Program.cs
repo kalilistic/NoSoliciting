@@ -184,6 +184,9 @@ namespace NoSoliciting.Trainer {
                 table.AddRow(row);
             }
 
+            Console.WriteLine("Rows are expected classification and columns are actual classification.");
+            Console.WriteLine();
+
             Console.WriteLine(table.ToString());
 
             Console.WriteLine($"Log loss : {eval.LogLoss * 100}");
