@@ -341,16 +341,16 @@ namespace NoSoliciting {
             }
 
             if (this.Plugin.Definitions != null) {
-                ImGui.Text($"Version: {this.Plugin.Definitions.Version}");
+                ImGui.TextUnformatted($"Version: {this.Plugin.Definitions.Version}");
             }
 
             if (Definitions.LastUpdate != null) {
-                ImGui.Text($"Last update: {Definitions.LastUpdate}");
+                ImGui.TextUnformatted($"Last update: {Definitions.LastUpdate}");
             }
 
             var error = Definitions.LastError;
             if (error != null) {
-                ImGui.Text($"Last error: {error}");
+                ImGui.TextUnformatted($"Last error: {error}");
             }
 
             if (ImGui.Button("Update definitions")) {
@@ -363,7 +363,7 @@ namespace NoSoliciting {
         private void DrawCustom(string name, ref List<string> substrings, ref List<string> regexes) {
             ImGui.Columns(2);
 
-            ImGui.Text("Substrings to filter");
+            ImGui.TextUnformatted("Substrings to filter");
             if (ImGui.BeginChild($"##{name}-substrings", new Vector2(0, 175))) {
                 for (var i = 0; i < substrings.Count; i++) {
                     var input = substrings[i];
@@ -394,7 +394,7 @@ namespace NoSoliciting {
 
             ImGui.NextColumn();
 
-            ImGui.Text("Regular expressions to filter");
+            ImGui.TextUnformatted("Regular expressions to filter");
             if (ImGui.BeginChild($"##{name}-regexes", new Vector2(0, 175))) {
                 for (var i = 0; i < regexes.Count; i++) {
                     var input = regexes[i];
@@ -459,7 +459,7 @@ namespace NoSoliciting {
                 return;
             }
 
-            ImGui.Text("Click on one of the entries below to report it to the developer as miscategorised.");
+            ImGui.TextUnformatted("Click on one of the entries below to report it to the developer as miscategorised.");
 
             if (this.LastReportStatus != ReportStatus.None) {
                 var status = this.LastReportStatus switch {
@@ -468,7 +468,7 @@ namespace NoSoliciting {
                     ReportStatus.InProgress => "sending",
                     _ => "unknown",
                 };
-                ImGui.Text($"Last report status: {status}");
+                ImGui.TextUnformatted($"Last report status: {status}");
             }
 
             ImGui.Separator();
