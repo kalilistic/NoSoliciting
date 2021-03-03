@@ -48,6 +48,9 @@ namespace NoSoliciting.Trainer {
             }
 
             var parentDir = Directory.GetParent(path);
+            if (parentDir == null) {
+                throw new ArgumentException("data.csv did not have a parent directory");
+            }
 
             var ctx = new MLContext(1);
 
@@ -139,6 +142,7 @@ namespace NoSoliciting.Trainer {
                 Mode.CreateModel => df,
                 Mode.Interactive => ttd.TrainSet,
                 Mode.InteractiveFull => df,
+                _ => throw new ArgumentOutOfRangeException($"mode {mode} not handled"),
             };
 
             var model = pipeline.Fit(train);
