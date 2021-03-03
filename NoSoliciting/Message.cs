@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Data;
 using Lumina.Excel.GeneratedSheets;
+#if DEBUG
+using System.Text;
+using NoSoliciting.Ml;
+#endif
 
 namespace NoSoliciting {
     public class Message {
@@ -74,6 +78,25 @@ namespace NoSoliciting {
                 TypeNameHandling = TypeNameHandling.None,
             });
         }
+
+        #if DEBUG
+        public StringBuilder ToCsv(StringBuilder? builder = null) {
+            builder ??= new StringBuilder();
+
+            var category = MessageCategoryExt.FromName(this.FilterReason) ?? MessageCategory.Normal;
+
+            builder.Append(category.ToModelName());
+            builder.Append(',');
+            builder.Append((int) this.ChatType);
+            builder.Append(",\"");
+            builder.Append(this.Content.TextValue
+                .Replace("\"", "\"\"")
+                .Replace("\r", " "));
+            builder.Append('"');
+
+            return builder;
+        }
+        #endif
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1028:Enum Storage should be Int32")]

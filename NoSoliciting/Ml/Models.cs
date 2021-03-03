@@ -27,6 +27,36 @@ namespace NoSoliciting.Ml {
             _ => null,
         };
 
+        #if DEBUG
+
+        public static string ToModelName(this MessageCategory category) => category switch {
+            MessageCategory.Trade => "TRADE",
+            MessageCategory.FreeCompany => "FC",
+            MessageCategory.Normal => "NORMAL",
+            MessageCategory.Phishing => "PHISH",
+            MessageCategory.RmtContent => "RMT_C",
+            MessageCategory.RmtGil => "RMT_G",
+            MessageCategory.Roleplaying => "RP",
+            MessageCategory.Static => "STATIC",
+            MessageCategory.Community => "COMMUNITY",
+            _ => throw new ArgumentException("Invalid category", nameof(category)),
+        };
+
+        public static MessageCategory? FromName(string? category) => category switch {
+            "Trade ads" => MessageCategory.Trade,
+            "Free Company ads" => MessageCategory.FreeCompany,
+            "Normal messages" => MessageCategory.Normal,
+            "Phishing messages" => MessageCategory.Phishing,
+            "RMT (content)" => MessageCategory.RmtContent,
+            "RMT (gil)" => MessageCategory.RmtGil,
+            "Roleplaying ads" => MessageCategory.Roleplaying,
+            "Static recruitment" => MessageCategory.Static,
+            "Community ads" => MessageCategory.Community,
+            _ => null,
+        };
+
+        #endif
+
         public static string Name(this MessageCategory category) => category switch {
             MessageCategory.Trade => "Trade ads",
             MessageCategory.FreeCompany => "Free Company ads",
