@@ -204,7 +204,9 @@ namespace NoSoliciting.Trainer {
 
                 var parts = msg.Split(' ', 2);
 
-                ushort.TryParse(parts[0], out var channel);
+                if (parts.Length < 2 || !ushort.TryParse(parts[0], out var channel)) {
+                    continue;
+                }
 
                 var input = new Data(channel, parts[1]);
                 var pred = predEngine.Predict(input);
