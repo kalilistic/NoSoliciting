@@ -9,6 +9,9 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Numerics;
+#if DEBUG
+using System.Text;
+#endif
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NoSoliciting.Ml;
@@ -529,6 +532,22 @@ namespace NoSoliciting {
                 }
 
                 if (ImGui.BeginTabItem("Party Finder##pf-report")) {
+                    #if DEBUG
+                    if (ImGui.Button("Copy CSV")) {
+                        var builder = new StringBuilder();
+
+                        foreach (var message in this.Plugin.PartyFinderHistory) {
+                            if (message.FilterReason == null) {
+                                continue;
+                            }
+
+                            message.ToCsv(builder).Append('\n');
+                        }
+
+                        ImGui.SetClipboardText(builder.ToString());
+                    }
+                    #endif
+
                     float[] maxSizes = {0f, 0f, 0f};
 
                     if (ImGui.BeginChild("##pf-messages", new Vector2(-1, -1))) {
@@ -642,6 +661,13 @@ namespace NoSoliciting {
             if (ImGui.Button("Copy to clipboard")) {
                 ImGui.SetClipboardText(message.Content.TextValue);
             }
+
+            #if DEBUG
+            ImGui.SameLine();
+            if (ImGui.Button("Copy CSV")) {
+                ImGui.SetClipboardText(message.ToCsv().ToString());
+            }
+            #endif
 
             ImGui.SameLine();
 
