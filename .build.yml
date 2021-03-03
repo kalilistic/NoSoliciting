@@ -2,7 +2,9 @@ image: fedora/latest
 packages:
   - dotnet
 sources:
-  - git@git.sr.ht:~jkcclemens/NoSoliciting
+  - https://git.sr.ht/~jkcclemens/NoSoliciting
+secrets:
+  - 92fe0dd0-db40-41e0-903a-a18489f75548
 tasks:
   - build: |
       cd NoSoliciting/NoSoliciting.Trainer
@@ -13,5 +15,7 @@ tasks:
   - create-model: |
       cd NoSoliciting/NoSoliciting.Trainer
       ./bin/Release/net5/NoSoliciting.Trainer create-model data.csv
+  - update-model: |
+      ssh -o 'StrictHostKeyChecking=accept-new' actions@warm.kitteh.space update_model < NoSoliciting/NoSoliciting.Trainer/model.zip
 artifacts:
   - NoSoliciting/NoSoliciting.Trainer/model.zip
