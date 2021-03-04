@@ -28,11 +28,11 @@ namespace NoSoliciting {
             }
 
             if (args == "report") {
-                this.Plugin.Ui.ToggleReporting();
+                this.Plugin.Ui.Report.Toggle();
                 return;
             }
 
-            this.Plugin.Ui.ToggleSettings();
+            this.Plugin.Ui.Settings.Toggle();
         }
     }
 }
