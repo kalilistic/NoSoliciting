@@ -8,14 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="ConsoleTables" Version="2.4.2" />
-      <PackageReference Include="CsvHelper" Version="22.1.2" />
-      <PackageReference Include="Microsoft.ML" Version="1.5.4" />
+        <PackageReference Include="ConsoleTables" Version="2.4.2"/>
+        <PackageReference Include="CsvHelper" Version="26.0.0"/>
+        <PackageReference Include="Microsoft.ML" Version="1.5.4"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj" />
-      <ProjectReference Include="..\NoSoliciting.Internal.Interface\NoSoliciting.Internal.Interface.csproj" />
+        <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj"/>
+        <ProjectReference Include="..\NoSoliciting.Internal.Interface\NoSoliciting.Internal.Interface.csproj"/>
     </ItemGroup>
 
 </Project>
