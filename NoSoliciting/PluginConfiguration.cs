@@ -12,8 +12,7 @@ namespace NoSoliciting {
     public class PluginConfiguration : IPluginConfiguration {
         public static readonly PluginConfiguration Default = new();
 
-        [NonSerialized]
-        private DalamudPluginInterface pi;
+        private DalamudPluginInterface Interface { get; set; } = null!;
 
         public int Version { get; set; } = 1;
 
@@ -98,12 +97,12 @@ namespace NoSoliciting {
         public bool ConsiderPrivatePfs { get; set; }
 
         public void Initialise(DalamudPluginInterface pi) {
-            this.pi = pi ?? throw new ArgumentNullException(nameof(pi), "DalamudPluginInterface cannot be null");
+            this.Interface = pi;
             this.CompileRegexes();
         }
 
         public void Save() {
-            this.pi.SavePluginConfig(this);
+            this.Interface.SavePluginConfig(this);
         }
 
         public void CompileRegexes() {
