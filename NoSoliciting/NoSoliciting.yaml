@@ -11,6 +11,7 @@ description: |-
   - Phishing messages
   - Static recruitment
   - Trade ads
+  - Community ads
   - Any PF with an item level over the max
 repo_url: https://git.sr.ht/~jkcclemens/NoSoliciting
 # Use higher priority to filter messages before other plugins get them.
