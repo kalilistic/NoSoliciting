@@ -78,7 +78,7 @@ namespace NoSoliciting.Ml {
             MessageCategory.RmtContent => "Real-money trade involving content (also known as content sellers)",
             MessageCategory.RmtGil => "Real-money trade involving gil or items (also known as RMT bots)",
             MessageCategory.Roleplaying => "Advertisements for personal RP, RP communities, venues, or anything else related to roleplaying",
-            MessageCategory.Static => "Statics looking for members or members looking for a static",
+            MessageCategory.Static => "Statics looking for members, members looking for a static, or statics looking for a fill",
             MessageCategory.Community => "Advertisements for general-purpose communities, generally Discord servers",
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
