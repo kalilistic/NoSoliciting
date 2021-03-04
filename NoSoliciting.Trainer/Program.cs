@@ -65,6 +65,8 @@ namespace NoSoliciting.Trainer {
                     .GetRecords<Data>()
                     .Select(rec => {
                         rec.Message = rec.Message
+                            .Replace("", "") // auto-translate start
+                            .Replace("", "") // auto-translate end
                             .Replace("\r\n", " ")
                             .Replace("\r", " ")
                             .Replace("\n", " ");
