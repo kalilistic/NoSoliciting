@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Dalamud.Game.Chat.SeStringHandling;
 
 namespace NoSoliciting {
     public static class PacketInfo {
@@ -95,17 +96,17 @@ namespace NoSoliciting {
         // 160 (0xA0) with name (32 bytes/0x20)
         // 352 (0x160) with both (192 bytes/0xC0)
 
-        private static string HandleString(IEnumerable<byte> bytes) {
+        private static SeString HandleString(SeStringManager manager, IEnumerable<byte> bytes) {
             var nonNull = bytes.TakeWhile(b => b != 0).ToArray();
-            return Encoding.UTF8.GetString(nonNull);
+            return manager.Parse(nonNull);
         }
 
-        internal string Name() {
-            return HandleString(this.name);
+        internal SeString Name(SeStringManager manager) {
+            return HandleString(manager, this.name);
         }
 
-        internal string Description() {
-            return HandleString(this.description);
+        internal SeString Description(SeStringManager manager) {
+            return HandleString(manager, this.description);
         }
 
         internal bool IsNull() {
