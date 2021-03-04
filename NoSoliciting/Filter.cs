@@ -217,7 +217,11 @@ namespace NoSoliciting {
                     continue;
                 }
 
-                var desc = listing.Description();
+                var rawName = listing.Name(this.Plugin.Interface.SeStringManager);
+                var rawDesc = listing.Description(this.Plugin.Interface.SeStringManager);
+
+                var name = rawName.TextValue;
+                var desc = rawDesc.TextValue;
 
                 string? reason = null;
 
@@ -245,8 +249,8 @@ namespace NoSoliciting {
                 this.Plugin.AddPartyFinderHistory(new Message(
                     this.Plugin.MlFilter.Version,
                     ChatType.None,
-                    listing.Name(),
-                    listing.Description(),
+                    rawName,
+                    rawDesc,
                     true,
                     reason
                 ));
@@ -259,7 +263,7 @@ namespace NoSoliciting {
                 packet.listings[i] = new PfListing();
 
                 if (this.Plugin.Config.LogFilteredPfs) {
-                    PluginLog.Log($"Filtered PF listing from {listing.Name()} ({reason}): {listing.Description()}");
+                    PluginLog.Log($"Filtered PF listing from {name} ({reason}): {desc}");
                 }
             }
 
@@ -301,7 +305,11 @@ namespace NoSoliciting {
                     continue;
                 }
 
-                var desc = listing.Description();
+                var rawName = listing.Name(this.Plugin.Interface.SeStringManager);
+                var rawDesc = listing.Description(this.Plugin.Interface.SeStringManager);
+
+                var name = rawName.TextValue;
+                var desc = rawDesc.TextValue;
 
                 string? reason = null;
                 var filter = false;
@@ -325,8 +333,8 @@ namespace NoSoliciting {
                 this.Plugin.AddPartyFinderHistory(new Message(
                     this.Plugin.Definitions.Version,
                     ChatType.None,
-                    listing.Name(),
-                    listing.Description(),
+                    rawName,
+                    rawDesc,
                     false,
                     reason
                 ));
@@ -339,7 +347,7 @@ namespace NoSoliciting {
                 packet.listings[i] = new PfListing();
 
                 if (this.Plugin.Config.LogFilteredPfs) {
-                    PluginLog.Log($"Filtered PF listing from {listing.Name()} ({reason}): {listing.Description()}");
+                    PluginLog.Log($"Filtered PF listing from {name} ({reason}): {desc}");
                 }
             }
 
