@@ -16,6 +16,10 @@ tasks:
       cd NoSoliciting/NoSoliciting.Trainer
       ./bin/Release/net5/NoSoliciting.Trainer create-model data.csv
   - update-model: |
-      ssh -o 'StrictHostKeyChecking=accept-new' actions@warm.kitteh.space update_model < NoSoliciting/NoSoliciting.Trainer/model.zip
+      cd NoSoliciting
+      LAST_COMMIT=$(ssh -o 'StrictHostKeyChecking=accept-new' actions@warm.kitteh.space model commit)
+      if [ "$LAST_COMMIT" = 'None' ] || git diff-tree --no-commit-id --name-only -r "$LAST_COMMIT"..HEAD | grep '^NoSoliciting\.Trainer/data\.csv'; then
+          ssh actions@warm.kitteh.space model update < NoSoliciting.Trainer/model.zip
+      fi
 artifacts:
   - NoSoliciting/NoSoliciting.Trainer/model.zip
