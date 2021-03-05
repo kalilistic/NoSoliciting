@@ -24,6 +24,7 @@ namespace NoSoliciting.Trainer {
             "come",
             "join",
             "blu",
+            "mounts",
         };
 
         private enum Mode {
