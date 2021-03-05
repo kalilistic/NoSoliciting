@@ -196,11 +196,11 @@ namespace NoSoliciting.Interface {
 
                 var types = this.Plugin.Config.MlFilters[category];
 
-                void DrawTypes(ChatType type) {
+                void DrawTypes(ChatType type, string id) {
                     var name = type.Name(this.Plugin.Interface.Data);
 
                     var check = types.Contains(type);
-                    if (!ImGui.Checkbox(name, ref check)) {
+                    if (!ImGui.Checkbox($"{name}##{id}", ref check)) {
                         return;
                     }
 
@@ -213,10 +213,10 @@ namespace NoSoliciting.Interface {
                     this.Plugin.Config.Save();
                 }
 
-                DrawTypes(ChatType.None);
+                DrawTypes(ChatType.None, category.ToString());
 
                 foreach (var type in Filter.FilteredChatTypes) {
-                    DrawTypes(type);
+                    DrawTypes(type, category.ToString());
                 }
             }
 
