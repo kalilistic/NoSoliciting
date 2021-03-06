@@ -52,7 +52,7 @@ namespace NoSoliciting {
             this.Filter = new Filter(this);
 
             if (this.Config.UseMachineLearning) {
-                this.InitialiseMachineLearning();
+                this.InitialiseMachineLearning(false);
             }
 
             // pre-compute the max ilvl to prevent stutter
@@ -74,12 +74,12 @@ namespace NoSoliciting {
             this._disposedValue = true;
         }
 
-        internal void InitialiseMachineLearning() {
+        internal void InitialiseMachineLearning(bool showWindow) {
             if (this.MlFilter != null) {
                 return;
             }
 
-            Task.Run(async () => this.MlFilter = await MlFilter.Load(this))
+            Task.Run(async () => this.MlFilter = await MlFilter.Load(this, showWindow))
                 .ContinueWith(e => {
                     if (e.IsFaulted) {
                         this.MlStatus = MlFilterStatus.Uninitialised;

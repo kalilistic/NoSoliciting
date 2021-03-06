@@ -52,7 +52,7 @@ namespace NoSoliciting.Interface {
                 this.Plugin.Config.Save();
 
                 if (this.Plugin.Config.UseMachineLearning) {
-                    this.Plugin.InitialiseMachineLearning();
+                    this.Plugin.InitialiseMachineLearning(false);
                 }
             }
 
@@ -129,7 +129,7 @@ namespace NoSoliciting.Interface {
                     this.Plugin.MlFilter?.Dispose();
                     this.Plugin.MlFilter = null;
                     this.Plugin.MlStatus = MlFilterStatus.Uninitialised;
-                    this.Plugin.InitialiseMachineLearning();
+                    this.Plugin.InitialiseMachineLearning(ImGui.GetIO().KeyAlt);
                 }
             }
 
