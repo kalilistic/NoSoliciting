@@ -50,7 +50,7 @@ namespace NoSoliciting.Ml {
             return MessageCategory.Normal;
         }
 
-        public static async Task<MlFilter?> Load(Plugin plugin) {
+        public static async Task<MlFilter?> Load(Plugin plugin, bool showWindow) {
             plugin.MlStatus = MlFilterStatus.DownloadingManifest;
 
             var manifest = await DownloadManifest();
@@ -93,7 +93,7 @@ namespace NoSoliciting.Ml {
 
             var pipeId = Guid.NewGuid();
 
-            var process = StartClassifier(exePath, pipeId);
+            var process = StartClassifier(exePath, pipeId, showWindow);
             var client = await CreateClassifierClient(pipeId, data);
 
             return new MlFilter(
@@ -119,11 +119,11 @@ namespace NoSoliciting.Ml {
             return client;
         }
 
-        private static Process StartClassifier(string exePath, Guid pipeId) {
+        private static Process StartClassifier(string exePath, Guid pipeId, bool showWindow) {
             var game = Process.GetCurrentProcess();
 
             var startInfo = new ProcessStartInfo(exePath) {
-                CreateNoWindow = true,
+                CreateNoWindow = !showWindow,
                 UseShellExecute = false,
                 Arguments = $"\"{game.Id}\" \"{game.ProcessName}\" \"{pipeId}\"",
             };
