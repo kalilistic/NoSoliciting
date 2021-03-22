@@ -25,6 +25,7 @@ namespace NoSoliciting.Trainer {
             "join",
             "blu",
             "mounts",
+            "ffxiv",
         };
 
         private enum Mode {
