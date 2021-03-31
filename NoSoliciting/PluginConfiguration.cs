@@ -83,6 +83,9 @@ namespace NoSoliciting {
             [MessageCategory.Static] = new HashSet<ChatType> {
                 ChatType.None,
             },
+            [MessageCategory.StaticSub] = new HashSet<ChatType> {
+                ChatType.None,
+            },
             [MessageCategory.Trade] = new HashSet<ChatType> {
                 ChatType.None,
             },
