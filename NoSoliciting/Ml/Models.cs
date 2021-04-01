@@ -15,6 +15,18 @@ namespace NoSoliciting.Ml {
     }
 
     public static class MessageCategoryExt {
+        public static readonly MessageCategory[] UiOrder = {
+            MessageCategory.Trade,
+            MessageCategory.FreeCompany,
+            MessageCategory.Phishing,
+            MessageCategory.RmtContent,
+            MessageCategory.RmtGil,
+            MessageCategory.Roleplaying,
+            MessageCategory.Static,
+            MessageCategory.StaticSub,
+            MessageCategory.Community,
+        };
+
         public static MessageCategory? FromString(string? category) => category switch {
             "TRADE" => MessageCategory.Trade,
             "FC" => MessageCategory.FreeCompany,

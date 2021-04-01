@@ -141,11 +141,7 @@ namespace NoSoliciting.Interface {
                 return;
             }
 
-            foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
-                if (category == MessageCategory.Normal) {
-                    continue;
-                }
-
+            foreach (var category in MessageCategoryExt.UiOrder) {
                 var check = this.Plugin.Config.BasicMlFilters.Contains(category);
                 if (ImGui.Checkbox(category.Name(), ref check)) {
                     if (check) {
@@ -181,11 +177,7 @@ namespace NoSoliciting.Interface {
             ImGui.TextUnformatted("The machine learning model was trained with certain channels in mind.");
             ImGui.PopStyleColor();
 
-            foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
-                if (category == MessageCategory.Normal) {
-                    continue;
-                }
-
+            foreach (var category in MessageCategoryExt.UiOrder) {
                 if (!ImGui.CollapsingHeader(category.Name())) {
                     continue;
                 }
