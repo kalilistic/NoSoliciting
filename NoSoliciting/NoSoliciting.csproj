@@ -36,7 +36,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="DalamudPackager" Version="1.2.0"/>
-        <PackageReference Include="Fody" Version="6.3.0">
+        <PackageReference Include="Fody" Version="6.5.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -44,7 +44,7 @@
         <PackageReference Include="JKang.IpcServiceFramework.Client.NamedPipe" Version="3.1.0"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1"/>
         <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all"/>
-        <PackageReference Include="YamlDotNet" Version="9.1.4"/>
+        <PackageReference Include="YamlDotNet" Version="10.1.0"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\Resources.Designer.cs">
