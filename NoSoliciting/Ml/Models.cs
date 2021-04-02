@@ -2,16 +2,16 @@
 
 namespace NoSoliciting.Ml {
     public enum MessageCategory {
-        Trade = 0,
-        FreeCompany = 1,
-        Normal = 2,
-        Phishing = 3,
-        RmtContent = 4,
-        RmtGil = 5,
-        Roleplaying = 6,
-        Static = 7,
-        StaticSub = 9,
-        Community = 8,
+        Trade,
+        FreeCompany,
+        Normal,
+        Phishing,
+        RmtContent,
+        RmtGil,
+        Roleplaying,
+        Static,
+        Community,
+        StaticSub,
     }
 
     public static class MessageCategoryExt {
