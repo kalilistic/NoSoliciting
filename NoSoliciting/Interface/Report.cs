@@ -6,8 +6,8 @@ using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using Dalamud.Game.Chat.SeStringHandling;
-using Dalamud.Game.Chat.SeStringHandling.Payloads;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin;
 using ImGuiNET;
 

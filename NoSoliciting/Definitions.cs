@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Dalamud.Game.Chat;
+using Dalamud.Game.Text;
 using Dalamud.Plugin;
 using NoSoliciting.Interface;
 using NoSoliciting.Properties;
