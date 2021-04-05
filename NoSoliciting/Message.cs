@@ -1,12 +1,12 @@
-﻿using Dalamud.Game.Chat;
-using Dalamud.Game.Chat.SeStringHandling;
-using Dalamud.Game.Chat.SeStringHandling.Payloads;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Data;
+using Dalamud.Game.Text;
+using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Lumina.Excel.GeneratedSheets;
 #if DEBUG
 using System.Text;

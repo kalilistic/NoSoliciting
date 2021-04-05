@@ -1,10 +1,10 @@
-﻿using Dalamud.Game.Chat;
-using Dalamud.Game.Chat.SeStringHandling;
-using Dalamud.Hooking;
+﻿using Dalamud.Hooking;
 using Dalamud.Plugin;
 using System;
 using Dalamud.Game.Internal.Gui;
 using Dalamud.Game.Internal.Gui.Structs;
+using Dalamud.Game.Text;
+using Dalamud.Game.Text.SeStringHandling;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
