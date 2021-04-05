@@ -3,7 +3,7 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
-        <Version>1.8.0</Version>
+        <Version>1.8.1</Version>
         <TargetFramework>net48</TargetFramework>
         <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
         <PlatformTarget>x64</PlatformTarget>
@@ -35,16 +35,16 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="1.2.1" />
+        <PackageReference Include="DalamudPackager" Version="1.2.1"/>
         <PackageReference Include="Fody" Version="6.5.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
-        <PackageReference Include="JKang.IpcServiceFramework.Client.NamedPipe" Version="3.1.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-        <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all" />
-        <PackageReference Include="YamlDotNet" Version="11.0.1" />
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2"/>
+        <PackageReference Include="JKang.IpcServiceFramework.Client.NamedPipe" Version="3.1.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1"/>
+        <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all"/>
+        <PackageReference Include="YamlDotNet" Version="11.0.1"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\Resources.Designer.cs">
@@ -58,9 +58,9 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        <EmbeddedResource Include="..\NoSoliciting.MessageClassifier\bin\Release\net48\NoSoliciting.MessageClassifier.exe" />
+        <EmbeddedResource Include="..\NoSoliciting.MessageClassifier\bin\Release\net48\NoSoliciting.MessageClassifier.exe"/>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj" />
+        <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj"/>
     </ItemGroup>
 </Project>
