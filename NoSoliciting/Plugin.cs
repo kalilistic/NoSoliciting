@@ -40,12 +40,13 @@ namespace NoSoliciting {
             string newPath = Path.GetDirectoryName(this.AssemblyLocation)!;
             Environment.SetEnvironmentVariable("PATH", $"{path};{newPath}");
 
-            this.Interface = pluginInterface ?? throw new ArgumentNullException(nameof(pluginInterface), "DalamudPluginInterface cannot be null");
-            this.Ui = new PluginUi(this);
-            this.Commands = new Commands(this);
+            this.Interface = pluginInterface;
 
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
+
+            this.Ui = new PluginUi(this);
+            this.Commands = new Commands(this);
 
             this.UpdateDefinitions();
 
