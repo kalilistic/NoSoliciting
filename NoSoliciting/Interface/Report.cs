@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -13,6 +12,13 @@ using ImGuiNET;
 
 namespace NoSoliciting.Interface {
     public class Report {
+        private const ImGuiTableFlags TableFlags = ImGuiTableFlags.Borders
+                                                   & ~ImGuiTableFlags.BordersOuterV
+                                                   | ImGuiTableFlags.PadOuterX
+                                                   | ImGuiTableFlags.RowBg
+                                                   | ImGuiTableFlags.SizingFixedFit
+                                                   | ImGuiTableFlags.ScrollY;
+
         private Plugin Plugin { get; }
 
         private ReportStatus LastReportStatus { get; set; } = ReportStatus.None;
@@ -77,41 +83,42 @@ namespace NoSoliciting.Interface {
                 return;
             }
 
-            float[] maxSizes = {0f, 0f, 0f, 0f};
-
             if (ImGui.BeginChild("##chat-messages", new Vector2(-1, -1))) {
-                ImGui.Columns(5);
+                if (ImGui.BeginTable("nosol-chat-report-table", 5, TableFlags)) {
+                    ImGui.TableSetupColumn("Timestamp");
+                    ImGui.TableSetupColumn("Channel");
+                    ImGui.TableSetupColumn("Reason");
+                    ImGui.TableSetupColumn("Sender");
+                    ImGui.TableSetupColumn("Message", ImGuiTableColumnFlags.WidthStretch);
+                    ImGui.TableSetupScrollFreeze(0, 1);
+                    ImGui.TableHeadersRow();
 
-                AddRow(maxSizes, "Timestamp", "Channel", "Reason", "Sender", "Message");
-                ImGui.Separator();
+                    foreach (var message in this.Plugin.MessageHistory) {
+                        ImGui.TableNextRow();
 
-                foreach (var message in this.Plugin.MessageHistory) {
-                    if (message.FilterReason != null) {
-                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
+                        if (message.FilterReason != null) {
+                            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
+                        }
+
+                        var sender = message.Sender.Payloads
+                            .Where(payload => payload.Type == PayloadType.RawText)
+                            .Cast<TextPayload>()
+                            .Select(payload => payload.Text)
+                            .FirstOrDefault() ?? "";
+
+                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? "", sender, message.Content.TextValue)) {
+                            ImGui.OpenPopup($"###modal-message-{message.Id}");
+                        }
+
+                        if (message.FilterReason != null) {
+                            ImGui.PopStyleColor();
+                        }
+
+                        this.SetUpReportModal(message);
                     }
 
-                    var sender = message.Sender.Payloads
-                        .Where(payload => payload.Type == PayloadType.RawText)
-                        .Cast<TextPayload>()
-                        .Select(payload => payload.Text)
-                        .FirstOrDefault() ?? "";
-
-                    if (AddRow(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? "", sender, message.Content.TextValue)) {
-                        ImGui.OpenPopup($"###modal-message-{message.Id}");
-                    }
-
-                    if (message.FilterReason != null) {
-                        ImGui.PopStyleColor();
-                    }
-
-                    this.SetUpReportModal(message);
+                    ImGui.EndTable();
                 }
-
-                for (var idx = 0; idx < maxSizes.Length; idx++) {
-                    ImGui.SetColumnWidth(idx, maxSizes[idx] + ImGui.GetStyle().ItemSpacing.X * 2);
-                }
-
-                ImGui.Columns(1);
 
                 ImGui.EndChild();
             }
@@ -140,41 +147,41 @@ namespace NoSoliciting.Interface {
             }
             #endif
 
-            float[] maxSizes = {0f, 0f, 0f};
-
             if (ImGui.BeginChild("##pf-messages", new Vector2(-1, -1))) {
-                ImGui.Columns(4);
+                if (ImGui.BeginTable("nosol-pf-report-table", 4, TableFlags)) {
+                    ImGui.TableSetupColumn("Timestamp");
+                    ImGui.TableSetupColumn("Reason");
+                    ImGui.TableSetupColumn("Host");
+                    ImGui.TableSetupColumn("Description", ImGuiTableColumnFlags.WidthStretch);
+                    ImGui.TableSetupScrollFreeze(0, 1);
+                    ImGui.TableHeadersRow();
 
-                AddRow(maxSizes, "Timestamp", "Reason", "Host", "Description");
-                ImGui.Separator();
+                    foreach (var message in this.Plugin.PartyFinderHistory) {
+                        ImGui.TableNextRow();
 
-                foreach (var message in this.Plugin.PartyFinderHistory) {
-                    if (message.FilterReason != null) {
-                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
+                        if (message.FilterReason != null) {
+                            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
+                        }
+
+                        var sender = message.Sender.Payloads
+                            .Where(payload => payload.Type == PayloadType.RawText)
+                            .Cast<TextPayload>()
+                            .Select(payload => payload.Text)
+                            .FirstOrDefault() ?? "";
+
+                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.FilterReason ?? "", sender, message.Content.TextValue)) {
+                            ImGui.OpenPopup($"###modal-message-{message.Id}");
+                        }
+
+                        if (message.FilterReason != null) {
+                            ImGui.PopStyleColor();
+                        }
+
+                        this.SetUpReportModal(message);
                     }
 
-                    var sender = message.Sender.Payloads
-                        .Where(payload => payload.Type == PayloadType.RawText)
-                        .Cast<TextPayload>()
-                        .Select(payload => payload.Text)
-                        .FirstOrDefault() ?? "";
-
-                    if (AddRow(maxSizes, message.Timestamp.ToString(CultureInfo.CurrentCulture), message.FilterReason ?? "", sender, message.Content.TextValue)) {
-                        ImGui.OpenPopup($"###modal-message-{message.Id}");
-                    }
-
-                    if (message.FilterReason != null) {
-                        ImGui.PopStyleColor();
-                    }
-
-                    this.SetUpReportModal(message);
+                    ImGui.EndTable();
                 }
-
-                for (var idx = 0; idx < maxSizes.Length; idx++) {
-                    ImGui.SetColumnWidth(idx, maxSizes[idx] + ImGui.GetStyle().ItemSpacing.X * 2);
-                }
-
-                ImGui.Columns(1);
 
                 ImGui.EndChild();
             }
@@ -273,10 +280,12 @@ namespace NoSoliciting.Interface {
 
         #region Utility
 
-        private static bool AddRow(IList<float> maxSizes, params string[] args) {
+        private static bool AddRow(params string[] args) {
             var clicked = false;
 
             for (var i = 0; i < args.Length; i++) {
+                ImGui.TableNextColumn();
+
                 var arg = args[i];
                 var last = i == args.Length - 1;
 
@@ -285,16 +294,12 @@ namespace NoSoliciting.Interface {
                 }
 
                 ImGui.TextUnformatted(arg);
+
                 if (last) {
                     ImGui.PopTextWrapPos();
                 }
 
                 clicked = clicked || ImGui.IsItemClicked();
-                if (!last) {
-                    maxSizes[i] = Math.Max(maxSizes[i], ImGui.CalcTextSize(arg).X);
-                }
-
-                ImGui.NextColumn();
             }
 
             return clicked;
