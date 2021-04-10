@@ -17,7 +17,10 @@ namespace NoSoliciting.Interface {
                                                    | ImGuiTableFlags.PadOuterX
                                                    | ImGuiTableFlags.RowBg
                                                    | ImGuiTableFlags.SizingFixedFit
-                                                   | ImGuiTableFlags.ScrollY;
+                                                   | ImGuiTableFlags.ScrollY
+                                                   | ImGuiTableFlags.Hideable
+                                                   | ImGuiTableFlags.Reorderable
+                                                   | ImGuiTableFlags.Resizable;
 
         private Plugin Plugin { get; }
 
