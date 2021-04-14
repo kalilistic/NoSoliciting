@@ -57,7 +57,11 @@ namespace NoSoliciting {
             }
 
             // pre-compute the max ilvl to prevent stutter
-            FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
+            try {
+                FilterUtil.MaxItemLevelAttainable(this.Interface.Data);
+            } catch (Exception ex) {
+                PluginLog.LogError(ex, "Exception while computing max item level");
+            }
         }
 
         protected virtual void Dispose(bool disposing) {
