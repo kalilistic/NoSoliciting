@@ -15,6 +15,7 @@ namespace NoSoliciting.Trainer {
     internal static class Program {
         private static readonly string[] StopWords = {
             "discord",
+            "gg",
             "lgbt",
             "lgbtq",
             "lgbtqia",
