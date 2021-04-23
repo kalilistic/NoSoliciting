@@ -124,7 +124,7 @@ namespace NoSoliciting.Trainer {
             var pipeline = ctx.Transforms.Conversion.MapValueToKey("Label", nameof(Data.Category))
                 .Append(ctx.Transforms.CustomMapping(compute.GetMapping(), "Compute"))
                 .Append(ctx.Transforms.CustomMapping(normalise.GetMapping(), "Normalise"))
-                .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Normalise.Normalised.NormalisedMessage), keepPunctuations: false))
+                .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Normalise.Normalised.NormalisedMessage), keepPunctuations: false, keepNumbers: false))
                 .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
                 .Append(ctx.Transforms.Text.RemoveDefaultStopWords("MsgNoDefStop", "MsgTokens"))
                 .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgNoDefStop", StopWords))
