@@ -99,6 +99,9 @@ namespace NoSoliciting {
 
         public bool ConsiderPrivatePfs { get; set; }
 
+        public IEnumerable<string> ValidChatSubstrings => this.ChatSubstrings.Where(needle => !string.IsNullOrWhiteSpace(needle));
+        public IEnumerable<string> ValidPfSubstrings => this.PFSubstrings.Where(needle => !string.IsNullOrWhiteSpace(needle));
+
         public void Initialise(DalamudPluginInterface pi) {
             this.Interface = pi;
             this.CompileRegexes();
@@ -110,9 +113,11 @@ namespace NoSoliciting {
 
         public void CompileRegexes() {
             this.CompiledChatRegexes = this.ChatRegexes
+                .Where(reg => !string.IsNullOrWhiteSpace(reg))
                 .Select(reg => new Regex(reg, RegexOptions.Compiled))
                 .ToList();
             this.CompiledPFRegexes = this.PFRegexes
+                .Where(reg => !string.IsNullOrWhiteSpace(reg))
                 .Select(reg => new Regex(reg, RegexOptions.Compiled))
                 .ToList();
         }

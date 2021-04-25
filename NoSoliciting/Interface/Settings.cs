@@ -351,9 +351,7 @@ namespace NoSoliciting.Interface {
                 for (var i = 0; i < substrings.Count; i++) {
                     var input = substrings[i];
                     if (ImGui.InputText($"##{name}-substring-{i}", ref input, 1_000)) {
-                        if (input.Length != 0) {
-                            substrings[i] = input;
-                        }
+                        substrings[i] = input;
                     }
 
                     ImGui.SameLine();
@@ -382,15 +380,12 @@ namespace NoSoliciting.Interface {
                 for (var i = 0; i < regexes.Count; i++) {
                     var input = regexes[i];
                     if (ImGui.InputText($"##{name}-regex-{i}", ref input, 1_000)) {
-                        var valid = true;
                         try {
                             _ = new Regex(input);
-                        } catch (ArgumentException) {
-                            valid = false;
-                        }
-
-                        if (valid && input.Length != 0) {
+                            // update if valid
                             regexes[i] = input;
+                        } catch (ArgumentException) {
+                            // ignore
                         }
                     }
 
