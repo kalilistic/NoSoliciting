@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Dalamud.Plugin;
@@ -81,6 +83,32 @@ namespace NoSoliciting.Ml {
                 plugin.MlStatus = MlFilterStatus.DownloadingModel;
                 // download the model if necessary
                 data ??= await DownloadModel(manifest!.Value.manifest!.ModelUrl);
+            }
+
+            // give up if we couldn't get any data at this point
+            if (data == null) {
+                plugin.MlStatus = MlFilterStatus.Uninitialised;
+                return null;
+            }
+
+            // validate checksum
+            var retries = 0;
+            const int maxRetries = 3;
+
+            var correctHash = manifest!.Value.manifest!.Hash();
+
+            using (var sha = SHA256.Create()) {
+                var hash = sha.ComputeHash(data);
+
+                while (!hash.SequenceEqual(correctHash) && retries < maxRetries) {
+                    PluginLog.Warning($"Model checksum did not match. Redownloading (attempt {retries + 1}/{maxRetries})");
+                    retries += 1;
+
+                    data = await DownloadModel(manifest!.Value.manifest!.ModelUrl);
+                    if (data != null) {
+                        hash = sha.ComputeHash(data);
+                    }
+                }
             }
 
             // give up if we couldn't get any data at this point
