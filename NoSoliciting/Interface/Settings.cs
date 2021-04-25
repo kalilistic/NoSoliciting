@@ -125,7 +125,7 @@ namespace NoSoliciting.Interface {
 
             if (ImGui.Button("Update model")) {
                 // prevent issues when people spam the button
-                if (ImGui.GetIO().KeyCtrl || this.Plugin.MlStatus == MlFilterStatus.Uninitialised || this.Plugin.MlStatus == MlFilterStatus.Initialised) {
+                if (ImGui.GetIO().KeyCtrl || this.Plugin.MlStatus is MlFilterStatus.Uninitialised or MlFilterStatus.Initialised) {
                     this.Plugin.MlFilter?.Dispose();
                     this.Plugin.MlFilter = null;
                     this.Plugin.MlStatus = MlFilterStatus.Uninitialised;

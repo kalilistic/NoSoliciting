@@ -53,28 +53,37 @@ namespace NoSoliciting.Ml {
         public static async Task<MlFilter?> Load(Plugin plugin, bool showWindow) {
             plugin.MlStatus = MlFilterStatus.DownloadingManifest;
 
+            // download and parse the remote manifest
             var manifest = await DownloadManifest();
             if (manifest == null) {
                 PluginLog.LogWarning("Could not download manifest. Will attempt to fall back on cached version.");
             }
 
+            // model zip file data
             byte[]? data = null;
 
+            // load the cached manifest
             var localManifest = LoadCachedManifest(plugin);
-            if (localManifest != null && (manifest?.Item1 == null || localManifest.Version == manifest.Item1.Version)) {
+            // if there is a cached manifest and we either couldn't download/parse the remote OR the cached version is the same as remote version
+            if (localManifest != null && (manifest?.Item1 == null || localManifest.Version == manifest.Value.manifest.Version)) {
                 try {
+                    // try to reach the cached model
                     data = File.ReadAllBytes(CachedFilePath(plugin, ModelName));
-                    manifest ??= Tuple.Create(localManifest, string.Empty);
+                    // set the manifest to our local one and an empty string for the source
+                    manifest ??= (localManifest, string.Empty);
                 } catch (IOException) {
                     // ignored
                 }
             }
 
-            if (!string.IsNullOrEmpty(manifest?.Item2)) {
+            // if there is source for the manifest
+            if (!string.IsNullOrEmpty(manifest?.source)) {
                 plugin.MlStatus = MlFilterStatus.DownloadingModel;
-                data ??= await DownloadModel(manifest!.Item1!.ModelUrl);
+                // download the model if necessary
+                data ??= await DownloadModel(manifest!.Value.manifest!.ModelUrl);
             }
 
+            // give up if we couldn't get any data at this point
             if (data == null) {
                 plugin.MlStatus = MlFilterStatus.Uninitialised;
                 return null;
@@ -82,12 +91,15 @@ namespace NoSoliciting.Ml {
 
             plugin.MlStatus = MlFilterStatus.Initialising;
 
-            if (!string.IsNullOrEmpty(manifest!.Item2)) {
+            // if there is source for the manifest
+            if (!string.IsNullOrEmpty(manifest!.Value.source)) {
+                // update the cached files
                 UpdateCachedFile(plugin, ModelName, data);
-                UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Item2));
+                UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Value.source));
             }
 
-            var pluginFolder = Util.PluginFolder(plugin);
+            // initialise the classifier
+            var pluginFolder = plugin.Interface.ConfigDirectory.ToString();
 
             var exePath = await ExtractClassifier(pluginFolder);
 
@@ -97,8 +109,8 @@ namespace NoSoliciting.Ml {
             var client = await CreateClassifierClient(pipeId, data);
 
             return new MlFilter(
-                manifest.Item1!.Version,
-                manifest.Item1!.ReportUrl,
+                manifest.Value.manifest!.Version,
+                manifest.Value.manifest!.ReportUrl,
                 process!,
                 client
             );
@@ -158,28 +170,28 @@ namespace NoSoliciting.Ml {
             }
         }
 
-        private static string CachedFilePath(IDalamudPlugin plugin, string name) {
-            var pluginFolder = Util.PluginFolder(plugin);
+        private static string CachedFilePath(Plugin plugin, string name) {
+            var pluginFolder = plugin.Interface.ConfigDirectory.ToString();
             Directory.CreateDirectory(pluginFolder);
             return Path.Combine(pluginFolder, name);
         }
 
-        private static async void UpdateCachedFile(IDalamudPlugin plugin, string name, byte[] data) {
+        private static async void UpdateCachedFile(Plugin plugin, string name, byte[] data) {
             var cachePath = CachedFilePath(plugin, name);
 
-            var file = File.OpenWrite(cachePath);
+            var file = File.Create(cachePath);
             await file.WriteAsync(data, 0, data.Length);
             await file.FlushAsync();
             file.Dispose();
         }
 
-        private static async Task<Tuple<Manifest, string>?> DownloadManifest() {
+        private static async Task<(Manifest manifest, string source)?> DownloadManifest() {
             try {
                 using var client = new WebClient();
                 var data = await client.DownloadStringTaskAsync(Url);
                 LastError = null;
-                return Tuple.Create(LoadYaml<Manifest>(data), data);
-            } catch (Exception e) when (e is WebException || e is YamlException) {
+                return (LoadYaml<Manifest>(data), data);
+            } catch (Exception e) when (e is WebException or YamlException) {
                 PluginLog.LogError("Could not download newest model manifest.");
                 PluginLog.LogError(e.ToString());
                 LastError = e.Message;
@@ -187,7 +199,7 @@ namespace NoSoliciting.Ml {
             }
         }
 
-        private static Manifest? LoadCachedManifest(IDalamudPlugin plugin) {
+        private static Manifest? LoadCachedManifest(Plugin plugin) {
             var manifestPath = CachedFilePath(plugin, ManifestName);
             if (!File.Exists(manifestPath)) {
                 return null;
