@@ -64,7 +64,7 @@ namespace NoSoliciting {
                 throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
             }
 
-            var pluginFolder = Util.PluginFolder(plugin);
+            var pluginFolder = plugin.Interface.ConfigDirectory.ToString();
 
             var cachedPath = Path.Combine(pluginFolder, "definitions.yaml");
             if (!File.Exists(cachedPath)) {
@@ -96,7 +96,7 @@ namespace NoSoliciting {
                 var text = await client.DownloadStringTaskAsync(Url).ConfigureAwait(true);
                 LastError = null;
                 return Tuple.Create(Load(text), text);
-            } catch (Exception e) when (e is WebException || e is YamlException) {
+            } catch (Exception e) when (e is WebException or YamlException) {
                 PluginLog.Log("Could not download newest definitions.");
                 PluginLog.Log(e.ToString());
                 LastError = e.Message;
@@ -104,8 +104,8 @@ namespace NoSoliciting {
             }
         }
 
-        private static async void UpdateCache(IDalamudPlugin plugin, string defs) {
-            var pluginFolder = Util.PluginFolder(plugin);
+        private static async void UpdateCache(Plugin plugin, string defs) {
+            var pluginFolder = plugin.Interface.ConfigDirectory.ToString();
             Directory.CreateDirectory(pluginFolder);
             var cachePath = Path.Combine(pluginFolder, "definitions.yaml");
 
