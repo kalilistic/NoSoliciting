@@ -16,7 +16,7 @@ namespace NoSoliciting {
 
                 msg = NoSolUtil.Normalise(msg);
 
-                return config.ChatSubstrings.Any(needle => msg.ContainsIgnoreCase(needle))
+                return config.ValidChatSubstrings.Any(needle => msg.ContainsIgnoreCase(needle))
                     || config.CompiledChatRegexes.Any(needle => needle.IsMatch(msg));
             }
         }
