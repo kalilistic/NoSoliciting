@@ -83,8 +83,8 @@
     "message": "Statics looking for fill-ins of missing members for clears",
     "description": "MessageCategoryExt.Description"
   },
-  " settings": {
-    "message": null,
+  "Settings": {
+    "message": "NoSoliciting settings",
     "description": "Settings.Draw"
   },
   "AdvancedMode": {
