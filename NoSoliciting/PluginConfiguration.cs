@@ -14,24 +14,7 @@ namespace NoSoliciting {
 
         private DalamudPluginInterface Interface { get; set; } = null!;
 
-        public int Version { get; set; } = 1;
-
-        [Obsolete("Use FilterStatus")]
-        public bool FilterChat { get; set; } = true;
-
-        [Obsolete("Use FilterStatus")]
-        public bool FilterFCRecruitments { get; set; } = false;
-
-        [Obsolete("Use FilterStatus")]
-        public bool FilterChatRPAds { get; set; } = false;
-
-        [Obsolete("Use FilterStatus")]
-        public bool FilterPartyFinder { get; set; } = true;
-
-        [Obsolete("Use FilterStatus")]
-        public bool FilterPartyFinderRPAds { get; set; } = false;
-
-        public Dictionary<string, bool> FilterStatus { get; private set; } = new();
+        public int Version { get; set; } = 2;
 
         public bool AdvancedMode { get; set; }
 
@@ -47,7 +30,7 @@ namespace NoSoliciting {
         public List<string> PFRegexes { get; } = new();
 
         [JsonIgnore]
-        public List<Regex> CompiledPFRegexes { get; private set; } = new();
+        public List<Regex> CompiledPfRegexes { get; private set; } = new();
 
         public bool FilterHugeItemLevelPFs { get; set; }
 
@@ -116,7 +99,7 @@ namespace NoSoliciting {
                 .Where(reg => !string.IsNullOrWhiteSpace(reg))
                 .Select(reg => new Regex(reg, RegexOptions.Compiled))
                 .ToList();
-            this.CompiledPFRegexes = this.PFRegexes
+            this.CompiledPfRegexes = this.PFRegexes
                 .Where(reg => !string.IsNullOrWhiteSpace(reg))
                 .Select(reg => new Regex(reg, RegexOptions.Compiled))
                 .ToList();
