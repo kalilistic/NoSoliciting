@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text.RegularExpressions;
-using CheapLoc;
 using Dalamud.Interface;
+using Dalamud.Plugin;
 using ImGuiNET;
 using NoSoliciting.Ml;
+using NoSoliciting.Resources;
 
 namespace NoSoliciting.Interface {
     public class Settings : IDisposable {
@@ -39,13 +40,17 @@ namespace NoSoliciting.Interface {
         }
 
         public void Draw() {
-            var windowTitle = string.Format(Loc.Localize("Settings", "{0} settings"), this.Plugin.Name);
+            var windowTitle = string.Format(Language.Settings, this.Plugin.Name);
             if (!this.ShowSettings || !ImGui.Begin($"{windowTitle}###NoSoliciting settings", ref this._showSettings)) {
                 return;
             }
 
+            if (ImGui.Button("Log resource culture")) {
+                PluginLog.Log(Language.Culture.Name);
+            }
+
             var advanced = this.Plugin.Config.AdvancedMode;
-            if (ImGui.Checkbox(Loc.Localize("AdvancedMode", "Advanced mode"), ref advanced)) {
+            if (ImGui.Checkbox(Language.AdvancedMode, ref advanced)) {
                 this.Plugin.Config.AdvancedMode = advanced;
                 this.Plugin.Config.Save();
             }
@@ -60,15 +65,15 @@ namespace NoSoliciting.Interface {
 
             this.DrawOtherFilters();
 
-            if (ImGui.BeginTabItem(Loc.Localize("OtherTab", "Other"))) {
+            if (ImGui.BeginTabItem(Language.OtherTab)) {
                 var logFilteredPfs = this.Plugin.Config.LogFilteredPfs;
-                if (ImGui.Checkbox(Loc.Localize("LogFilteredPfs", "Log filtered PFs"), ref logFilteredPfs)) {
+                if (ImGui.Checkbox(Language.LogFilteredPfs, ref logFilteredPfs)) {
                     this.Plugin.Config.LogFilteredPfs = logFilteredPfs;
                     this.Plugin.Config.Save();
                 }
 
                 var logFilteredMessages = this.Plugin.Config.LogFilteredChat;
-                if (ImGui.Checkbox(Loc.Localize("LogFilteredMessages", "Log filtered messages"), ref logFilteredMessages)) {
+                if (ImGui.Checkbox(Language.LogFilteredMessages, ref logFilteredMessages)) {
                     this.Plugin.Config.LogFilteredChat = logFilteredMessages;
                     this.Plugin.Config.Save();
                 }
@@ -80,7 +85,7 @@ namespace NoSoliciting.Interface {
 
             ImGui.Separator();
 
-            if (ImGui.Button(Loc.Localize("ShowReportingWindow", "Show reporting window"))) {
+            if (ImGui.Button(Language.ShowReportingWindow)) {
                 this.Ui.Report.Open();
             }
 
@@ -96,18 +101,18 @@ namespace NoSoliciting.Interface {
                 this.DrawBasicMachineLearningConfig();
             }
 
-            if (!ImGui.BeginTabItem(Loc.Localize("ModelTab", "Model"))) {
+            if (!ImGui.BeginTabItem(Language.ModelTab)) {
                 return;
             }
 
-            ImGui.TextUnformatted(string.Format(Loc.Localize("ModelTabVersion", "Version: {0}"), this.Plugin.MlFilter?.Version));
-            ImGui.TextUnformatted(string.Format(Loc.Localize("ModelTabStatus", "Model status: {0}"), this.Plugin.MlStatus.Description()));
+            ImGui.TextUnformatted(string.Format(Language.ModelTabVersion, this.Plugin.MlFilter?.Version));
+            ImGui.TextUnformatted(string.Format(Language.ModelTabStatus, this.Plugin.MlStatus.Description()));
             var lastError = MlFilter.LastError;
             if (lastError != null) {
-                ImGui.TextUnformatted(string.Format(Loc.Localize("ModelTabError", "Last error: {0}"), lastError));
+                ImGui.TextUnformatted(string.Format(Language.ModelTabError, lastError));
             }
 
-            if (ImGui.Button(Loc.Localize("UpdateModel", "Update model"))) {
+            if (ImGui.Button(Language.UpdateModel)) {
                 // prevent issues when people spam the button
                 if (ImGui.GetIO().KeyCtrl || this.Plugin.MlStatus is MlFilterStatus.Uninitialised or MlFilterStatus.Initialised) {
                     this.Plugin.MlFilter?.Dispose();
@@ -121,7 +126,7 @@ namespace NoSoliciting.Interface {
         }
 
         private void DrawBasicMachineLearningConfig() {
-            if (!ImGui.BeginTabItem(Loc.Localize("FiltersTab", "Filters"))) {
+            if (!ImGui.BeginTabItem(Language.FiltersTab)) {
                 return;
             }
 
@@ -152,13 +157,13 @@ namespace NoSoliciting.Interface {
         }
 
         private void DrawAdvancedMachineLearningConfig() {
-            if (!ImGui.BeginTabItem(Loc.Localize("FiltersTab", "Filters"))) {
+            if (!ImGui.BeginTabItem(Language.FiltersTab)) {
                 return;
             }
 
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(255f, 204f, 0f, 1f));
-            ImGui.TextUnformatted(Loc.Localize("AdvancedWarning1", "Do not change advanced settings unless you know what you are doing."));
-            ImGui.TextUnformatted(Loc.Localize("AdvancedWarning2", "The machine learning model was trained with certain channels in mind."));
+            ImGui.TextUnformatted(Language.AdvancedWarning1);
+            ImGui.TextUnformatted(Language.AdvancedWarning2);
             ImGui.PopStyleColor();
 
             foreach (var category in MessageCategoryExt.UiOrder) {
@@ -204,13 +209,13 @@ namespace NoSoliciting.Interface {
         #region Other config
 
         private void DrawOtherFilters() {
-            if (!ImGui.BeginTabItem(Loc.Localize("OtherFiltersTab", "Other filters"))) {
+            if (!ImGui.BeginTabItem(Language.OtherFiltersTab)) {
                 return;
             }
 
-            if (ImGui.CollapsingHeader(Loc.Localize("ChatFilters", "Chat filters"))) {
+            if (ImGui.CollapsingHeader(Language.ChatFilters)) {
                 var customChat = this.Plugin.Config.CustomChatFilter;
-                if (ImGui.Checkbox(Loc.Localize("EnableCustomChatFilters", "Enable custom chat filters"), ref customChat)) {
+                if (ImGui.Checkbox(Language.EnableCustomChatFilters, ref customChat)) {
                     this.Plugin.Config.CustomChatFilter = customChat;
                     this.Plugin.Config.Save();
                 }
@@ -222,22 +227,22 @@ namespace NoSoliciting.Interface {
                 }
             }
 
-            if (ImGui.CollapsingHeader(Loc.Localize("PartyFinderFilters", "Party Finder filters"))) {
+            if (ImGui.CollapsingHeader(Language.PartyFinderFilters)) {
                 var filterHugeItemLevelPFs = this.Plugin.Config.FilterHugeItemLevelPFs;
                 // ReSharper disable once InvertIf
-                if (ImGui.Checkbox(Loc.Localize("FilterIlvlPfs", "Filter PFs with item level above maximum"), ref filterHugeItemLevelPFs)) {
+                if (ImGui.Checkbox(Language.FilterIlvlPfs, ref filterHugeItemLevelPFs)) {
                     this.Plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
                     this.Plugin.Config.Save();
                 }
 
                 var considerPrivate = this.Plugin.Config.ConsiderPrivatePfs;
-                if (ImGui.Checkbox(Loc.Localize("FilterPrivatePfs", "Apply filters to private Party Finder listings"), ref considerPrivate)) {
+                if (ImGui.Checkbox(Language.FilterPrivatePfs, ref considerPrivate)) {
                     this.Plugin.Config.ConsiderPrivatePfs = considerPrivate;
                     this.Plugin.Config.Save();
                 }
 
                 var customPf = this.Plugin.Config.CustomPFFilter;
-                if (ImGui.Checkbox(Loc.Localize("EnableCustomPartyFinderFilters", "Enable custom Party Finder filters"), ref customPf)) {
+                if (ImGui.Checkbox(Language.EnableCustomPartyFinderFilters, ref customPf)) {
                     this.Plugin.Config.CustomPFFilter = customPf;
                     this.Plugin.Config.Save();
                 }
@@ -255,7 +260,7 @@ namespace NoSoliciting.Interface {
         private void DrawCustom(string name, ref List<string> substrings, ref List<string> regexes) {
             ImGui.Columns(2);
 
-            ImGui.TextUnformatted(Loc.Localize("SubstringsToFilter", "Substrings to filter"));
+            ImGui.TextUnformatted(Language.SubstringsToFilter);
             if (ImGui.BeginChild($"##{name}-substrings", new Vector2(0, 175))) {
                 for (var i = 0; i < substrings.Count; i++) {
                     var input = substrings[i];
@@ -284,7 +289,7 @@ namespace NoSoliciting.Interface {
 
             ImGui.NextColumn();
 
-            ImGui.TextUnformatted(Loc.Localize("RegularExpressionsToFilter", "Regular expressions to filter"));
+            ImGui.TextUnformatted(Language.RegularExpressionsToFilter);
             if (ImGui.BeginChild($"##{name}-regexes", new Vector2(0, 175))) {
                 for (var i = 0; i < regexes.Count; i++) {
                     var input = regexes[i];
@@ -320,7 +325,7 @@ namespace NoSoliciting.Interface {
             ImGui.Columns(1);
 
             // ReSharper disable once InvertIf
-            var saveLoc = Loc.Localize("SaveFilters", "Save filters");
+            var saveLoc = Language.SaveFilters;
             if (ImGui.Button($"{saveLoc}##{name}-save")) {
                 this.Plugin.Config.Save();
                 this.Plugin.Config.CompileRegexes();

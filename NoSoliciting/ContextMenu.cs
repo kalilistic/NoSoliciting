@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CheapLoc;
 using NoSoliciting.Interface;
+using NoSoliciting.Resources;
 using XivCommon.Functions;
 
 namespace NoSoliciting {
@@ -24,7 +24,7 @@ namespace NoSoliciting {
                 return;
             }
 
-            var label = Loc.Localize("ReportToNoSoliciting", "Report to NoSoliciting");
+            var label = Language.ReportToNoSoliciting;
             args.AdditionalItems.Add(new ContextMenuItem(label, this.Report));
         }
 
@@ -50,12 +50,12 @@ namespace NoSoliciting {
                 var status = await this.Plugin.Ui.Report.ReportMessageAsync(message);
                 switch (status) {
                     case ReportStatus.Successful: {
-                        var msg = Loc.Localize("ReportToastSuccess", "Party Finder listing hosted by {0} reported successfully.");
+                        var msg = Language.ReportToastSuccess;
                         this.Plugin.Interface.Framework.Gui.Toast.ShowNormal(string.Format(msg, listing.Name));
                         break;
                     }
                     case ReportStatus.Failure: {
-                        var msg = Loc.Localize("ReportToastFailure", "Failed to report Party Finder listing hosted by {0}.");
+                        var msg = Language.ReportToastFailure;
                         this.Plugin.Interface.Framework.Gui.Toast.ShowError(string.Format(msg, listing.Name));
                         break;
                     }
