@@ -45,10 +45,6 @@ namespace NoSoliciting.Interface {
                 return;
             }
 
-            if (ImGui.Button("Log resource culture")) {
-                PluginLog.Log(Language.Culture.Name);
-            }
-
             var advanced = this.Plugin.Config.AdvancedMode;
             if (ImGui.Checkbox(Language.AdvancedMode, ref advanced)) {
                 this.Plugin.Config.AdvancedMode = advanced;
