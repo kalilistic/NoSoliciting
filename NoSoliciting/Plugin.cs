@@ -5,9 +5,9 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using CheapLoc;
-using Dalamud;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
+using Resourcer;
 using XivCommon;
 
 namespace NoSoliciting {
@@ -44,7 +44,20 @@ namespace NoSoliciting {
 
             this.Interface = pluginInterface;
 
-            Loc.Setup(Resourcer.Resource.AsString("Resources/en.json"), Assembly.GetAssembly(typeof(Plugin)));
+            Loc.Setup(Resource.AsString("Resources/en.json"), Assembly.GetAssembly(typeof(Plugin)));
+            this.Interface.OnLanguageChanged += code => {
+                try {
+                    var data = Resource.AsStringUnChecked($"Resources/{code}.json");
+                    if (data != null) {
+                        Loc.Setup(data, Assembly.GetAssembly(typeof(Plugin)));
+                        return;
+                    }
+                } catch (Exception) {
+                    // ignore
+                }
+
+                Loc.Setup(Resource.AsString("Resources/en.json"), Assembly.GetAssembly(typeof(Plugin)));
+            };
 
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
