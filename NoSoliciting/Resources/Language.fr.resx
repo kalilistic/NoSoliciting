@@ -1,17 +1,123 @@
-﻿<root>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="ReportToNoSoliciting" xml:space="preserve">
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ReportToNoSoliciting" xml:space="preserve">
         <value>Signaler à NoSoliciting</value>
-    </data>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Paramètres de {0}</value>
+  </data>
+  <data name="AdvancedMode" xml:space="preserve">
+    <value>Paramètres avancés</value>
+  </data>
+  <data name="SaveFilters" xml:space="preserve">
+    <value>Sauvegarder les filtres</value>
+  </data>
+  <data name="Reporting" xml:space="preserve">
+    <value>Signalement à {0}</value>
+  </data>
+  <data name="ReportHelp" xml:space="preserve">
+    <value>Cliquez sur l'une des entrées pour la signaler à la développeuse comme étant mal catégorisée.</value>
+  </data>
+  <data name="ReportStatusFailure" xml:space="preserve">
+    <value>échec de l'envoi</value>
+  </data>
+  <data name="ReportStatusSuccessful" xml:space="preserve">
+    <value>effectué avec succès</value>
+  </data>
+  <data name="ReportStatusInProgress" xml:space="preserve">
+    <value>envoi en cours</value>
+  </data>
+  <data name="ReportStatusUnknown" xml:space="preserve">
+    <value>inconnu</value>
+  </data>
+  <data name="ReportStatusMessage" xml:space="preserve">
+    <value>État du dernier signalement : {0}</value>
+  </data>
+  <data name="ReportChatTab" xml:space="preserve">
+    <value>Discussion</value>
+  </data>
+  <data name="ReportColumnTimestamp" xml:space="preserve">
+    <value>Date et heure</value>
+  </data>
+  <data name="ReportColumnChannel" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="ReportColumnReason" xml:space="preserve">
+    <value>Raison</value>
+  </data>
+  <data name="OtherTab" xml:space="preserve">
+    <value>Autres</value>
+  </data>
+  <data name="ModelTab" xml:space="preserve">
+    <value>Modèle</value>
+  </data>
+  <data name="ModelTabVersion" xml:space="preserve">
+    <value>Version : {0}</value>
+  </data>
+  <data name="ModelTabStatus" xml:space="preserve">
+    <value>État du modèle : {0}</value>
+  </data>
+  <data name="ModelTabError" xml:space="preserve">
+    <value>Dernière erreur rencontrée : {0}</value>
+  </data>
+  <data name="UpdateModel" xml:space="preserve">
+    <value>Mettre à jour le modèle</value>
+  </data>
+  <data name="FiltersTab" xml:space="preserve">
+    <value>Filtres</value>
+  </data>
+  <data name="AdvancedWarning1" xml:space="preserve">
+    <value>Veuillez ne modifier les paramètres avancés que si vous savez exactement ce que vous faites.</value>
+  </data>
+  <data name="LogFilteredPfs" xml:space="preserve">
+    <value>Enregistrer les Recherches d'Équipe (PFs) filtrées</value>
+  </data>
+  <data name="LogFilteredMessages" xml:space="preserve">
+    <value>Enregistrer les messages filtrées</value>
+  </data>
+  <data name="ShowReportingWindow" xml:space="preserve">
+    <value>Ouvrir la fenêtre de signalement</value>
+  </data>
+  <data name="AdvancedWarning2" xml:space="preserve">
+    <value>Le modèle d'apprentissage automatique a été entraîné selon une configuration précise de channels.</value>
+  </data>
+  <data name="OtherFiltersTab" xml:space="preserve">
+    <value>Autres filtres</value>
+  </data>
+  <data name="ChatFilters" xml:space="preserve">
+    <value>Filtres de discussion</value>
+  </data>
+  <data name="EnableCustomChatFilters" xml:space="preserve">
+    <value>Activer les filtres de discussion personnalisés</value>
+  </data>
+  <data name="FilterPrivatePfs" xml:space="preserve">
+    <value>Appliquer les filtres aux Recherches d'Équipe (PFs) listées en privées</value>
+  </data>
+  <data name="EnableCustomPartyFinderFilters" xml:space="preserve">
+    <value>Activer les filtres de Recherche d'Équipe (PFs) personnalisés</value>
+  </data>
+  <data name="SubstringsToFilter" xml:space="preserve">
+    <value>Sous-chaînes (substrings) à filtrer</value>
+  </data>
+  <data name="RegularExpressionsToFilter" xml:space="preserve">
+    <value>Expressions régulières à filtrer</value>
+  </data>
+  <data name="PartyFinderFilters" xml:space="preserve">
+    <value>Filtres de Recherche d'Équipe (PFs)</value>
+  </data>
+  <data name="FilterIlvlPfs" xml:space="preserve">
+    <value>Filtrer les Recherche d'Équipe (PFs) avec un niveau d'objet requis supérieur au maximum</value>
+  </data>
 </root>
