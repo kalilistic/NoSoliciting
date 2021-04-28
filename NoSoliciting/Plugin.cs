@@ -5,9 +5,9 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Dalamud;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
-using Resourcer;
 using XivCommon;
 
 namespace NoSoliciting {
@@ -44,13 +44,12 @@ namespace NoSoliciting {
 
             this.Interface = pluginInterface;
 
-            Util.PreLoadResourcesFromMainAssembly();
-
-            Resources.Language.Culture = new CultureInfo(this.Interface.UiLanguage);
-            this.Interface.OnLanguageChanged += OnLanguageUpdate;
-
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
+
+            Util.PreLoadResourcesFromMainAssembly();
+            this.ConfigureLanguage();
+            this.Interface.OnLanguageChanged += this.OnLanguageUpdate;
 
             this.Common = new XivCommonBase(this.Interface, Hooks.PartyFinder | Hooks.ContextMenu);
 
@@ -82,13 +81,29 @@ namespace NoSoliciting {
                 this.Commands.Dispose();
                 this.Ui.Dispose();
                 this.Common.Dispose();
-                this.Interface.OnLanguageChanged -= OnLanguageUpdate;
+                this.Interface.OnLanguageChanged -= this.OnLanguageUpdate;
             }
 
             this._disposedValue = true;
         }
 
-        private static void OnLanguageUpdate(string langCode) {
+        private void OnLanguageUpdate(string langCode) {
+            this.ConfigureLanguage(langCode);
+        }
+
+        internal void ConfigureLanguage(string? langCode = null) {
+            if (this.Config.FollowGameLanguage) {
+                langCode = this.Interface.ClientState.ClientLanguage switch {
+                    ClientLanguage.Japanese => "ja",
+                    ClientLanguage.English => "en",
+                    ClientLanguage.German => "de",
+                    ClientLanguage.French => "fr",
+                    _ => throw new ArgumentOutOfRangeException(),
+                };
+            } else {
+                langCode ??= this.Interface.UiLanguage;
+            }
+
             Resources.Language.Culture = new CultureInfo(langCode);
         }
 
