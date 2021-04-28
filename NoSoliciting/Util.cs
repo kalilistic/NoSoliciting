@@ -5,10 +5,7 @@ using System.Reflection;
 
 namespace NoSoliciting {
     internal static class Util {
-        internal static void PreLoadResourcesFromMainAssembly() {
-            const string resourcesPrefix = "NoSoliciting.Resources.Language.";
-            const string resourcesExtension = ".resources";
-
+        internal static void PreLoadResourcesFromMainAssembly(string resourcesPrefix, string resourcesExtension = ".resources") {
             // get loaded resource sets from resource manager
             var resourceManager = Resources.Language.ResourceManager;
 
