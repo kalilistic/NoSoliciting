@@ -85,8 +85,7 @@ namespace NoSoliciting.Interface {
         }
 
         private void ChatTab() {
-            var tabTitle = Language.ReportChatTab;
-            if (!ImGui.BeginTabItem($"{tabTitle}##chat-report")) {
+            if (!ImGui.BeginTabItem($"{Language.ReportChatTab}###chat-report")) {
                 return;
             }
 
@@ -134,8 +133,7 @@ namespace NoSoliciting.Interface {
         }
 
         private void PartyFinderTab() {
-            var tabTitle = Language.ReportPartyFinderTab;
-            if (!ImGui.BeginTabItem($"{tabTitle}##pf-report")) {
+            if (!ImGui.BeginTabItem($"{Language.ReportPartyFinderTab}###pf-report")) {
                 return;
             }
 

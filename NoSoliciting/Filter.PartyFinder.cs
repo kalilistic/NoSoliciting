@@ -17,7 +17,7 @@ namespace NoSoliciting {
                 msg = NoSolUtil.Normalise(msg);
 
                 return config.ValidPfSubstrings.Any(needle => msg.ContainsIgnoreCase(needle))
-                    || config.CompiledPFRegexes.Any(needle => needle.IsMatch(msg));
+                    || config.CompiledPfRegexes.Any(needle => needle.IsMatch(msg));
             }
         }
     }

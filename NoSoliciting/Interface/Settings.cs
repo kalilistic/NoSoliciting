@@ -82,7 +82,7 @@ namespace NoSoliciting.Interface {
                 this.DrawBasicMachineLearningConfig();
             }
 
-            if (!ImGui.BeginTabItem(Language.ModelTab)) {
+            if (!ImGui.BeginTabItem($"{Language.ModelTab}###model-tab")) {
                 return;
             }
 
@@ -107,7 +107,7 @@ namespace NoSoliciting.Interface {
         }
 
         private void DrawBasicMachineLearningConfig() {
-            if (!ImGui.BeginTabItem(Language.FiltersTab)) {
+            if (!ImGui.BeginTabItem($"{Language.FiltersTab}###filters-tab")) {
                 return;
             }
 
@@ -138,7 +138,7 @@ namespace NoSoliciting.Interface {
         }
 
         private void DrawAdvancedMachineLearningConfig() {
-            if (!ImGui.BeginTabItem(Language.FiltersTab)) {
+            if (!ImGui.BeginTabItem($"{Language.FiltersTab}###filters-tab")) {
                 return;
             }
 
@@ -190,7 +190,7 @@ namespace NoSoliciting.Interface {
         #region Other config
 
         private void DrawOtherFilters() {
-            if (!ImGui.BeginTabItem(Language.OtherFiltersTab)) {
+            if (!ImGui.BeginTabItem($"{Language.OtherFiltersTab}###other-filters-tab")) {
                 return;
             }
 
@@ -316,7 +316,7 @@ namespace NoSoliciting.Interface {
         #endregion
 
         private void DrawOtherTab() {
-            if (!ImGui.BeginTabItem(Language.OtherTab)) {
+            if (!ImGui.BeginTabItem($"{Language.OtherTab}###other-tab")) {
                 return;
             }
 
