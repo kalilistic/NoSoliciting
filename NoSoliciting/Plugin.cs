@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using CheapLoc;
+using Dalamud;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
+using XivCommon;
 
 namespace NoSoliciting {
     public class Plugin : IDalamudPlugin {
@@ -17,13 +20,12 @@ namespace NoSoliciting {
 
         public DalamudPluginInterface Interface { get; private set; } = null!;
         public PluginConfiguration Config { get; private set; } = null!;
+        public XivCommonBase Common { get; private set; } = null!;
         public PluginUi Ui { get; private set; } = null!;
         public Commands Commands { get; private set; } = null!;
-        public Definitions? Definitions { get; private set; }
+        private ContextMenu ContextMenu { get; set; } = null!;
         public MlFilterStatus MlStatus { get; set; } = MlFilterStatus.Uninitialised;
         public MlFilter? MlFilter { get; set; }
-        public bool MlReady => this.Config.UseMachineLearning && this.MlFilter != null;
-        public bool DefsReady => !this.Config.UseMachineLearning && this.Definitions != null;
 
         private readonly List<Message> _messageHistory = new();
         public IEnumerable<Message> MessageHistory => this._messageHistory;
@@ -42,19 +44,20 @@ namespace NoSoliciting {
 
             this.Interface = pluginInterface;
 
+            Loc.Setup(Resourcer.Resource.AsString("Resources/en.json"), Assembly.GetAssembly(typeof(Plugin)));
+
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
 
+            this.Common = new XivCommonBase(this.Interface, Hooks.PartyFinder | Hooks.ContextMenu);
+
             this.Ui = new PluginUi(this);
             this.Commands = new Commands(this);
-
-            this.UpdateDefinitions();
+            this.ContextMenu = new ContextMenu(this);
 
             this.Filter = new Filter(this);
 
-            if (this.Config.UseMachineLearning) {
-                this.InitialiseMachineLearning(false);
-            }
+            this.InitialiseMachineLearning(false);
 
             // pre-compute the max ilvl to prevent stutter
             try {
@@ -70,10 +73,14 @@ namespace NoSoliciting {
             }
 
             if (disposing) {
+                Loc.ExportLocalizable();
+
                 this.Filter.Dispose();
                 this.MlFilter?.Dispose();
+                this.ContextMenu.Dispose();
                 this.Commands.Dispose();
                 this.Ui.Dispose();
+                this.Common.Dispose();
             }
 
             this._disposedValue = true;
@@ -94,18 +101,6 @@ namespace NoSoliciting {
                     this.MlStatus = MlFilterStatus.Initialised;
                     PluginLog.Log("Machine learning model loaded");
                 });
-        }
-
-        internal void UpdateDefinitions() {
-            Task.Run(async () => {
-                var defs = await Definitions.UpdateAndCache(this).ConfigureAwait(true);
-                // this shouldn't be possible, but what do I know
-                if (defs != null) {
-                    defs.Initialise(this);
-                    this.Definitions = defs;
-                    Definitions.LastUpdate = DateTime.Now;
-                }
-            });
         }
 
         public void AddMessageHistory(Message message) {

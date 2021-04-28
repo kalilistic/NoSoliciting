@@ -1,0 +1,170 @@
+{
+  "ReportToNoSoliciting": {
+    "message": "Report to NoSoliciting",
+    "description": "ContextMenu.OnOpenContextMenu"
+  },
+  "TradeCategory": {
+    "message": "Trade ads",
+    "description": "MessageCategoryExt.Name"
+  },
+  "FreeCompanyCategory": {
+    "message": "Free Company ads",
+    "description": "MessageCategoryExt.Name"
+  },
+  "NormalCategory": {
+    "message": "Normal messages",
+    "description": "MessageCategoryExt.Name"
+  },
+  "PhishingCategory": {
+    "message": "Phishing messages",
+    "description": "MessageCategoryExt.Name"
+  },
+  "RmtContentCategory": {
+    "message": "RMT (content)",
+    "description": "MessageCategoryExt.Name"
+  },
+  "RmtGilCategory": {
+    "message": "RMT (gil)",
+    "description": "MessageCategoryExt.Name"
+  },
+  "RoleplayingCategory": {
+    "message": "Roleplaying ads",
+    "description": "MessageCategoryExt.Name"
+  },
+  "StaticCategory": {
+    "message": "Static recruitment",
+    "description": "MessageCategoryExt.Name"
+  },
+  "CommunityCategory": {
+    "message": "Community ads",
+    "description": "MessageCategoryExt.Name"
+  },
+  "StaticSubCategory": {
+    "message": "Static substitutes",
+    "description": "MessageCategoryExt.Name"
+  },
+  "TradeDescription": {
+    "message": "Messages advertising trading items or services for gil, such as omnicrafters looking for work or people selling rare items off the market board",
+    "description": "MessageCategoryExt.Description"
+  },
+  "FreeCompanyDescription": {
+    "message": "Advertisements for Free Companies",
+    "description": "MessageCategoryExt.Description"
+  },
+  "NormalDescription": {
+    "message": "Normal messages that should not be filtered",
+    "description": "MessageCategoryExt.Description"
+  },
+  "PhishingDescription": {
+    "message": "Messages trying to trick you into revealing your account details in order to steal your account",
+    "description": "MessageCategoryExt.Description"
+  },
+  "RmtContentDescription": {
+    "message": "Real-money trade involving content (also known as content sellers)",
+    "description": "MessageCategoryExt.Description"
+  },
+  "RmtGilDescription": {
+    "message": "Real-money trade involving gil or items (also known as RMT bots)",
+    "description": "MessageCategoryExt.Description"
+  },
+  "RoleplayingDescription": {
+    "message": "Advertisements for personal RP, RP communities, venues, or anything else related to roleplaying",
+    "description": "MessageCategoryExt.Description"
+  },
+  "StaticDescription": {
+    "message": "Statics looking for members or players looking for a static",
+    "description": "MessageCategoryExt.Description"
+  },
+  "CommunityDescription": {
+    "message": "Advertisements for general-purpose communities, generally Discord servers",
+    "description": "MessageCategoryExt.Description"
+  },
+  "StaticSubDescription": {
+    "message": "Statics looking for fill-ins of missing members for clears",
+    "description": "MessageCategoryExt.Description"
+  },
+  " settings": {
+    "message": null,
+    "description": "Settings.Draw"
+  },
+  "AdvancedMode": {
+    "message": "Advanced mode",
+    "description": "Settings.Draw"
+  },
+  "OtherTab": {
+    "message": "Other",
+    "description": "Settings.Draw"
+  },
+  "LogFilteredPfs": {
+    "message": "Log filtered PFs",
+    "description": "Settings.Draw"
+  },
+  "LogFilteredMessages": {
+    "message": "Log filtered messages",
+    "description": "Settings.Draw"
+  },
+  "ShowReportingWindow": {
+    "message": "Show reporting window",
+    "description": "Settings.Draw"
+  },
+  "ModelTab": {
+    "message": "Model",
+    "description": "Settings.DrawMachineLearningConfig"
+  },
+  "UpdateModel": {
+    "message": "Update model",
+    "description": "Settings.DrawMachineLearningConfig"
+  },
+  "FiltersTab": {
+    "message": "Filters",
+    "description": "Settings.DrawBasicMachineLearningConfig"
+  },
+  "AdvancedWarning1": {
+    "message": "Do not change advanced settings unless you know what you are doing.",
+    "description": "Settings.DrawAdvancedMachineLearningConfig"
+  },
+  "AdvancedWarning2": {
+    "message": "The machine learning model was trained with certain channels in mind.",
+    "description": "Settings.DrawAdvancedMachineLearningConfig"
+  },
+  "OtherFiltersTab": {
+    "message": "Other filters",
+    "description": "Settings.DrawOtherFilters"
+  },
+  "ChatFilters": {
+    "message": "Chat filters",
+    "description": "Settings.DrawOtherFilters"
+  },
+  "EnableCustomChatFilters": {
+    "message": "Enable custom chat filters",
+    "description": "Settings.DrawOtherFilters"
+  },
+  "PartyFinderFilters": {
+    "message": "Party Finder filters",
+    "description": "Settings.DrawOtherFilters"
+  },
+  "FilterIlvlPfs": {
+    "message": "Filter PFs with item level above maximum",
+    "description": "Settings.DrawOtherFilters"
+  },
+  "FilterPrivatePfs": {
+    "message": "Apply filters to private Party Finder listings",
+    "description": "Settings.DrawOtherFilters"
+  },
+  "EnableCustomPartyFinderFilters": {
+    "message": "Enabled custom Party Finder filters",
+    "description": "Settings.DrawOtherFilters"
+  },
+  "SubstringsToFilter": {
+    "message": "Substrings to filter",
+    "description": "Settings.DrawCustom"
+  },
+  "RegularExpressionsToFilter": {
+    "message": "Regular expressions to filter",
+    "description": "Settings.DrawCustom"
+  },
+  "SaveFilters": {
+    "message": "Save filters",
+    "description": "Settings.DrawCustom"
+  }
+}

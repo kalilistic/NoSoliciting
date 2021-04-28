@@ -14,8 +14,11 @@ using NoSoliciting.Ml;
 #endif
 
 namespace NoSoliciting {
+    [Serializable]
     public class Message {
         public Guid Id { get; }
+        [JsonIgnore]
+        public uint ActorId { get; }
         public uint DefinitionsVersion { get; }
         public DateTime Timestamp { get; }
         public ChatType ChatType { get; }
@@ -24,25 +27,16 @@ namespace NoSoliciting {
         public bool Ml { get; }
         public string? FilterReason { get; }
 
-        public Message(uint defsVersion, ChatType type, SeString sender, SeString content, bool ml, string? reason) {
+        public Message(uint defsVersion, ChatType type, uint actorId, SeString sender, SeString content, bool ml, string? reason) {
             this.Id = Guid.NewGuid();
             this.DefinitionsVersion = defsVersion;
             this.Timestamp = DateTime.Now;
             this.ChatType = type;
+            this.ActorId = actorId;
             this.Sender = sender;
             this.Content = content;
             this.Ml = ml;
             this.FilterReason = reason;
-        }
-
-        public Message(uint defsVersion, ChatType type, string sender, string content, bool ml, string? reason) : this(
-            defsVersion,
-            type,
-            new SeString(new Payload[] {new TextPayload(sender)}),
-            new SeString(new Payload[] {new TextPayload(content)}),
-            ml,
-            reason
-        ) {
         }
 
         [Serializable]

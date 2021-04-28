@@ -1,5 +1,4 @@
-﻿using Dalamud.Hooking;
-using Dalamud.Plugin;
+﻿using Dalamud.Plugin;
 using System;
 using Dalamud.Game.Internal.Gui;
 using Dalamud.Game.Internal.Gui.Structs;
@@ -41,11 +40,7 @@ namespace NoSoliciting {
         };
 
         private Plugin Plugin { get; }
-        private bool _clearOnNext;
-
-        private delegate IntPtr HandlePfSummaryDelegate(IntPtr param1, IntPtr param2, byte param3);
-
-        private readonly Hook<HandlePfSummaryDelegate>? _handleSummaryHook;
+        private int LastBatch { get; set; } = -1;
 
         private bool _disposedValue;
 
@@ -54,11 +49,6 @@ namespace NoSoliciting {
 
             this.Plugin.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.OnChat;
             this.Plugin.Interface.Framework.Gui.PartyFinder.ReceiveListing += this.OnListing;
-
-            var summaryPtr = this.Plugin.Interface.TargetModuleScanner.ScanText("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 8B FA 48 8B F1 45 84 C0 74 ?? 0F B7 0A");
-
-            this._handleSummaryHook = new Hook<HandlePfSummaryDelegate>(summaryPtr, new HandlePfSummaryDelegate(this.HandleSummary));
-            this._handleSummaryHook.Enable();
         }
 
         private void Dispose(bool disposing) {
@@ -69,7 +59,6 @@ namespace NoSoliciting {
             if (disposing) {
                 this.Plugin.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.OnChat;
                 this.Plugin.Interface.Framework.Gui.PartyFinder.ReceiveListing -= this.OnListing;
-                this._handleSummaryHook?.Dispose();
             }
 
             this._disposedValue = true;
@@ -82,25 +71,19 @@ namespace NoSoliciting {
         }
 
         private void OnChat(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
-            isHandled = isHandled || this.FilterMessage(type, sender, message);
+            isHandled = isHandled || this.FilterMessage(type, senderId, sender, message);
         }
 
         private void OnListing(PartyFinderListing listing, PartyFinderListingEventArgs args) {
             try {
-                if (this._clearOnNext) {
+                if (this.LastBatch != args.BatchNumber) {
                     this.Plugin.ClearPartyFinderHistory();
-                    this._clearOnNext = false;
                 }
 
-                string? reason = null;
-                uint? version = null;
-                if (this.Plugin.MlReady) {
-                    version = this.Plugin.MlFilter!.Version;
-                    reason = this.MlListingFilterReason(listing);
-                } else if (this.Plugin.DefsReady) {
-                    version = this.Plugin.Definitions!.Version;
-                    reason = this.DefsListingFilterReason(listing);
-                }
+                this.LastBatch = args.BatchNumber;
+
+                var version = this.Plugin.MlFilter?.Version;
+                var reason = this.MlListingFilterReason(listing);
 
                 if (version == null) {
                     return;
@@ -109,9 +92,10 @@ namespace NoSoliciting {
                 this.Plugin.AddPartyFinderHistory(new Message(
                     version.Value,
                     ChatType.None,
+                    listing.ContentIdLower,
                     listing.Name,
                     listing.Description,
-                    this.Plugin.MlReady,
+                    true,
                     reason
                 ));
 
@@ -129,19 +113,15 @@ namespace NoSoliciting {
             }
         }
 
-        private bool FilterMessage(XivChatType type, SeString sender, SeString message) {
+        private bool FilterMessage(XivChatType type, uint senderId, SeString sender, SeString message) {
             if (message == null) {
                 throw new ArgumentNullException(nameof(message), "SeString cannot be null");
             }
 
-            if (this.Plugin.MlReady) {
-                return this.MlFilterMessage(type, sender, message);
-            }
-
-            return this.Plugin.DefsReady && this.DefsFilterMessage(type, sender, message);
+            return this.MlFilterMessage(type, senderId, sender, message);
         }
 
-        private bool MlFilterMessage(XivChatType type, SeString sender, SeString message) {
+        private bool MlFilterMessage(XivChatType type, uint senderId, SeString sender, SeString message) {
             if (this.Plugin.MlFilter == null) {
                 return false;
             }
@@ -177,47 +157,10 @@ namespace NoSoliciting {
             this.Plugin.AddMessageHistory(new Message(
                 this.Plugin.MlFilter.Version,
                 ChatTypeExt.FromDalamud(type),
+                senderId,
                 sender,
                 message,
                 true,
-                reason
-            ));
-
-            if (filter && this.Plugin.Config.LogFilteredChat) {
-                PluginLog.Log($"Filtered chat message ({reason}): {text}");
-            }
-
-            return filter;
-        }
-
-        private bool DefsFilterMessage(XivChatType type, SeString sender, SeString message) {
-            if (this.Plugin.Definitions == null || ChatTypeExt.FromDalamud(type).IsBattle()) {
-                return false;
-            }
-
-            var text = message.TextValue;
-
-            string? reason = null;
-            var filter = false;
-
-            foreach (var def in this.Plugin.Definitions.Chat.Values) {
-                filter = filter || this.Plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled)
-                    && enabled
-                    && def.Matches(type, text)
-                    && SetReason(out reason, def.Id);
-            }
-
-            // check for custom filters if enabled
-            filter = filter || this.Plugin.Config.CustomChatFilter
-                && Chat.MatchesCustomFilters(text, this.Plugin.Config)
-                && SetReason(out reason, "custom");
-
-            this.Plugin.AddMessageHistory(new Message(
-                this.Plugin.Definitions.Version,
-                ChatTypeExt.FromDalamud(type),
-                sender,
-                message,
-                false,
                 reason
             ));
 
@@ -262,37 +205,6 @@ namespace NoSoliciting {
             }
 
             return null;
-        }
-
-        private string? DefsListingFilterReason(PartyFinderListing listing) {
-            if (this.Plugin.Definitions == null) {
-                return null;
-            }
-
-            var desc = listing.Description.TextValue;
-
-            if (this.Plugin.Config.FilterHugeItemLevelPFs && listing.MinimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.Plugin.Interface.Data)) {
-                return "ilvl";
-            }
-
-            foreach (var def in this.Plugin.Definitions.PartyFinder.Values) {
-                if (this.Plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled) && enabled && def.Matches(XivChatType.None, desc)) {
-                    return def.Id;
-                }
-            }
-
-            // check for custom filters if enabled
-            if (this.Plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.Plugin.Config)) {
-                return "custom";
-            }
-
-            return null;
-        }
-
-        private IntPtr HandleSummary(IntPtr param1, IntPtr param2, byte param3) {
-            this._clearOnNext = true;
-
-            return this._handleSummaryHook!.Original(param1, param2, param3);
         }
 
         private static bool SetReason(out string reason, string value) {

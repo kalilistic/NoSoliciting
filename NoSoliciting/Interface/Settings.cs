@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using CheapLoc;
 using Dalamud.Interface;
+using Dalamud.Plugin;
 using ImGuiNET;
 using NoSoliciting.Ml;
 
@@ -38,26 +41,13 @@ namespace NoSoliciting.Interface {
         }
 
         public void Draw() {
-            if (!this.ShowSettings || !ImGui.Begin($"{this.Plugin.Name} settings", ref this._showSettings)) {
+            var windowTitle = Loc.Localize("Settings", $"{this.Plugin.Name} settings");
+            if (!this.ShowSettings || !ImGui.Begin($"{windowTitle}###NoSoliciting settings", ref this._showSettings)) {
                 return;
             }
 
-            var modes = new[] {
-                "Machine learning (default)",
-                "Definition matchers (obsolete)",
-            };
-            var modeIndex = this.Plugin.Config.UseMachineLearning ? 0 : 1;
-            if (ImGui.Combo("Filter mode", ref modeIndex, modes, modes.Length)) {
-                this.Plugin.Config.UseMachineLearning = modeIndex == 0;
-                this.Plugin.Config.Save();
-
-                if (this.Plugin.Config.UseMachineLearning) {
-                    this.Plugin.InitialiseMachineLearning(false);
-                }
-            }
-
             var advanced = this.Plugin.Config.AdvancedMode;
-            if (ImGui.Checkbox("Advanced mode", ref advanced)) {
+            if (ImGui.Checkbox(Loc.Localize("AdvancedMode", "Advanced mode"), ref advanced)) {
                 this.Plugin.Config.AdvancedMode = advanced;
                 this.Plugin.Config.Save();
             }
@@ -68,23 +58,19 @@ namespace NoSoliciting.Interface {
                 return;
             }
 
-            if (this.Plugin.Config.UseMachineLearning) {
-                this.DrawMachineLearningConfig();
-            } else {
-                this.DrawDefinitionsConfig();
-            }
+            this.DrawMachineLearningConfig();
 
             this.DrawOtherFilters();
 
-            if (ImGui.BeginTabItem("Other")) {
+            if (ImGui.BeginTabItem(Loc.Localize("OtherTab", "Other"))) {
                 var logFilteredPfs = this.Plugin.Config.LogFilteredPfs;
-                if (ImGui.Checkbox("Log filtered PFs", ref logFilteredPfs)) {
+                if (ImGui.Checkbox(Loc.Localize("LogFilteredPfs", "Log filtered PFs"), ref logFilteredPfs)) {
                     this.Plugin.Config.LogFilteredPfs = logFilteredPfs;
                     this.Plugin.Config.Save();
                 }
 
                 var logFilteredMessages = this.Plugin.Config.LogFilteredChat;
-                if (ImGui.Checkbox("Log filtered messages", ref logFilteredMessages)) {
+                if (ImGui.Checkbox(Loc.Localize("LogFilteredMessages", "Log filtered messages"), ref logFilteredMessages)) {
                     this.Plugin.Config.LogFilteredChat = logFilteredMessages;
                     this.Plugin.Config.Save();
                 }
@@ -96,7 +82,7 @@ namespace NoSoliciting.Interface {
 
             ImGui.Separator();
 
-            if (ImGui.Button("Show reporting window")) {
+            if (ImGui.Button(Loc.Localize("ShowReportingWindow", "Show reporting window"))) {
                 this.Ui.Report.Open();
             }
 
@@ -112,7 +98,7 @@ namespace NoSoliciting.Interface {
                 this.DrawBasicMachineLearningConfig();
             }
 
-            if (!ImGui.BeginTabItem("Model")) {
+            if (!ImGui.BeginTabItem(Loc.Localize("ModelTab", "Model"))) {
                 return;
             }
 
@@ -123,7 +109,7 @@ namespace NoSoliciting.Interface {
                 ImGui.TextUnformatted($"Last error: {lastError}");
             }
 
-            if (ImGui.Button("Update model")) {
+            if (ImGui.Button(Loc.Localize("UpdateModel", "Update model"))) {
                 // prevent issues when people spam the button
                 if (ImGui.GetIO().KeyCtrl || this.Plugin.MlStatus is MlFilterStatus.Uninitialised or MlFilterStatus.Initialised) {
                     this.Plugin.MlFilter?.Dispose();
@@ -137,7 +123,7 @@ namespace NoSoliciting.Interface {
         }
 
         private void DrawBasicMachineLearningConfig() {
-            if (!ImGui.BeginTabItem("Filters")) {
+            if (!ImGui.BeginTabItem(Loc.Localize("FiltersTab", "Filters"))) {
                 return;
             }
 
@@ -168,13 +154,13 @@ namespace NoSoliciting.Interface {
         }
 
         private void DrawAdvancedMachineLearningConfig() {
-            if (!ImGui.BeginTabItem("Filters")) {
+            if (!ImGui.BeginTabItem(Loc.Localize("FiltersTab", "Filters"))) {
                 return;
             }
 
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(255f, 204f, 0f, 1f));
-            ImGui.TextUnformatted("Do not change advanced settings unless you know what you are doing.");
-            ImGui.TextUnformatted("The machine learning model was trained with certain channels in mind.");
+            ImGui.TextUnformatted(Loc.Localize("AdvancedWarning1", "Do not change advanced settings unless you know what you are doing."));
+            ImGui.TextUnformatted(Loc.Localize("AdvancedWarning2", "The machine learning model was trained with certain channels in mind."));
             ImGui.PopStyleColor();
 
             foreach (var category in MessageCategoryExt.UiOrder) {
@@ -217,91 +203,16 @@ namespace NoSoliciting.Interface {
 
         #endregion
 
-        #region Definitions config
-
-        private void DrawDefinitionsConfig() {
-            if (this.Plugin.Config.AdvancedMode) {
-                this.DrawDefsAdvancedSettings();
-            } else {
-                this.DrawDefsBasicSettings();
-            }
-
-            this.DrawDefinitionsTab();
-        }
-
-        private void DrawDefinitionsTab() {
-            if (!ImGui.BeginTabItem("Definitions")) {
-                return;
-            }
-
-            if (this.Plugin.Definitions != null) {
-                ImGui.TextUnformatted($"Version: {this.Plugin.Definitions.Version}");
-            }
-
-            if (Definitions.LastUpdate != null) {
-                ImGui.TextUnformatted($"Last update: {Definitions.LastUpdate}");
-            }
-
-            var error = Definitions.LastError;
-            if (error != null) {
-                ImGui.TextUnformatted($"Last error: {error}");
-            }
-
-            if (ImGui.Button("Update definitions")) {
-                this.Plugin.UpdateDefinitions();
-            }
-
-            ImGui.EndTabItem();
-        }
-
-        private void DrawDefsBasicSettings() {
-            if (this.Plugin.Definitions == null) {
-                return;
-            }
-
-            if (!ImGui.BeginTabItem("Filters")) {
-                return;
-            }
-
-            this.DrawCheckboxes(this.Plugin.Definitions.Chat.Values, true, "chat");
-
-            ImGui.Separator();
-
-            this.DrawCheckboxes(this.Plugin.Definitions.PartyFinder.Values, true, "Party Finder");
-
-            ImGui.EndTabItem();
-        }
-
-        private void DrawDefsAdvancedSettings() {
-            if (this.Plugin.Definitions == null) {
-                return;
-            }
-
-            if (ImGui.BeginTabItem("Chat")) {
-                this.DrawCheckboxes(this.Plugin.Definitions.Chat.Values, false, "chat");
-
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Party Finder")) {
-                this.DrawCheckboxes(this.Plugin.Definitions.PartyFinder.Values, false, "Party Finder");
-
-                ImGui.EndTabItem();
-            }
-        }
-
-        #endregion
-
         #region Other config
 
         private void DrawOtherFilters() {
-            if (!ImGui.BeginTabItem("Other filters")) {
+            if (!ImGui.BeginTabItem(Loc.Localize("OtherFiltersTab", "Other filters"))) {
                 return;
             }
 
-            if (ImGui.CollapsingHeader("Chat filters")) {
+            if (ImGui.CollapsingHeader(Loc.Localize("ChatFilters", "Chat filters"))) {
                 var customChat = this.Plugin.Config.CustomChatFilter;
-                if (ImGui.Checkbox("Enable custom chat filters", ref customChat)) {
+                if (ImGui.Checkbox(Loc.Localize("EnableCustomChatFilters", "Enable custom chat filters"), ref customChat)) {
                     this.Plugin.Config.CustomChatFilter = customChat;
                     this.Plugin.Config.Save();
                 }
@@ -313,22 +224,22 @@ namespace NoSoliciting.Interface {
                 }
             }
 
-            if (ImGui.CollapsingHeader("Party Finder filters")) {
+            if (ImGui.CollapsingHeader(Loc.Localize("PartyFinderFilters", "Party Finder filters"))) {
                 var filterHugeItemLevelPFs = this.Plugin.Config.FilterHugeItemLevelPFs;
                 // ReSharper disable once InvertIf
-                if (ImGui.Checkbox("Filter PFs with item level above maximum", ref filterHugeItemLevelPFs)) {
+                if (ImGui.Checkbox(Loc.Localize("FilterIlvlPfs", "Filter PFs with item level above maximum"), ref filterHugeItemLevelPFs)) {
                     this.Plugin.Config.FilterHugeItemLevelPFs = filterHugeItemLevelPFs;
                     this.Plugin.Config.Save();
                 }
 
                 var considerPrivate = this.Plugin.Config.ConsiderPrivatePfs;
-                if (ImGui.Checkbox("Apply filters to private Party Finder listings", ref considerPrivate)) {
+                if (ImGui.Checkbox(Loc.Localize("FilterPrivatePfs", "Apply filters to private Party Finder listings"), ref considerPrivate)) {
                     this.Plugin.Config.ConsiderPrivatePfs = considerPrivate;
                     this.Plugin.Config.Save();
                 }
 
                 var customPf = this.Plugin.Config.CustomPFFilter;
-                if (ImGui.Checkbox("Enable custom Party Finder filters", ref customPf)) {
+                if (ImGui.Checkbox(Loc.Localize("EnableCustomPartyFinderFilters", "Enabled custom Party Finder filters"), ref customPf)) {
                     this.Plugin.Config.CustomPFFilter = customPf;
                     this.Plugin.Config.Save();
                 }
@@ -346,7 +257,7 @@ namespace NoSoliciting.Interface {
         private void DrawCustom(string name, ref List<string> substrings, ref List<string> regexes) {
             ImGui.Columns(2);
 
-            ImGui.TextUnformatted("Substrings to filter");
+            ImGui.TextUnformatted(Loc.Localize("SubstringsToFilter", "Substrings to filter"));
             if (ImGui.BeginChild($"##{name}-substrings", new Vector2(0, 175))) {
                 for (var i = 0; i < substrings.Count; i++) {
                     var input = substrings[i];
@@ -375,7 +286,7 @@ namespace NoSoliciting.Interface {
 
             ImGui.NextColumn();
 
-            ImGui.TextUnformatted("Regular expressions to filter");
+            ImGui.TextUnformatted(Loc.Localize("RegularExpressionsToFilter", "Regular expressions to filter"));
             if (ImGui.BeginChild($"##{name}-regexes", new Vector2(0, 175))) {
                 for (var i = 0; i < regexes.Count; i++) {
                     var input = regexes[i];
@@ -411,26 +322,10 @@ namespace NoSoliciting.Interface {
             ImGui.Columns(1);
 
             // ReSharper disable once InvertIf
-            if (ImGui.Button($"Save filters##{name}-save")) {
+            var saveLoc = Loc.Localize("SaveFilters", "Save filters");
+            if (ImGui.Button($"{saveLoc}##{name}-save")) {
                 this.Plugin.Config.Save();
                 this.Plugin.Config.CompileRegexes();
-            }
-        }
-
-        #endregion
-
-        #region Utility
-
-        private void DrawCheckboxes(IEnumerable<Definition> defs, bool basic, string labelFillIn) {
-            foreach (var def in defs) {
-                this.Plugin.Config.FilterStatus.TryGetValue(def.Id, out var enabled);
-                var label = basic ? def.Option.Basic : def.Option.Advanced;
-                label = label.Replace("{}", labelFillIn);
-                // ReSharper disable once InvertIf
-                if (ImGui.Checkbox(label, ref enabled)) {
-                    this.Plugin.Config.FilterStatus[def.Id] = enabled;
-                    this.Plugin.Config.Save();
-                }
             }
         }
 
