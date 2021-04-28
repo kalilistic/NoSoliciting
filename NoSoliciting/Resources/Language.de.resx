@@ -157,10 +157,10 @@
     <value>Nutze die Spracheinstellung des Spiels, anstelle der von Dalamud</value>
   </data>
   <data name="ReportToastFailure" xml:space="preserve">
-    <value>Fehler beim Melden der Gruppensuche von {0}</value>
+    <value>Fehler beim Melden der Gruppensuche von {0}.</value>
   </data>
   <data name="ReportToastSuccess" xml:space="preserve">
-    <value>Gruppensuche von {0] erfolgreich gemeldet</value>
+    <value>Gruppensuche von {0] erfolgreich gemeldet.</value>
   </data>
   <data name="CommunityDescription" xml:space="preserve">
     <value>Werbung für alle möglichen Gemeinschaften, normalerweise Discord Server</value>
@@ -209,5 +209,26 @@
   </data>
   <data name="LogFilteredMessages" xml:space="preserve">
     <value>Gefilterte Nachrichten protokollieren</value>
+  </data>
+  <data name="ShowReportingWindow" xml:space="preserve">
+    <value>Berichtsfenster öffnen</value>
+  </data>
+  <data name="ReportColumnHost" xml:space="preserve">
+    <value>Suchender</value>
+  </data>
+  <data name="Reporting" xml:space="preserve">
+    <value>{0} Bericht</value>
+  </data>
+  <data name="RmtContentDescription" xml:space="preserve">
+    <value>Echtgeldhandel, der den Abschluss von Inhalten beinhaltet (auch bekannt als Content Seller)</value>
+  </data>
+  <data name="RmtGilDescription" xml:space="preserve">
+    <value>Echtgeldhandel, der Gil oder Gegenstände beinhaltet (auch bekannt als RMT Bots)</value>
+  </data>
+  <data name="CommunityCategory" xml:space="preserve">
+    <value>Gemeinschaftswerbung</value>
+  </data>
+  <data name="TradeCategory" xml:space="preserve">
+    <value>Handelswerbung</value>
   </data>
 </root>
