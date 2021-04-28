@@ -24,6 +24,10 @@ namespace NoSoliciting {
                 return;
             }
 
+            if (args.ContentIdLower == 0) {
+                return;
+            }
+
             var label = Language.ReportToNoSoliciting;
             args.AdditionalItems.Add(new ContextMenuItem(label, this.Report));
         }
