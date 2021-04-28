@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using CheapLoc;
 using Dalamud.Interface;
-using Dalamud.Plugin;
 using ImGuiNET;
 using NoSoliciting.Ml;
 
@@ -41,7 +39,7 @@ namespace NoSoliciting.Interface {
         }
 
         public void Draw() {
-            var windowTitle = Loc.Localize("Settings", "NoSoliciting settings");
+            var windowTitle = string.Format(Loc.Localize("Settings", "{0} settings"), this.Plugin.Name);
             if (!this.ShowSettings || !ImGui.Begin($"{windowTitle}###NoSoliciting settings", ref this._showSettings)) {
                 return;
             }
@@ -102,11 +100,11 @@ namespace NoSoliciting.Interface {
                 return;
             }
 
-            ImGui.TextUnformatted($"Version: {this.Plugin.MlFilter?.Version}");
-            ImGui.TextUnformatted($"Model status: {this.Plugin.MlStatus.Description()}");
+            ImGui.TextUnformatted(string.Format(Loc.Localize("ModelTabVersion", "Version: {0}"), this.Plugin.MlFilter?.Version));
+            ImGui.TextUnformatted(string.Format(Loc.Localize("ModelTabStatus", "Model status: {0}"), this.Plugin.MlStatus.Description()));
             var lastError = MlFilter.LastError;
             if (lastError != null) {
-                ImGui.TextUnformatted($"Last error: {lastError}");
+                ImGui.TextUnformatted(string.Format(Loc.Localize("ModelTabError", "Last error: {0}"), lastError));
             }
 
             if (ImGui.Button(Loc.Localize("UpdateModel", "Update model"))) {
@@ -239,7 +237,7 @@ namespace NoSoliciting.Interface {
                 }
 
                 var customPf = this.Plugin.Config.CustomPFFilter;
-                if (ImGui.Checkbox(Loc.Localize("EnableCustomPartyFinderFilters", "Enabled custom Party Finder filters"), ref customPf)) {
+                if (ImGui.Checkbox(Loc.Localize("EnableCustomPartyFinderFilters", "Enable custom Party Finder filters"), ref customPf)) {
                     this.Plugin.Config.CustomPFFilter = customPf;
                     this.Plugin.Config.Save();
                 }

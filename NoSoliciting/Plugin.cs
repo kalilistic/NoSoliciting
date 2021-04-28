@@ -45,6 +45,7 @@ namespace NoSoliciting {
             this.Interface = pluginInterface;
 
             Loc.Setup(Resourcer.Resource.AsString("Resources/en.json"), Assembly.GetAssembly(typeof(Plugin)));
+            Loc.ExportLocalizable();
 
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
@@ -73,8 +74,6 @@ namespace NoSoliciting {
             }
 
             if (disposing) {
-                Loc.ExportLocalizable();
-
                 this.Filter.Dispose();
                 this.MlFilter?.Dispose();
                 this.ContextMenu.Dispose();
