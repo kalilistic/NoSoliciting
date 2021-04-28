@@ -41,7 +41,7 @@ namespace NoSoliciting.Interface {
         }
 
         public void Draw() {
-            var windowTitle = Loc.Localize("Settings", $"{this.Plugin.Name} settings");
+            var windowTitle = Loc.Localize("Settings", "NoSoliciting settings");
             if (!this.ShowSettings || !ImGui.Begin($"{windowTitle}###NoSoliciting settings", ref this._showSettings)) {
                 return;
             }
