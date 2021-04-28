@@ -9,6 +9,7 @@
             <InputAssemblies Include="$(OutputPath)\M*.dll"/>
             <InputAssemblies Include="$(OutputPath)\S*.dll"/>
             <InputAssemblies Include="$(OutputPath)\Y*.dll"/>
+            <InputAssemblies Include="$(OutputPath)\XivCommon.dll"/>
         </ItemGroup>
         <ILRepack
                 Parallel="true"

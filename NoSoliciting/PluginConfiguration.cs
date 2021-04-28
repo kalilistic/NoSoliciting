@@ -51,8 +51,6 @@ namespace NoSoliciting {
 
         public bool FilterHugeItemLevelPFs { get; set; }
 
-        public bool UseMachineLearning { get; set; } = true;
-
         public HashSet<MessageCategory> BasicMlFilters { get; set; } = new() {
             MessageCategory.RmtGil,
             MessageCategory.RmtContent,

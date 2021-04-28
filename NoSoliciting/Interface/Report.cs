@@ -232,24 +232,7 @@ namespace NoSoliciting.Interface {
                 ImGui.PopStyleColor();
             } else {
                 if (ImGui.Button("Report")) {
-                    Task.Run(async () => {
-                        string? resp = null;
-                        try {
-                            using var client = new WebClient();
-                            this.LastReportStatus = ReportStatus.InProgress;
-                            var reportUrl = this.Plugin.MlFilter?.ReportUrl;
-                            if (reportUrl != null) {
-                                resp = await client.UploadStringTaskAsync(reportUrl, message.ToJson()).ConfigureAwait(true);
-                            }
-                        } catch (Exception) {
-                            // ignored
-                        }
-
-                        this.LastReportStatus = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
-                        PluginLog.Log(resp == null
-                            ? "Report not sent. ML model not set."
-                            : $"Report sent. Response: {resp}");
-                    });
+                    this.ReportMessage(message);
                     ImGui.CloseCurrentPopup();
                 }
 
@@ -306,6 +289,36 @@ namespace NoSoliciting.Interface {
             }
 
             return clicked;
+        }
+
+        internal void ReportMessage(Message message) {
+            Task.Run(async () => await this.ReportMessageAsync(message));
+        }
+
+        internal async Task<ReportStatus> ReportMessageAsync(Message message) {
+            string? resp = null;
+            try {
+                using var client = new WebClient();
+                this.LastReportStatus = ReportStatus.InProgress;
+                var reportUrl = this.Plugin.MlFilter?.ReportUrl;
+                if (reportUrl != null) {
+                    resp = await client.UploadStringTaskAsync(reportUrl, message.ToJson()).ConfigureAwait(true);
+                }
+            } catch (Exception) {
+                // ignored
+            }
+
+            var status = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
+            if (status == ReportStatus.Failure) {
+                PluginLog.LogWarning($"Failed to report message:\n{resp}");
+            }
+
+            this.LastReportStatus = status;
+            PluginLog.Log(resp == null
+                ? "Report not sent. ML model not set."
+                : $"Report sent. Response: {resp}");
+
+            return status;
         }
 
         #endregion
