@@ -120,4 +120,115 @@
   <data name="FilterIlvlPfs" xml:space="preserve">
     <value>Filtrer les Recherche d'Équipe (PFs) avec un niveau d'objet requis supérieur au maximum</value>
   </data>
+  <data name="OtherGameLanguage" xml:space="preserve">
+    <value>Utiliser la langue des paramètres du jeu au lieu de ceux de Dalamud</value>
+  </data>
+  <data name="TradeCategory" xml:space="preserve">
+    <value>Publicités à but d'échange</value>
+  </data>
+  <data name="FreeCompanyCategory" xml:space="preserve">
+    <value>Publicités de compagnie libre</value>
+  </data>
+  <data name="TradeDescription" xml:space="preserve">
+    <value>Messages faisant la publicité d'échanges d'objets ou de services contre des gils, tels que les omnicrafteurs à la recherche de travail ou de vendeurs d'objets rares via le tableau des marchés</value>
+  </data>
+  <data name="PhishingDescription" xml:space="preserve">
+    <value>Messages tentant de vous piéger dans le but de vous faire révéler les détails et identifiants de votre compte afin de vous le voler</value>
+  </data>
+  <data name="RmtGilDescription" xml:space="preserve">
+    <value>Ventes contre de l'argent réel impliquant des gils (aussi connus sous le nom de gils RMT : Real Money Traders)</value>
+  </data>
+  <data name="RmtContentCategory" xml:space="preserve">
+    <value>RMT (contenu)</value>
+  </data>
+  <data name="PhishingCategory" xml:space="preserve">
+    <value>Messages de phishing</value>
+  </data>
+  <data name="NormalCategory" xml:space="preserve">
+    <value>Messages normaux</value>
+  </data>
+  <data name="RmtGilCategory" xml:space="preserve">
+    <value>RMT (gils)</value>
+  </data>
+  <data name="RoleplayingCategory" xml:space="preserve">
+    <value>Publicités pour du jeu de rôle (RP)</value>
+  </data>
+  <data name="StaticCategory" xml:space="preserve">
+    <value>Recrutement de statique</value>
+  </data>
+  <data name="CommunityCategory" xml:space="preserve">
+    <value>Publicités communautaires</value>
+  </data>
+  <data name="StaticSubCategory" xml:space="preserve">
+    <value>Remplacements de statique</value>
+  </data>
+  <data name="FreeCompanyDescription" xml:space="preserve">
+    <value>Messages de recrutement de la part de Compagnies Libres</value>
+  </data>
+  <data name="NormalDescription" xml:space="preserve">
+    <value>Les messages normaux ne devraient pas être filtrés</value>
+  </data>
+  <data name="RmtContentDescription" xml:space="preserve">
+    <value>Ventes contre de l'argent réel impliquant la complétion de contenu (aussi connus sous le nom de content RMT : Real Money Traders)</value>
+  </data>
+  <data name="RoleplayingDescription" xml:space="preserve">
+    <value>Promotion pour du jeu de rôle personnel, des communautés de jeu de rôle, des événements et tout ce qui a trait au jeu de rôle</value>
+  </data>
+  <data name="StaticDescription" xml:space="preserve">
+    <value>Membres d'une statique à la recherche de membres, ou joueurs à la recherche de personnes qui cherchent une statique</value>
+  </data>
+  <data name="ReportToastSuccess" xml:space="preserve">
+    <value>Recherche d'équipe organisée par {0} signalée avec succès.</value>
+  </data>
+  <data name="ReportToastFailure" xml:space="preserve">
+    <value>Échec du signalement de la Recherche d'Équipe de {0].</value>
+  </data>
+  <data name="ReportColumnSender" xml:space="preserve">
+    <value>Expéditeur</value>
+  </data>
+  <data name="ReportColumnMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="ReportPartyFinderTab" xml:space="preserve">
+    <value>Recherche d'Équipe</value>
+  </data>
+  <data name="ReportColumnHost" xml:space="preserve">
+    <value>Recruteur</value>
+  </data>
+  <data name="ReportColumnDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ReportModalTitle" xml:space="preserve">
+    <value>Signaler à {0}</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>Publicités pour des communautés de tous types et pour tous propos, généralement des serveurs Discord</value>
+  </data>
+  <data name="StaticSubDescription" xml:space="preserve">
+    <value>Statique à la recherche de remplaçants de leurs membres manquants pour leur complétion</value>
+  </data>
+  <data name="ReportModalHelp1" xml:space="preserve">
+    <value>Signaler ce message avertira la développeuse que vous pensez qu'il a été incorrectement classifié.</value>
+  </data>
+  <data name="ReportModalWasFiltered" xml:space="preserve">
+    <value>Plus précisément, cela veut dire que ce message A ÉTÉ filtré alors qu'il n'aurait pas dû l'être.</value>
+  </data>
+  <data name="ReportModalWasNotFiltered" xml:space="preserve">
+    <value>Plus précisément, cela veut dire que ce message N'A PAS ÉTÉ filtré alors qu'il aurait dû l'être.</value>
+  </data>
+  <data name="ReportModalHelp2" xml:space="preserve">
+    <value>NoSoliciting n'est fonctionnel que pour les messages en anglais. Veuillez ne pas signaler des messages qui ne sont pas en anglais.</value>
+  </data>
+  <data name="ReportModalCustom" xml:space="preserve">
+    <value>Vous ne pouvez pas signaler de messages filtrés à cause d'un filtre personnalisé.</value>
+  </data>
+  <data name="ReportModalReport" xml:space="preserve">
+    <value>Signaler</value>
+  </data>
+  <data name="ReportModalCopy" xml:space="preserve">
+    <value>Copier dans le presse-papiers</value>
+  </data>
+  <data name="ReportModalCancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
 </root>
