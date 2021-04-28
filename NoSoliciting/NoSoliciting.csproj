@@ -9,10 +9,6 @@
         <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="CheapLoc">
-            <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\CheapLoc.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
         <Reference Include="Dalamud">
             <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Dalamud.dll</HintPath>
             <Private>False</Private>
@@ -42,19 +38,29 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="1.2.1"/>
-        <PackageReference Include="Fody" Version="6.5.1" PrivateAssets="all"/>
-        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2"/>
-        <PackageReference Include="JKang.IpcServiceFramework.Client.NamedPipe" Version="3.1.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1"/>
-        <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all"/>
-        <PackageReference Include="YamlDotNet" Version="11.1.1"/>
+        <PackageReference Include="DalamudPackager" Version="1.2.1" />
+        <PackageReference Include="Fody" Version="6.5.1" PrivateAssets="all" />
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+        <PackageReference Include="JKang.IpcServiceFramework.Client.NamedPipe" Version="3.1.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+        <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all" />
+        <PackageReference Include="YamlDotNet" Version="11.1.1" />
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="..\NoSoliciting.MessageClassifier\bin\Release\net48\NoSoliciting.MessageClassifier.exe"/>
-        <EmbeddedResource Include="Resources\en.json"/>
+        <EmbeddedResource Include="..\NoSoliciting.MessageClassifier\bin\Release\net48\NoSoliciting.MessageClassifier.exe" />
+        <EmbeddedResource Update="Resources\Language.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Language.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj"/>
+        <ProjectReference Include="..\NoSoliciting.Interface\NoSoliciting.Interface.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Resources\Language.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>NoSoliciting.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 </Project>

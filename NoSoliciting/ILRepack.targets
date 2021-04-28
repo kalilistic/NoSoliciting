@@ -5,6 +5,7 @@
         <ItemGroup>
             <InputAssemblies Include="$(OutputPath)\NoSoliciting.dll"/>
             <InputAssemblies Include="$(OutputPath)\NoSoliciting.Interface.dll"/>
+            <InputAssemblies Include="$(OutputPath)\*\NoSoliciting.resources.dll"/>
             <InputAssemblies Include="$(OutputPath)\J*.dll"/>
             <InputAssemblies Include="$(OutputPath)\M*.dll"/>
             <InputAssemblies Include="$(OutputPath)\S*.dll"/>

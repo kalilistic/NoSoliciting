@@ -1,10 +1,10 @@
 ﻿using Dalamud.Plugin;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using CheapLoc;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 using Resourcer;
@@ -44,20 +44,10 @@ namespace NoSoliciting {
 
             this.Interface = pluginInterface;
 
-            Loc.Setup(Resource.AsString("Resources/en.json"), Assembly.GetAssembly(typeof(Plugin)));
-            this.Interface.OnLanguageChanged += code => {
-                try {
-                    var data = Resource.AsStringUnChecked($"Resources/{code}.json");
-                    if (data != null) {
-                        Loc.Setup(data, Assembly.GetAssembly(typeof(Plugin)));
-                        return;
-                    }
-                } catch (Exception) {
-                    // ignore
-                }
+            Util.PreLoadResourcesFromMainAssembly();
 
-                Loc.Setup(Resource.AsString("Resources/en.json"), Assembly.GetAssembly(typeof(Plugin)));
-            };
+            Resources.Language.Culture = new CultureInfo(this.Interface.UiLanguage);
+            this.Interface.OnLanguageChanged += OnLanguageUpdate;
 
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
@@ -92,9 +82,14 @@ namespace NoSoliciting {
                 this.Commands.Dispose();
                 this.Ui.Dispose();
                 this.Common.Dispose();
+                this.Interface.OnLanguageChanged -= OnLanguageUpdate;
             }
 
             this._disposedValue = true;
+        }
+
+        private static void OnLanguageUpdate(string langCode) {
+            Resources.Language.Culture = new CultureInfo(langCode);
         }
 
         internal void InitialiseMachineLearning(bool showWindow) {

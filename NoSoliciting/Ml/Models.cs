@@ -1,6 +1,5 @@
 ﻿using System;
-using CheapLoc;
-using Dalamud;
+using NoSoliciting.Resources;
 
 namespace NoSoliciting.Ml {
     public enum MessageCategory {
@@ -75,30 +74,30 @@ namespace NoSoliciting.Ml {
         #endif
 
         public static string Name(this MessageCategory category) => category switch {
-            MessageCategory.Trade => Loc.Localize("TradeCategory", "Trade ads"),
-            MessageCategory.FreeCompany => Loc.Localize("FreeCompanyCategory", "Free Company ads"),
-            MessageCategory.Normal => Loc.Localize("NormalCategory", "Normal messages"),
-            MessageCategory.Phishing => Loc.Localize("PhishingCategory", "Phishing messages"),
-            MessageCategory.RmtContent => Loc.Localize("RmtContentCategory", "RMT (content)"),
-            MessageCategory.RmtGil => Loc.Localize("RmtGilCategory", "RMT (gil)"),
-            MessageCategory.Roleplaying => Loc.Localize("RoleplayingCategory", "Roleplaying ads"),
-            MessageCategory.Static => Loc.Localize("StaticCategory", "Static recruitment"),
-            MessageCategory.Community => Loc.Localize("CommunityCategory", "Community ads"),
-            MessageCategory.StaticSub => Loc.Localize("StaticSubCategory", "Static substitutes"),
+            MessageCategory.Trade => Language.TradeCategory,
+            MessageCategory.FreeCompany => Language.FreeCompanyCategory,
+            MessageCategory.Normal => Language.NormalCategory,
+            MessageCategory.Phishing => Language.PhishingCategory,
+            MessageCategory.RmtContent => Language.RmtContentCategory,
+            MessageCategory.RmtGil => Language.RmtGilCategory,
+            MessageCategory.Roleplaying => Language.RoleplayingCategory,
+            MessageCategory.Static => Language.StaticCategory,
+            MessageCategory.Community => Language.CommunityCategory,
+            MessageCategory.StaticSub => Language.StaticSubCategory,
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
 
         public static string Description(this MessageCategory category) => category switch {
-            MessageCategory.Trade => Loc.Localize("TradeDescription", "Messages advertising trading items or services for gil, such as omnicrafters looking for work or people selling rare items off the market board"),
-            MessageCategory.FreeCompany => Loc.Localize("FreeCompanyDescription", "Advertisements for Free Companies"),
-            MessageCategory.Normal => Loc.Localize("NormalDescription", "Normal messages that should not be filtered"),
-            MessageCategory.Phishing => Loc.Localize("PhishingDescription", "Messages trying to trick you into revealing your account details in order to steal your account"),
-            MessageCategory.RmtContent => Loc.Localize("RmtContentDescription", "Real-money trade involving content (also known as content sellers)"),
-            MessageCategory.RmtGil => Loc.Localize("RmtGilDescription", "Real-money trade involving gil or items (also known as RMT bots)"),
-            MessageCategory.Roleplaying => Loc.Localize("RoleplayingDescription", "Advertisements for personal RP, RP communities, venues, or anything else related to roleplaying"),
-            MessageCategory.Static => Loc.Localize("StaticDescription", "Statics looking for members or players looking for a static"),
-            MessageCategory.Community => Loc.Localize("CommunityDescription", "Advertisements for general-purpose communities, generally Discord servers"),
-            MessageCategory.StaticSub => Loc.Localize("StaticSubDescription", "Statics looking for fill-ins of missing members for clears"),
+            MessageCategory.Trade => Language.TradeDescription,
+            MessageCategory.FreeCompany => Language.FreeCompanyDescription,
+            MessageCategory.Normal => Language.NormalDescription,
+            MessageCategory.Phishing => Language.PhishingDescription,
+            MessageCategory.RmtContent => Language.RmtContentDescription,
+            MessageCategory.RmtGil => Language.RmtGilDescription,
+            MessageCategory.Roleplaying => Language.RoleplayingDescription,
+            MessageCategory.Static => Language.StaticDescription,
+            MessageCategory.Community => Language.CommunityDescription,
+            MessageCategory.StaticSub => Language.StaticSubDescription,
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
     }
