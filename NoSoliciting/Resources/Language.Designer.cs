@@ -259,6 +259,15 @@ namespace NoSoliciting.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use the game&apos;s language setting instead of Dalamud&apos;s.
+        /// </summary>
+        internal static string OtherGameLanguage {
+            get {
+                return ResourceManager.GetString("OtherGameLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
         internal static string OtherTab {

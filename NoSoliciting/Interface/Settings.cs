@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using Dalamud.Interface;
-using Dalamud.Plugin;
 using ImGuiNET;
 using NoSoliciting.Ml;
 using NoSoliciting.Resources;
@@ -61,21 +60,7 @@ namespace NoSoliciting.Interface {
 
             this.DrawOtherFilters();
 
-            if (ImGui.BeginTabItem(Language.OtherTab)) {
-                var logFilteredPfs = this.Plugin.Config.LogFilteredPfs;
-                if (ImGui.Checkbox(Language.LogFilteredPfs, ref logFilteredPfs)) {
-                    this.Plugin.Config.LogFilteredPfs = logFilteredPfs;
-                    this.Plugin.Config.Save();
-                }
-
-                var logFilteredMessages = this.Plugin.Config.LogFilteredChat;
-                if (ImGui.Checkbox(Language.LogFilteredMessages, ref logFilteredMessages)) {
-                    this.Plugin.Config.LogFilteredChat = logFilteredMessages;
-                    this.Plugin.Config.Save();
-                }
-
-                ImGui.EndTabItem();
-            }
+            this.DrawOtherTab();
 
             ImGui.EndTabBar();
 
@@ -329,5 +314,32 @@ namespace NoSoliciting.Interface {
         }
 
         #endregion
+
+        private void DrawOtherTab() {
+            if (!ImGui.BeginTabItem(Language.OtherTab)) {
+                return;
+            }
+
+            var useGameLanguage = this.Plugin.Config.FollowGameLanguage;
+            if (ImGui.Checkbox(Language.OtherGameLanguage, ref useGameLanguage)) {
+                this.Plugin.Config.FollowGameLanguage = useGameLanguage;
+                this.Plugin.Config.Save();
+                this.Plugin.ConfigureLanguage();
+            }
+
+            var logFilteredPfs = this.Plugin.Config.LogFilteredPfs;
+            if (ImGui.Checkbox(Language.LogFilteredPfs, ref logFilteredPfs)) {
+                this.Plugin.Config.LogFilteredPfs = logFilteredPfs;
+                this.Plugin.Config.Save();
+            }
+
+            var logFilteredMessages = this.Plugin.Config.LogFilteredChat;
+            if (ImGui.Checkbox(Language.LogFilteredMessages, ref logFilteredMessages)) {
+                this.Plugin.Config.LogFilteredChat = logFilteredMessages;
+                this.Plugin.Config.Save();
+            }
+
+            ImGui.EndTabItem();
+        }
     }
 }

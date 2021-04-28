@@ -234,4 +234,7 @@
     <data name="ReportToastFailure" xml:space="preserve">
         <value>Failed to report Party Finder listing hosted by {0}.</value>
     </data>
+    <data name="OtherGameLanguage" xml:space="preserve">
+        <value>Use the game's language setting instead of Dalamud's</value>
+    </data>
 </root>
