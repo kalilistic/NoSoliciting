@@ -26,11 +26,6 @@ namespace NoSoliciting {
 
             var label = Loc.Localize("ReportToNoSoliciting", "Report to NoSoliciting");
             args.AdditionalItems.Add(new ContextMenuItem(label, this.Report));
-            // args.AdditionalItems.Add(new ContextMenuItem("Report to NoSoliciting", this.Report) {
-            //     NameJapanese = "NoSolicitingへの報告",
-            //     NameFrench = "Signaler à NoSoliciting",
-            //     NameGerman = "An NoSoliciting melden",
-            // });
         }
 
         private void Report(ContextMenuItemSelectedArgs args) {
@@ -54,12 +49,16 @@ namespace NoSoliciting {
             Task.Run(async () => {
                 var status = await this.Plugin.Ui.Report.ReportMessageAsync(message);
                 switch (status) {
-                    case ReportStatus.Successful:
-                        this.Plugin.Interface.Framework.Gui.Toast.ShowNormal($"Party Finder hosted by {listing.Name} reported successfully.");
+                    case ReportStatus.Successful: {
+                        var msg = Loc.Localize("ReportToastSuccess", "Party Finder listing hosted by {0} reported successfully.");
+                        this.Plugin.Interface.Framework.Gui.Toast.ShowNormal(string.Format(msg, listing.Name));
                         break;
-                    case ReportStatus.Failure:
-                        this.Plugin.Interface.Framework.Gui.Toast.ShowError($"Failed to report Party Finder hosted by {listing.Name}.");
+                    }
+                    case ReportStatus.Failure: {
+                        var msg = Loc.Localize("ReportToastFailure", "Failed to report Party Finder listing hosted by {0}.");
+                        this.Plugin.Interface.Framework.Gui.Toast.ShowError(string.Format(msg, listing.Name));
                         break;
+                    }
                 }
             });
         }

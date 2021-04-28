@@ -5,6 +5,7 @@ using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using CheapLoc;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin;
@@ -52,20 +53,22 @@ namespace NoSoliciting.Interface {
 
             ImGui.SetNextWindowSize(new Vector2(1_000, 350), ImGuiCond.FirstUseEver);
 
-            if (!ImGui.Begin("NoSoliciting reporting", ref this._showReporting)) {
+            var windowTitle = string.Format(Loc.Localize("Reporting", "{0} reporting"), this.Plugin.Name);
+            if (!ImGui.Begin($"{windowTitle}###NoSoliciting reporting", ref this._showReporting)) {
                 return;
             }
 
-            ImGui.TextUnformatted("Click on one of the entries below to report it to the developer as miscategorised.");
+            ImGui.TextUnformatted(Loc.Localize("ReportHelp", "Click on one of the entries below to report it to the developer as miscategorised."));
 
             if (this.LastReportStatus != ReportStatus.None) {
                 var status = this.LastReportStatus switch {
-                    ReportStatus.Failure => "failed to send",
-                    ReportStatus.Successful => "sent successfully",
-                    ReportStatus.InProgress => "sending",
-                    _ => "unknown",
+                    ReportStatus.Failure => Loc.Localize("ReportStatusFailure", "failed to send"),
+                    ReportStatus.Successful => Loc.Localize("ReportStatusSuccessful", "sent successfully"),
+                    ReportStatus.InProgress => Loc.Localize("ReportStatusInProgress", "sending"),
+                    _ => Loc.Localize("ReportStatusUnknown", "unknown"),
                 };
-                ImGui.TextUnformatted($"Last report status: {status}");
+                var reportStatus = Loc.Localize("ReportStatusMessage", "Last report status: {0}");
+                ImGui.TextUnformatted(string.Format(reportStatus, status));
             }
 
             ImGui.Separator();
@@ -82,17 +85,18 @@ namespace NoSoliciting.Interface {
         }
 
         private void ChatTab() {
-            if (!ImGui.BeginTabItem("Chat##chat-report")) {
+            var tabTitle = Loc.Localize("ReportChatTab", "Chat");
+            if (!ImGui.BeginTabItem($"{tabTitle}##chat-report")) {
                 return;
             }
 
             if (ImGui.BeginChild("##chat-messages", new Vector2(-1, -1))) {
                 if (ImGui.BeginTable("nosol-chat-report-table", 5, TableFlags)) {
-                    ImGui.TableSetupColumn("Timestamp");
-                    ImGui.TableSetupColumn("Channel");
-                    ImGui.TableSetupColumn("Reason");
-                    ImGui.TableSetupColumn("Sender");
-                    ImGui.TableSetupColumn("Message", ImGuiTableColumnFlags.WidthStretch);
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnTimestamp", "Timestamp"));
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnChannel", "Channel"));
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnReason", "Reason"));
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnSender", "Sender"));
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnMessage", "Message"), ImGuiTableColumnFlags.WidthStretch);
                     ImGui.TableSetupScrollFreeze(0, 1);
                     ImGui.TableHeadersRow();
 
@@ -130,7 +134,8 @@ namespace NoSoliciting.Interface {
         }
 
         private void PartyFinderTab() {
-            if (!ImGui.BeginTabItem("Party Finder##pf-report")) {
+            var tabTitle = Loc.Localize("ReportPartyFinderTab", "Party Finder");
+            if (!ImGui.BeginTabItem($"{tabTitle}##pf-report")) {
                 return;
             }
 
@@ -152,10 +157,10 @@ namespace NoSoliciting.Interface {
 
             if (ImGui.BeginChild("##pf-messages", new Vector2(-1, -1))) {
                 if (ImGui.BeginTable("nosol-pf-report-table", 4, TableFlags)) {
-                    ImGui.TableSetupColumn("Timestamp");
-                    ImGui.TableSetupColumn("Reason");
-                    ImGui.TableSetupColumn("Host");
-                    ImGui.TableSetupColumn("Description", ImGuiTableColumnFlags.WidthStretch);
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnTimestamp", "Timestamp"));
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnReason", "Reason"));
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnHost", "Host"));
+                    ImGui.TableSetupColumn(Loc.Localize("ReportColumnDescription", "Description"), ImGuiTableColumnFlags.WidthStretch);
                     ImGui.TableSetupScrollFreeze(0, 1);
                     ImGui.TableHeadersRow();
 
@@ -196,23 +201,19 @@ namespace NoSoliciting.Interface {
 
         private void SetUpReportModal(Message message) {
             ImGui.SetNextWindowSize(new Vector2(350, -1));
-            if (!ImGui.BeginPopupModal($"Report to NoSoliciting###modal-message-{message.Id}")) {
+
+            var modalTitle = string.Format(Loc.Localize("ReportModalTitle", "Report to {0}"), this.Plugin.Name);
+            if (!ImGui.BeginPopupModal($"{modalTitle}###modal-message-{message.Id}")) {
                 return;
             }
 
             ImGui.PushTextWrapPos();
 
-            if (!message.Ml) {
-                ImGui.TextUnformatted("You cannot report messages filtered by definitions. Please switch to machine learning mode.");
-
-                goto EndPopup;
-            }
-
-            ImGui.TextUnformatted("Reporting this message will let the developer know that you think this message was incorrectly classified.");
+            ImGui.TextUnformatted(Loc.Localize("ReportModalHelp1", "Reporting this message will let the developer know that you think this message was incorrectly classified."));
 
             ImGui.TextUnformatted(message.FilterReason != null
-                ? "Specifically, this message WAS filtered but shouldn't have been."
-                : "Specifically, this message WAS NOT filtered but should have been.");
+                ? Loc.Localize("ReportModalWasFiltered", "Specifically, this message WAS filtered but shouldn't have been.")
+                : Loc.Localize("ReportModalWasNotFiltered", "Specifically, this message WAS NOT filtered but should have been."));
 
             ImGui.Separator();
 
@@ -221,17 +222,18 @@ namespace NoSoliciting.Interface {
             ImGui.Separator();
 
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
-            ImGui.TextUnformatted("NoSoliciting only works for English messages. Do not report non-English messages.");
+            ImGui.TextUnformatted(Loc.Localize("ReportModalHelp2", "NoSoliciting only works for English messages. Do not report non-English messages."));
             ImGui.PopStyleColor();
 
             ImGui.Separator();
 
             if (message.FilterReason == "custom") {
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
-                ImGui.TextUnformatted("You cannot report messages filtered because of a custom filter.");
+                ImGui.TextUnformatted(Loc.Localize("ReportModalCustom", "You cannot report messages filtered because of a custom filter."));
                 ImGui.PopStyleColor();
             } else {
-                if (ImGui.Button("Report")) {
+                var buttonTitle = Loc.Localize("ReportModalReport", "Report");
+                if (ImGui.Button($"{buttonTitle}##report-submit-{message.Id}")) {
                     this.ReportMessage(message);
                     ImGui.CloseCurrentPopup();
                 }
@@ -239,7 +241,8 @@ namespace NoSoliciting.Interface {
                 ImGui.SameLine();
             }
 
-            if (ImGui.Button("Copy to clipboard")) {
+            var copyButton = Loc.Localize("ReportModalCopy", "Copy to clipboard");
+            if (ImGui.Button($"{copyButton}##report-copy-{message.Id}")) {
                 ImGui.SetClipboardText(message.Content.TextValue);
             }
 
@@ -252,8 +255,8 @@ namespace NoSoliciting.Interface {
 
             ImGui.SameLine();
 
-            EndPopup:
-            if (ImGui.Button("Cancel")) {
+            var cancelButton = Loc.Localize("ReportModalCancel", "Cancel");
+            if (ImGui.Button($"{cancelButton}##report-cancel-{message.Id}")) {
                 ImGui.CloseCurrentPopup();
             }
 
