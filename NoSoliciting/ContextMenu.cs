@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NoSoliciting.Interface;
 using NoSoliciting.Resources;
-using XivCommon.Functions;
+using XivCommon.Functions.ContextMenu;
 
 namespace NoSoliciting {
     public class ContextMenu : IDisposable {
@@ -19,7 +19,7 @@ namespace NoSoliciting {
             this.Plugin.Common.Functions.ContextMenu.OpenContextMenu -= this.OnOpenContextMenu;
         }
 
-        private void OnOpenContextMenu(ContextMenuArgs args) {
+        private void OnOpenContextMenu(ContextMenuOpenArgs args) {
             if (args.ParentAddonName != "LookingForGroup") {
                 return;
             }
@@ -29,7 +29,7 @@ namespace NoSoliciting {
             }
 
             var label = Language.ReportToNoSoliciting;
-            args.AdditionalItems.Add(new ContextMenuItem(label, this.Report));
+            args.Items.Add(new NormalContextMenuItem(label, this.Report));
         }
 
         private void Report(ContextMenuItemSelectedArgs args) {
