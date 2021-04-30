@@ -37,8 +37,16 @@ namespace NoSoliciting {
                 var resourceSet = new System.Resources.ResourceSet(resourceStream);
                 var culture = CultureInfo.GetCultureInfo(locale);
                 if (resourceSetByCulture is Hashtable) {
+                    if (resourceSetByCulture.Contains(culture)) {
+                        resourceSetByCulture.Remove(culture);
+                    }
+
                     resourceSetByCulture.Add(culture, resourceSet);
                 } else {
+                    if (resourceSetByCulture.Contains(culture.Name)) {
+                        resourceSetByCulture.Remove(culture.Name);
+                    }
+
                     resourceSetByCulture.Add(culture.Name, resourceSet);
                 }
             }
