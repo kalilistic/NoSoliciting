@@ -231,4 +231,22 @@
   <data name="ReportModalCancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
+  <data name="ModelStatusUninitialised" xml:space="preserve">
+    <value>Non-initialisée</value>
+  </data>
+  <data name="ModelStatusPreparing" xml:space="preserve">
+    <value>Préparation de la mise à jour du modèle</value>
+  </data>
+  <data name="ModelStatusInitialised" xml:space="preserve">
+    <value>Initialisé</value>
+  </data>
+  <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+    <value>Téléchargement du manifeste du modèle en cours</value>
+  </data>
+  <data name="ModelStatusDownloadingModel" xml:space="preserve">
+    <value>Téléchargement du modèle</value>
+  </data>
+  <data name="ModelStatusInitialising" xml:space="preserve">
+    <value>Initialisation du modèle et du classificateur</value>
+  </data>
 </root>
