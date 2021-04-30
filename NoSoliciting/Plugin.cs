@@ -100,10 +100,9 @@ namespace NoSoliciting {
                     ClientLanguage.French => "fr",
                     _ => throw new ArgumentOutOfRangeException(),
                 };
-            } else {
-                langCode ??= this.Interface.UiLanguage;
             }
 
+            langCode ??= this.Interface.UiLanguage;
             Resources.Language.Culture = new CultureInfo(langCode);
         }
 
