@@ -196,6 +196,60 @@ namespace NoSoliciting.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading model manifest.
+        /// </summary>
+        internal static string ModelStatusDownloadingManifest {
+            get {
+                return ResourceManager.GetString("ModelStatusDownloadingManifest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading model.
+        /// </summary>
+        internal static string ModelStatusDownloadingModel {
+            get {
+                return ResourceManager.GetString("ModelStatusDownloadingModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialised.
+        /// </summary>
+        internal static string ModelStatusInitialised {
+            get {
+                return ResourceManager.GetString("ModelStatusInitialised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialising model and classifier.
+        /// </summary>
+        internal static string ModelStatusInitialising {
+            get {
+                return ResourceManager.GetString("ModelStatusInitialising", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparing to update model.
+        /// </summary>
+        internal static string ModelStatusPreparing {
+            get {
+                return ResourceManager.GetString("ModelStatusPreparing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uninitialised.
+        /// </summary>
+        internal static string ModelStatusUninitialised {
+            get {
+                return ResourceManager.GetString("ModelStatusUninitialised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Model.
         /// </summary>
         internal static string ModelTab {

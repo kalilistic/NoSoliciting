@@ -10,6 +10,7 @@ using Dalamud.Plugin;
 using JKang.IpcServiceFramework.Client;
 using Microsoft.Extensions.DependencyInjection;
 using NoSoliciting.Interface;
+using NoSoliciting.Resources;
 using Resourcer;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
@@ -277,12 +278,12 @@ namespace NoSoliciting.Ml {
     public static class MlFilterStatusExt {
         public static string Description(this MlFilterStatus status) {
             return status switch {
-                MlFilterStatus.Uninitialised => "Uninitialised",
-                MlFilterStatus.Preparing => "Preparing to update model",
-                MlFilterStatus.DownloadingManifest => "Downloading model manifest",
-                MlFilterStatus.DownloadingModel => "Downloading model",
-                MlFilterStatus.Initialising => "Initialising model and classifier",
-                MlFilterStatus.Initialised => "Initialised",
+                MlFilterStatus.Uninitialised => Language.ModelStatusUninitialised,
+                MlFilterStatus.Preparing => Language.ModelStatusPreparing,
+                MlFilterStatus.DownloadingManifest => Language.ModelStatusDownloadingManifest,
+                MlFilterStatus.DownloadingModel => Language.ModelStatusDownloadingModel,
+                MlFilterStatus.Initialising => Language.ModelStatusInitialising,
+                MlFilterStatus.Initialised => Language.ModelStatusInitialised,
                 _ => status.ToString(),
             };
         }

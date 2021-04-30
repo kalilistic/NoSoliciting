@@ -237,4 +237,22 @@
     <data name="OtherGameLanguage" xml:space="preserve">
         <value>Use the game's language setting instead of Dalamud's</value>
     </data>
+    <data name="ModelStatusUninitialised" xml:space="preserve">
+        <value>Uninitialised</value>
+    </data>
+    <data name="ModelStatusPreparing" xml:space="preserve">
+        <value>Preparing to update model</value>
+    </data>
+    <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+        <value>Downloading model manifest</value>
+    </data>
+    <data name="ModelStatusDownloadingModel" xml:space="preserve">
+        <value>Downloading model</value>
+    </data>
+    <data name="ModelStatusInitialising" xml:space="preserve">
+        <value>Initialising model and classifier</value>
+    </data>
+    <data name="ModelStatusInitialised" xml:space="preserve">
+        <value>Initialised</value>
+    </data>
 </root>
