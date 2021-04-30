@@ -103,7 +103,7 @@ namespace NoSoliciting {
             }
 
             langCode ??= this.Interface.UiLanguage;
-            Resources.Language.Culture = new CultureInfo(langCode);
+            Resources.Language.Culture = new CultureInfo(langCode ?? "en");
         }
 
         internal void InitialiseMachineLearning(bool showWindow) {
