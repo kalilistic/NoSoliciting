@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="OtherGameLanguage" xml:space="preserve">
+    <value>使用游戏语言而不是 Dalamud 的语言作为插件语言</value>
+  </data>
+  <data name="LogFilteredPfs" xml:space="preserve">
+    <value>启用队员招募过滤日志</value>
+  </data>
+  <data name="ShowReportingWindow" xml:space="preserve">
+    <value>回报错误</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>{0} 设置</value>
+  </data>
+  <data name="AdvancedMode" xml:space="preserve">
+    <value>高级模式</value>
+  </data>
+  <data name="ModelTab" xml:space="preserve">
+    <value>机器学习模型</value>
+  </data>
+  <data name="ModelTabVersion" xml:space="preserve">
+    <value>版本：{0}</value>
+  </data>
+  <data name="ModelTabStatus" xml:space="preserve">
+    <value>状态：{0}</value>
+  </data>
+  <data name="ModelTabError" xml:space="preserve">
+    <value>最后一个错误：{0}</value>
+  </data>
+  <data name="UpdateModel" xml:space="preserve">
+    <value>更新模型</value>
+  </data>
+  <data name="FiltersTab" xml:space="preserve">
+    <value>过滤规则</value>
+  </data>
+  <data name="AdvancedWarning2" xml:space="preserve">
+    <value>机器学习模型已经对部分频道进行了训练。</value>
+  </data>
+  <data name="OtherFiltersTab" xml:space="preserve">
+    <value>其他过滤规则</value>
+  </data>
+  <data name="ChatFilters" xml:space="preserve">
+    <value>聊天消息过滤</value>
+  </data>
+  <data name="EnableCustomChatFilters" xml:space="preserve">
+    <value>启用自定义聊天消息过滤</value>
+  </data>
+  <data name="PartyFinderFilters" xml:space="preserve">
+    <value>队员招募过滤</value>
+  </data>
+  <data name="FilterPrivatePfs" xml:space="preserve">
+    <value>应用过滤规则至带密码的招募</value>
+  </data>
+  <data name="EnableCustomPartyFinderFilters" xml:space="preserve">
+    <value>启用自定义队员招募过滤</value>
+  </data>
+  <data name="SubstringsToFilter" xml:space="preserve">
+    <value>过滤关键词</value>
+  </data>
+  <data name="RegularExpressionsToFilter" xml:space="preserve">
+    <value>过滤正则表达式</value>
+  </data>
+  <data name="SaveFilters" xml:space="preserve">
+    <value>保存过滤规则</value>
+  </data>
+  <data name="Reporting" xml:space="preserve">
+    <value>{0} 错误报告</value>
+  </data>
+  <data name="ReportStatusFailure" xml:space="preserve">
+    <value>发送失败</value>
+  </data>
+  <data name="ReportStatusSuccessful" xml:space="preserve">
+    <value>发送成功</value>
+  </data>
+  <data name="ReportStatusInProgress" xml:space="preserve">
+    <value>发送中</value>
+  </data>
+  <data name="ReportStatusUnknown" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="ReportStatusMessage" xml:space="preserve">
+    <value>最后报告状态：{0}</value>
+  </data>
+  <data name="ReportChatTab" xml:space="preserve">
+    <value>聊天消息</value>
+  </data>
+  <data name="ReportColumnTimestamp" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="ReportColumnChannel" xml:space="preserve">
+    <value>频道</value>
+  </data>
+  <data name="ReportColumnReason" xml:space="preserve">
+    <value>原因</value>
+  </data>
+  <data name="ReportColumnSender" xml:space="preserve">
+    <value>发送者</value>
+  </data>
+  <data name="ReportColumnMessage" xml:space="preserve">
+    <value>消息内容</value>
+  </data>
+  <data name="ReportPartyFinderTab" xml:space="preserve">
+    <value>队员招募</value>
+  </data>
+  <data name="ReportColumnHost" xml:space="preserve">
+    <value>招募者</value>
+  </data>
+  <data name="ReportColumnDescription" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="ReportModalTitle" xml:space="preserve">
+    <value>报告给 {0}</value>
+  </data>
+  <data name="ReportModalWasFiltered" xml:space="preserve">
+    <value>具体来说，这是一条正常消息，但它被错误地过滤了。</value>
+  </data>
+  <data name="ReportModalWasNotFiltered" xml:space="preserve">
+    <value>具体来说，这是一条应该被过滤的消息，但它被放过了。</value>
+  </data>
+  <data name="ReportModalCustom" xml:space="preserve">
+    <value>你不能报告被自定义过滤规则过滤的消息。</value>
+  </data>
+  <data name="ReportModalReport" xml:space="preserve">
+    <value>报告</value>
+  </data>
+  <data name="ReportModalCopy" xml:space="preserve">
+    <value>复制到剪贴板</value>
+  </data>
+  <data name="ReportModalCancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="TradeCategory" xml:space="preserve">
+    <value>交易广告</value>
+  </data>
+  <data name="FreeCompanyCategory" xml:space="preserve">
+    <value>部队广告</value>
+  </data>
+  <data name="StaticSubCategory" xml:space="preserve">
+    <value>固定队补位招募</value>
+  </data>
+  <data name="NormalCategory" xml:space="preserve">
+    <value>普通消息</value>
+  </data>
+  <data name="PhishingCategory" xml:space="preserve">
+    <value>钓鱼消息</value>
+  </data>
+  <data name="RmtContentCategory" xml:space="preserve">
+    <value>RMT（副本）</value>
+  </data>
+  <data name="RmtGilCategory" xml:space="preserve">
+    <value>RMT（金币）</value>
+  </data>
+  <data name="RoleplayingCategory" xml:space="preserve">
+    <value>角色扮演广告</value>
+  </data>
+  <data name="TradeDescription" xml:space="preserve">
+    <value>宣传使用金币交易物品或代打的消息，例如寻找工作或贩卖稀有物品</value>
+  </data>
+  <data name="FreeCompanyDescription" xml:space="preserve">
+    <value>部队广告</value>
+  </data>
+  <data name="NormalDescription" xml:space="preserve">
+    <value>普通消息，不应该被过滤</value>
+  </data>
+  <data name="PhishingDescription" xml:space="preserve">
+    <value>试图欺骗你透露账号信息以进行盗号等行为的消息</value>
+  </data>
+  <data name="RmtContentDescription" xml:space="preserve">
+    <value>使用现实货币进行/招募代打</value>
+  </data>
+  <data name="RmtGilDescription" xml:space="preserve">
+    <value>使用现实货币购买/售卖金币或物品</value>
+  </data>
+  <data name="RoleplayingDescription" xml:space="preserve">
+    <value>宣传个人RP、RP团体、场所或其他与角色扮演有关的消息</value>
+  </data>
+  <data name="StaticDescription" xml:space="preserve">
+    <value>固定队寻找队友或玩家正在寻找固定队</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>宣传玩家社区/团体的广告，例如 Discord 服务器等</value>
+  </data>
+  <data name="StaticSubDescription" xml:space="preserve">
+    <value>固定队寻找补位成员</value>
+  </data>
+  <data name="ReportToNoSoliciting" xml:space="preserve">
+    <value>报告给 NoSoliciting</value>
+  </data>
+  <data name="ReportToastSuccess" xml:space="preserve">
+    <value>由 {0} 发起的队员招募已报告成功。</value>
+  </data>
+  <data name="ReportToastFailure" xml:space="preserve">
+    <value>由 {0} 发起的队员招募报告失败。</value>
+  </data>
+  <data name="CommunityCategory" xml:space="preserve">
+    <value>社区广告</value>
+  </data>
+  <data name="StaticCategory" xml:space="preserve">
+    <value>固定队招募</value>
+  </data>
+  <data name="OtherTab" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="LogFilteredMessages" xml:space="preserve">
+    <value>启用文字消息过滤日志</value>
+  </data>
+  <data name="AdvancedWarning1" xml:space="preserve">
+    <value>除非你明确知道自己在干什么，否则请不要更改高级设置。</value>
+  </data>
+  <data name="FilterIlvlPfs" xml:space="preserve">
+    <value>过滤装备品级高于最大值的招募</value>
+  </data>
+  <data name="ReportHelp" xml:space="preserve">
+    <value>单击下方分类错误的项目以将其报告给开发者。</value>
+  </data>
+  <data name="ReportModalHelp1" xml:space="preserve">
+    <value>报告此消息将使开发者知道此消息被错误归类。</value>
+  </data>
+  <data name="ReportModalHelp2" xml:space="preserve">
+    <value>NoSoliciting 只对英文消息有效。请不要报告其他语言的消息。</value>
+  </data>
+</root>
