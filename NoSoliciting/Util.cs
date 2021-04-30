@@ -2,13 +2,12 @@
 using System.Collections;
 using System.Globalization;
 using System.Reflection;
+using System.Resources;
 
 namespace NoSoliciting {
     internal static class Util {
-        internal static void PreLoadResourcesFromMainAssembly(string resourcesPrefix, string resourcesExtension = ".resources") {
+        internal static void PreloadEmbeddedResources(Assembly resourceAssembly, ResourceManager resourceManager, string resourcesPrefix, string resourcesExtension = ".resources") {
             // get loaded resource sets from resource manager
-            var resourceManager = Resources.Language.ResourceManager;
-
             if ((
                 resourceManager.GetType().GetField("_resourceSets", BindingFlags.Instance | BindingFlags.NonPublic) ??
                 // ReSharper disable once PossibleNullReferenceException
@@ -17,10 +16,9 @@ namespace NoSoliciting {
                 return;
             }
 
-            var resourceAssembly = typeof(Plugin).Assembly; // get assembly with localization resources
             foreach (var embeddedResourceName in resourceAssembly.GetManifestResourceNames()) {
-                if (embeddedResourceName.StartsWith(resourcesPrefix, StringComparison.Ordinal) == false ||
-                    embeddedResourceName.EndsWith(resourcesExtension, StringComparison.Ordinal) == false) {
+                if (!embeddedResourceName.StartsWith(resourcesPrefix, StringComparison.Ordinal) ||
+                    !embeddedResourceName.EndsWith(resourcesExtension, StringComparison.Ordinal)) {
                     continue; // not localized resource
                 }
 
@@ -36,19 +34,17 @@ namespace NoSoliciting {
 
                 var resourceSet = new System.Resources.ResourceSet(resourceStream);
                 var culture = CultureInfo.GetCultureInfo(locale);
-                if (resourceSetByCulture is Hashtable) {
-                    if (resourceSetByCulture.Contains(culture)) {
-                        resourceSetByCulture.Remove(culture);
-                    }
 
-                    resourceSetByCulture.Add(culture, resourceSet);
-                } else {
-                    if (resourceSetByCulture.Contains(culture.Name)) {
-                        resourceSetByCulture.Remove(culture.Name);
-                    }
+                var key = resourceSetByCulture is Hashtable
+                    ? (object) culture
+                    : culture.Name;
 
-                    resourceSetByCulture.Add(culture.Name, resourceSet);
+                // remove any old resources if there somehow are any
+                if (resourceSetByCulture.Contains(key)) {
+                    resourceSetByCulture.Remove(key);
                 }
+
+                resourceSetByCulture.Add(key, resourceSet);
             }
         }
     }
