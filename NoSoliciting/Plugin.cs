@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Dalamud;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
+using NoSoliciting.Resources;
 using XivCommon;
 
 namespace NoSoliciting {
@@ -47,7 +48,7 @@ namespace NoSoliciting {
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
 
-            Util.PreLoadResourcesFromMainAssembly("NoSoliciting.Resources.Language.");
+            Util.PreloadEmbeddedResources(this.GetType().Assembly, Language.ResourceManager, "NoSoliciting.Resources.Language.");
             this.ConfigureLanguage();
             this.Interface.OnLanguageChanged += this.OnLanguageUpdate;
 
