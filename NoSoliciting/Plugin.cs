@@ -48,7 +48,6 @@ namespace NoSoliciting {
             this.Config = this.Interface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             this.Config.Initialise(this.Interface);
 
-            Util.PreloadEmbeddedResources(this.GetType().Assembly, Language.ResourceManager, "NoSoliciting.Resources.Language.");
             this.ConfigureLanguage();
             this.Interface.OnLanguageChanged += this.OnLanguageUpdate;
 
