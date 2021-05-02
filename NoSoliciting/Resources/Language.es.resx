@@ -277,4 +277,22 @@
   <data name="StaticSubDescription" xml:space="preserve">
     <value>Statics buscando sustitutos temporales para clears</value>
   </data>
+  <data name="ModelStatusUninitialised" xml:space="preserve">
+    <value>Sin inicializar</value>
+  </data>
+  <data name="ModelStatusPreparing" xml:space="preserve">
+    <value>Preparando actualización del modelo</value>
+  </data>
+  <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+    <value>Descargando manifiesto del modelo</value>
+  </data>
+  <data name="ModelStatusDownloadingModel" xml:space="preserve">
+    <value>Descargando modelo</value>
+  </data>
+  <data name="ModelStatusInitialising" xml:space="preserve">
+    <value>Inicializando modelo y clasificador</value>
+  </data>
+  <data name="ModelStatusInitialised" xml:space="preserve">
+    <value>Inicializado</value>
+  </data>
 </root>
