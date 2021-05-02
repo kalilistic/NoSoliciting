@@ -277,4 +277,22 @@
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSoliciting 只对英文消息有效。请不要报告其他语言的消息。</value>
   </data>
+  <data name="ModelStatusUninitialised" xml:space="preserve">
+    <value>未初始化</value>
+  </data>
+  <data name="ModelStatusPreparing" xml:space="preserve">
+    <value>准备更新中</value>
+  </data>
+  <data name="ModelStatusDownloadingModel" xml:space="preserve">
+    <value>正在下载模型</value>
+  </data>
+  <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+    <value>正在获取模型信息</value>
+  </data>
+  <data name="ModelStatusInitialising" xml:space="preserve">
+    <value>正在进行初始化</value>
+  </data>
+  <data name="ModelStatusInitialised" xml:space="preserve">
+    <value>初始化完成</value>
+  </data>
 </root>

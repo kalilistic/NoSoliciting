@@ -277,4 +277,22 @@
   <data name="OtherGameLanguage" xml:space="preserve">
     <value>使用遊戲語言而不是 Dalamud 的語言作為插件語言</value>
   </data>
+  <data name="ModelStatusUninitialised" xml:space="preserve">
+    <value>未初始化</value>
+  </data>
+  <data name="ModelStatusPreparing" xml:space="preserve">
+    <value>準備更新中</value>
+  </data>
+  <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+    <value>正在獲取模型信息</value>
+  </data>
+  <data name="ModelStatusDownloadingModel" xml:space="preserve">
+    <value>正在下載模型</value>
+  </data>
+  <data name="ModelStatusInitialising" xml:space="preserve">
+    <value>正在進行初始化</value>
+  </data>
+  <data name="ModelStatusInitialised" xml:space="preserve">
+    <value>初始化完成</value>
+  </data>
 </root>
