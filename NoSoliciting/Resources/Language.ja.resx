@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,241 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="OtherTab" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="OtherGameLanguage" xml:space="preserve">
+    <value>Dalamudの言語設定ではなく、ゲームの言語設定を使用する</value>
+  </data>
+  <data name="ShowReportingWindow" xml:space="preserve">
+    <value>報告ウィンドウを開く</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>{0} 設定</value>
+  </data>
+  <data name="ModelTab" xml:space="preserve">
+    <value>モデル</value>
+  </data>
+  <data name="ModelTabVersion" xml:space="preserve">
+    <value>バージョン: {0}</value>
+  </data>
+  <data name="ModelTabStatus" xml:space="preserve">
+    <value>モデルの状態: {0}</value>
+  </data>
+  <data name="ModelTabError" xml:space="preserve">
+    <value>最後に発生したエラー</value>
+  </data>
+  <data name="UpdateModel" xml:space="preserve">
+    <value>モデルの更新</value>
+  </data>
+  <data name="FiltersTab" xml:space="preserve">
+    <value>フィルタ</value>
+  </data>
+  <data name="AdvancedWarning2" xml:space="preserve">
+    <value>機械学習のモデルは特定のチャンネルの会話を想定して訓練されています。</value>
+  </data>
+  <data name="OtherFiltersTab" xml:space="preserve">
+    <value>その他のフィルタ</value>
+  </data>
+  <data name="ChatFilters" xml:space="preserve">
+    <value>チャットフィルタ</value>
+  </data>
+  <data name="PartyFinderFilters" xml:space="preserve">
+    <value>パーティ募集フィルタ</value>
+  </data>
+  <data name="FilterIlvlPfs" xml:space="preserve">
+    <value>アイテムレベルが最大値を超える募集をフィルタリング</value>
+  </data>
+  <data name="EnableCustomPartyFinderFilters" xml:space="preserve">
+    <value>カスタムパーティ募集フィルタを有効化</value>
+  </data>
+  <data name="SubstringsToFilter" xml:space="preserve">
+    <value>フィルタするキーワード</value>
+  </data>
+  <data name="RegularExpressionsToFilter" xml:space="preserve">
+    <value>フィルタする正規表現</value>
+  </data>
+  <data name="SaveFilters" xml:space="preserve">
+    <value>フィルタの保存</value>
+  </data>
+  <data name="Reporting" xml:space="preserve">
+    <value>{0} 誤りの報告</value>
+  </data>
+  <data name="ReportStatusFailure" xml:space="preserve">
+    <value>送信失敗</value>
+  </data>
+  <data name="ReportStatusSuccessful" xml:space="preserve">
+    <value>送信成功</value>
+  </data>
+  <data name="LogFilteredMessages" xml:space="preserve">
+    <value>テキストメッセージのフィルタリングログを有効化</value>
+  </data>
+  <data name="LogFilteredPfs" xml:space="preserve">
+    <value>パーティ募集のフィルタリングログを有効化</value>
+  </data>
+  <data name="ReportStatusInProgress" xml:space="preserve">
+    <value>送信中</value>
+  </data>
+  <data name="ReportStatusUnknown" xml:space="preserve">
+    <value>不明</value>
+  </data>
+  <data name="ReportStatusMessage" xml:space="preserve">
+    <value>最後の報告の状態: {0}</value>
+  </data>
+  <data name="ReportChatTab" xml:space="preserve">
+    <value>チャット</value>
+  </data>
+  <data name="ReportColumnChannel" xml:space="preserve">
+    <value>チャンネル</value>
+  </data>
+  <data name="ReportColumnReason" xml:space="preserve">
+    <value>理由</value>
+  </data>
+  <data name="ReportColumnSender" xml:space="preserve">
+    <value>発言者</value>
+  </data>
+  <data name="ReportColumnMessage" xml:space="preserve">
+    <value>内容</value>
+  </data>
+  <data name="ReportPartyFinderTab" xml:space="preserve">
+    <value>パーティ募集</value>
+  </data>
+  <data name="ReportColumnHost" xml:space="preserve">
+    <value>募集者</value>
+  </data>
+  <data name="ReportColumnDescription" xml:space="preserve">
+    <value>説明</value>
+  </data>
+  <data name="ReportModalTitle" xml:space="preserve">
+    <value>{0}に報告</value>
+  </data>
+  <data name="ReportModalWasNotFiltered" xml:space="preserve">
+    <value>具体的には、この内容はフィルタされていませんが本来フィルタリングされるべきだったと報告します。</value>
+  </data>
+  <data name="ReportModalHelp2" xml:space="preserve">
+    <value>NoSolicitingは英語のメッセージにのみ有効です。 他の言語でメッセージを報告しないでください。</value>
+  </data>
+  <data name="ReportModalCustom" xml:space="preserve">
+    <value>カスタムフィルタでフィルタリングされたメッセージを報告することはできません。</value>
+  </data>
+  <data name="ReportModalReport" xml:space="preserve">
+    <value>報告</value>
+  </data>
+  <data name="ReportModalCopy" xml:space="preserve">
+    <value>クリップボードにコピー</value>
+  </data>
+  <data name="ReportModalCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="TradeCategory" xml:space="preserve">
+    <value>トレード広告</value>
+  </data>
+  <data name="NormalCategory" xml:space="preserve">
+    <value>通常メッセージ</value>
+  </data>
+  <data name="PhishingCategory" xml:space="preserve">
+    <value>フィッシングメッセージ</value>
+  </data>
+  <data name="RmtContentCategory" xml:space="preserve">
+    <value>RMT (コンテンツ)</value>
+  </data>
+  <data name="RmtGilCategory" xml:space="preserve">
+    <value>RMT (ギル)</value>
+  </data>
+  <data name="StaticCategory" xml:space="preserve">
+    <value>固定パーティ募集</value>
+  </data>
+  <data name="CommunityCategory" xml:space="preserve">
+    <value>コミュニティ広告</value>
+  </data>
+  <data name="StaticSubCategory" xml:space="preserve">
+    <value>固定パーティ補充の募集</value>
+  </data>
+  <data name="FreeCompanyDescription" xml:space="preserve">
+    <value>フリーカンパニーの募集広告</value>
+  </data>
+  <data name="NormalDescription" xml:space="preserve">
+    <value>フィルタリングされるべきでない通常のメッセージ</value>
+  </data>
+  <data name="PhishingDescription" xml:space="preserve">
+    <value>アカウントを盗むために、人を騙してアカウント情報を明かそうとするメッセージ</value>
+  </data>
+  <data name="RmtContentDescription" xml:space="preserve">
+    <value>リアルマネーを使ったコンテンツの取引</value>
+  </data>
+  <data name="RoleplayingDescription" xml:space="preserve">
+    <value>個人的なRP、RPコミュニティ、会場、その他ロールプレイに関連するものの広告</value>
+  </data>
+  <data name="StaticDescription" xml:space="preserve">
+    <value>固定パーティのメンバー募集や固定パーティを探すプレイヤー</value>
+  </data>
+  <data name="StaticSubDescription" xml:space="preserve">
+    <value>固定パーティのメンバー補充募集</value>
+  </data>
+  <data name="ReportToNoSoliciting" xml:space="preserve">
+    <value>NoSolicitingに報告</value>
+  </data>
+  <data name="ReportToastSuccess" xml:space="preserve">
+    <value>{0}のパーティ募集メッセージが正常に報告されました。</value>
+  </data>
+  <data name="AdvancedMode" xml:space="preserve">
+    <value>高度な設定</value>
+  </data>
+  <data name="AdvancedWarning1" xml:space="preserve">
+    <value>高度な設定の変更は、自分が何をしているのかを理解していない限り行わないでください。</value>
+  </data>
+  <data name="EnableCustomChatFilters" xml:space="preserve">
+    <value>カスタムチャットフィルタを有効化</value>
+  </data>
+  <data name="FilterPrivatePfs" xml:space="preserve">
+    <value>プライベート募集にフィルタを適用</value>
+  </data>
+  <data name="ReportHelp" xml:space="preserve">
+    <value>以下のエントリをクリックすることで、誤分類を開発者に報告することができます。</value>
+  </data>
+  <data name="ReportColumnTimestamp" xml:space="preserve">
+    <value>タイムスタンプ</value>
+  </data>
+  <data name="ReportModalHelp1" xml:space="preserve">
+    <value>このメッセージを報告することで、開発者はこのメッセージが誤って分類されたことを知ることができます。</value>
+  </data>
+  <data name="ReportModalWasFiltered" xml:space="preserve">
+    <value>具体的には、フィルタされた内容は本来フィルタリングされるべきではなかったことを報告します。</value>
+  </data>
+  <data name="FreeCompanyCategory" xml:space="preserve">
+    <value>FC広告</value>
+  </data>
+  <data name="RoleplayingCategory" xml:space="preserve">
+    <value>ロールプレイ広告</value>
+  </data>
+  <data name="TradeDescription" xml:space="preserve">
+    <value>ギルを対価にクラフターの製作を行う募集やレアアイテムの取引など、アイテムやサービスをギルと交換することを宣伝するメッセージ</value>
+  </data>
+  <data name="RmtGilDescription" xml:space="preserve">
+    <value>リアルマネーを使ったアイテムやギルの取引</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>一般的なDiscordサーバなどの汎用コミュニティの広告</value>
+  </data>
+  <data name="ReportToastFailure" xml:space="preserve">
+    <value>{0}のパーティ募集メッセージの報告に失敗しました。</value>
+  </data>
+  <data name="ModelStatusUninitialised" xml:space="preserve">
+    <value>未初期化</value>
+  </data>
+  <data name="ModelStatusPreparing" xml:space="preserve">
+    <value>モデルの更新準備中</value>
+  </data>
+  <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+    <value>モデルマニフェストのダウンロード中</value>
+  </data>
+  <data name="ModelStatusDownloadingModel" xml:space="preserve">
+    <value>モデルのダウンロード中</value>
+  </data>
+  <data name="ModelStatusInitialising" xml:space="preserve">
+    <value>モデルと分類器の初期化中</value>
+  </data>
+  <data name="ModelStatusInitialised" xml:space="preserve">
+    <value>準備完了</value>
+  </data>
 </root>
