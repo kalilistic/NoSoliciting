@@ -1,0 +1,32 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="EnableCustomChatFilters" xml:space="preserve">
+        <value>Activer les filtres de discussion personnalisés</value>
+    </data>
+    <data name="EnableCustomPartyFinderFilters" xml:space="preserve">
+        <value>Activer les filtres de Recherche d'Équipe (PFs) personnalisés</value>
+    </data>
+    <data name="FilterPrivatePfs" xml:space="preserve">
+        <value>Appliquer les filtres aux Recherches d'Équipe (PFs) listées en privées</value>
+    </data>
+    <data name="RegularExpressionsToFilter" xml:space="preserve">
+        <value>Expressions régulières à filtrer</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Paramètres de {0}</value>
+    </data>
+    <data name="SubstringsToFilter" xml:space="preserve">
+        <value>Sous-chaînes (substrings) à filtrer</value>
+    </data>
+</root>
