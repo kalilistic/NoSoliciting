@@ -4,6 +4,7 @@ using Dalamud.Game.Internal.Gui;
 using Dalamud.Game.Internal.Gui.Structs;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
+using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
@@ -194,7 +195,7 @@ namespace NoSoliciting {
             }
 
             // only look at ml for pfs >= min words
-            if (desc.Trim().Split(' ').Length < MinWords) {
+            if (desc.Trim().Spacify().Split(' ').Length < MinWords) {
                 return null;
             }
 

@@ -58,7 +58,7 @@ namespace NoSoliciting.Interface {
             '~', '-',
         };
 
-        private static string Spacify(string input) {
+        public static string Spacify(this string input) {
             return SpaceSymbols.Aggregate(input, (current, sym) => current.Replace(sym, ' '));
         }
 
@@ -114,7 +114,7 @@ namespace NoSoliciting.Interface {
             var normalised = input.Normalize(NormalizationForm.FormKD);
 
             // replace several symbols with spaces instead
-            return spacify ? Spacify(normalised) : normalised;
+            return spacify ? normalised.Spacify() : normalised;
         }
     }
 }
