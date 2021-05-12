@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="OtherTab" xml:space="preserve">
+    <value>Outros</value>
+  </data>
+  <data name="LogFilteredPfs" xml:space="preserve">
+    <value>Registrar PFs filtrados</value>
+  </data>
+  <data name="LogFilteredMessages" xml:space="preserve">
+    <value>Registrar mensagens filtradas</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Configurações de {0}</value>
+  </data>
+  <data name="AdvancedMode" xml:space="preserve">
+    <value>Modo avançado</value>
+  </data>
+  <data name="ModelTab" xml:space="preserve">
+    <value>Modelo</value>
+  </data>
+  <data name="ModelTabVersion" xml:space="preserve">
+    <value>Versão: {0}</value>
+  </data>
+  <data name="ModelTabStatus" xml:space="preserve">
+    <value>Status do modelo: {0}</value>
+  </data>
+  <data name="ModelTabError" xml:space="preserve">
+    <value>Último erro: {0}</value>
+  </data>
+  <data name="UpdateModel" xml:space="preserve">
+    <value>Atualizar modelo</value>
+  </data>
+  <data name="FiltersTab" xml:space="preserve">
+    <value>Filtros</value>
+  </data>
+  <data name="AdvancedWarning1" xml:space="preserve">
+    <value>Não altere as configurações avançadas a não ser que você saiba o que está fazendo.</value>
+  </data>
+  <data name="AdvancedWarning2" xml:space="preserve">
+    <value>O modelo de machine learning foi treinado com certos canais em mente.</value>
+  </data>
+  <data name="OtherFiltersTab" xml:space="preserve">
+    <value>Outros filtros</value>
+  </data>
+  <data name="ChatFilters" xml:space="preserve">
+    <value>Filtros de Chat</value>
+  </data>
+  <data name="EnableCustomChatFilters" xml:space="preserve">
+    <value>Ativar filtros de chat personalizados</value>
+  </data>
+  <data name="PartyFinderFilters" xml:space="preserve">
+    <value>Filtros do Party Finder</value>
+  </data>
+  <data name="FilterIlvlPfs" xml:space="preserve">
+    <value>Filtrar PFs com item level acima do máximo</value>
+  </data>
+  <data name="ShowReportingWindow" xml:space="preserve">
+    <value>Mostrar janela de relato</value>
+  </data>
+  <data name="FilterPrivatePfs" xml:space="preserve">
+    <value>Aplicar filtros a anúncios de Party Finder privado</value>
+  </data>
+  <data name="EnableCustomPartyFinderFilters" xml:space="preserve">
+    <value>Ativar filtros de Party Finder personalizados</value>
+  </data>
+  <data name="SubstringsToFilter" xml:space="preserve">
+    <value>Subtextos a filtrar</value>
+  </data>
+  <data name="SaveFilters" xml:space="preserve">
+    <value>Salvar filtros</value>
+  </data>
+  <data name="Reporting" xml:space="preserve">
+    <value>Relatar {0}</value>
+  </data>
+  <data name="ReportHelp" xml:space="preserve">
+    <value>Clique em uma das entradas abaixo para reportá-la ao desenvolvedor como categorizada de forma errônea.</value>
+  </data>
+  <data name="ReportStatusFailure" xml:space="preserve">
+    <value>Falha no envio</value>
+  </data>
+  <data name="ReportStatusSuccessful" xml:space="preserve">
+    <value>enviado com sucesso</value>
+  </data>
+  <data name="ReportStatusInProgress" xml:space="preserve">
+    <value>enviando</value>
+  </data>
+  <data name="ReportStatusUnknown" xml:space="preserve">
+    <value>desconhecido</value>
+  </data>
+  <data name="ReportChatTab" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="ReportColumnTimestamp" xml:space="preserve">
+    <value>Carimbo de data / hora</value>
+  </data>
+  <data name="ReportColumnChannel" xml:space="preserve">
+    <value>Canal</value>
+  </data>
+  <data name="ReportColumnReason" xml:space="preserve">
+    <value>Motivo</value>
+  </data>
+  <data name="ReportColumnSender" xml:space="preserve">
+    <value>Remetente</value>
+  </data>
+  <data name="ReportColumnMessage" xml:space="preserve">
+    <value>Mensagem</value>
+  </data>
+  <data name="ReportPartyFinderTab" xml:space="preserve">
+    <value>Party Finder</value>
+  </data>
+  <data name="ReportColumnHost" xml:space="preserve">
+    <value>Anfitrião</value>
+  </data>
+  <data name="ReportColumnDescription" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="ReportModalTitle" xml:space="preserve">
+    <value>Relatar a(ao) {0}</value>
+  </data>
+  <data name="ReportModalWasFiltered" xml:space="preserve">
+    <value>De maneira específica, essa mensagem FOI filtrada, mas não deveria ter sido.</value>
+  </data>
+  <data name="ReportModalWasNotFiltered" xml:space="preserve">
+    <value>De maneira específica, essa mensagem NÃO FOI filtrada, mas deveria ter sido.</value>
+  </data>
+  <data name="ReportModalCustom" xml:space="preserve">
+    <value>Voçê não pode relatar as mensagens filtradas por causa de um filtro personalizado.</value>
+  </data>
+  <data name="ReportModalReport" xml:space="preserve">
+    <value>Relatar</value>
+  </data>
+  <data name="ReportModalCopy" xml:space="preserve">
+    <value>Copiar para a área de transferência</value>
+  </data>
+  <data name="ReportModalCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="TradeCategory" xml:space="preserve">
+    <value>Anúncios propondo trocas</value>
+  </data>
+  <data name="FreeCompanyCategory" xml:space="preserve">
+    <value>Anúncios de Free Company</value>
+  </data>
+  <data name="NormalCategory" xml:space="preserve">
+    <value>Mensagens normais</value>
+  </data>
+  <data name="PhishingCategory" xml:space="preserve">
+    <value>Mensagens de Phishing</value>
+  </data>
+  <data name="RmtContentCategory" xml:space="preserve">
+    <value>RMT (conteúdo)</value>
+  </data>
+  <data name="RmtGilCategory" xml:space="preserve">
+    <value>RMT (gil)</value>
+  </data>
+  <data name="StaticCategory" xml:space="preserve">
+    <value>Recrutamentos para Statics</value>
+  </data>
+  <data name="CommunityCategory" xml:space="preserve">
+    <value>Anúncios de Comunidades</value>
+  </data>
+  <data name="StaticSubCategory" xml:space="preserve">
+    <value>Substitutos para Statics</value>
+  </data>
+  <data name="FreeCompanyDescription" xml:space="preserve">
+    <value>Propagandas de Free Companies</value>
+  </data>
+  <data name="NormalDescription" xml:space="preserve">
+    <value>Mensagens normais que não devem ser filtradas</value>
+  </data>
+  <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+    <value>Baixando manifest de modelos</value>
+  </data>
+  <data name="ModelStatusDownloadingModel" xml:space="preserve">
+    <value>Baixando modelo</value>
+  </data>
+  <data name="ModelStatusInitialising" xml:space="preserve">
+    <value>Inicializando modelo e classificador</value>
+  </data>
+  <data name="ModelStatusInitialised" xml:space="preserve">
+    <value>Inicializado</value>
+  </data>
+  <data name="PhishingDescription" xml:space="preserve">
+    <value>Mensagens tentando enganar você para que você revele dados de sua conta para poder roubá-la</value>
+  </data>
+  <data name="RmtContentDescription" xml:space="preserve">
+    <value>Conteúdo que envolva troca por dinheiro real (prática conhecida como venda de conteúdo)</value>
+  </data>
+  <data name="RmtGilDescription" xml:space="preserve">
+    <value>Troca por dinheiro real que envolva gil ou itens (também conhecidos como bots de RMT)</value>
+  </data>
+  <data name="RoleplayingDescription" xml:space="preserve">
+    <value>Propaganda de RP pessoal, comunidades ou locais de RP ou qualquer coisa que envolva roleplaying</value>
+  </data>
+  <data name="StaticDescription" xml:space="preserve">
+    <value>Statics procurando membros ou jogadores procurando por um Static</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>Propaganda de comunidades, em geral servidores no Discord</value>
+  </data>
+  <data name="StaticSubDescription" xml:space="preserve">
+    <value>Statics procurando tapa-buracos para membros</value>
+  </data>
+  <data name="ReportToNoSoliciting" xml:space="preserve">
+    <value>Relatar ao NoSoliciting</value>
+  </data>
+  <data name="ReportToastSuccess" xml:space="preserve">
+    <value>Anúncio de Party Finder criado pelo jogador {0} relatado com sucesso.</value>
+  </data>
+  <data name="RegularExpressionsToFilter" xml:space="preserve">
+    <value>Expressões regulares a filtrar</value>
+  </data>
+  <data name="ReportStatusMessage" xml:space="preserve">
+    <value>Status do último relato: {0}</value>
+  </data>
+  <data name="ReportModalHelp1" xml:space="preserve">
+    <value>Relatar essa mensagem vai permtir que o desenvolvedor saiba por que você pensa que essa mensagem foi classificada erroneamente.</value>
+  </data>
+  <data name="ReportModalHelp2" xml:space="preserve">
+    <value>NoSoliciting só funciona para mensagens em Inglês. Não relate mensagens em outras línguas.</value>
+  </data>
+  <data name="RoleplayingCategory" xml:space="preserve">
+    <value>Anúncios de Roleplaying</value>
+  </data>
+  <data name="TradeDescription" xml:space="preserve">
+    <value>Mensagens de propaganda de troca de itens ou serviços por gil, tais como omnicrafters oferecendo serviços ou pessoas vendendo itens raros fora do market board</value>
+  </data>
+</root>
