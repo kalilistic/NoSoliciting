@@ -64,7 +64,7 @@
   <data name="ReportModalHelp1" xml:space="preserve">
     <value>報告此消息將使開發人員知道此消息被錯誤歸類。</value>
   </data>
-  <data name="ReportModalCustom" xml:space="preserve">
+  <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>你不能報告被客製化過濾規則過濾的消息。</value>
   </data>
   <data name="OtherTab" xml:space="preserve">

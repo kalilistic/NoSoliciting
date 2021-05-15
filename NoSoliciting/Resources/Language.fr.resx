@@ -219,7 +219,7 @@
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSoliciting n'est fonctionnel que pour les messages en anglais. Veuillez ne pas signaler des messages qui ne sont pas en anglais.</value>
   </data>
-  <data name="ReportModalCustom" xml:space="preserve">
+  <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>Vous ne pouvez pas signaler de messages filtrés à cause d'un filtre personnalisé.</value>
   </data>
   <data name="ReportModalReport" xml:space="preserve">

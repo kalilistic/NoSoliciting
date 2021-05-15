@@ -84,23 +84,20 @@ namespace NoSoliciting {
                 this.LastBatch = args.BatchNumber;
 
                 var version = this.Plugin.MlFilter?.Version;
-                var reason = this.MlListingFilterReason(listing);
-
-                if (version == null) {
-                    return;
-                }
+                var (category, reason) = this.MlListingFilterReason(listing);
 
                 this.Plugin.AddPartyFinderHistory(new Message(
-                    version.Value,
+                    version,
                     ChatType.None,
                     listing.ContentIdLower,
                     listing.Name,
                     listing.Description,
-                    true,
-                    reason
+                    category,
+                    reason == "custom",
+                    reason == "ilvl"
                 ));
 
-                if (reason == null) {
+                if (category == null && reason == null) {
                     return;
                 }
 
@@ -123,10 +120,6 @@ namespace NoSoliciting {
         }
 
         private bool MlFilterMessage(XivChatType type, uint senderId, SeString sender, SeString message) {
-            if (this.Plugin.MlFilter == null) {
-                return false;
-            }
-
             var chatType = ChatTypeExt.FromDalamud(type);
 
             // NOTE: don't filter on user-controlled chat types here because custom filters are supposed to check all
@@ -137,80 +130,81 @@ namespace NoSoliciting {
 
             var text = message.TextValue;
 
-            string? reason = null;
+            var custom = false;
+            MessageCategory? classification = null;
 
             // step 1. check for custom filters if enabled
-            var filter = this.Plugin.Config.CustomChatFilter
-                         && Chat.MatchesCustomFilters(text, this.Plugin.Config)
-                         && SetReason(out reason, "custom");
+            var filter = false;
+            if (this.Plugin.Config.CustomChatFilter && Chat.MatchesCustomFilters(text, this.Plugin.Config)) {
+                filter = true;
+                custom = true;
+            }
 
             // only look at ml if message >= min words
-            if (!filter && text.Trim().Split(' ').Length >= MinWords) {
+            if (!filter && this.Plugin.MlFilter != null && text.Trim().Split(' ').Length >= MinWords) {
                 // step 2. classify the message using the model
                 var category = this.Plugin.MlFilter.ClassifyMessage((ushort) chatType, text);
 
                 // step 2a. only filter if configured to act on this channel
-                filter = category != MessageCategory.Normal
-                         && this.Plugin.Config.MlEnabledOn(category, chatType)
-                         && SetReason(out reason, category.Name());
+                if (category != MessageCategory.Normal && this.Plugin.Config.MlEnabledOn(category, chatType)) {
+                    filter = true;
+                    classification = category;
+                }
             }
 
-            this.Plugin.AddMessageHistory(new Message(
-                this.Plugin.MlFilter.Version,
+            var history = new Message(
+                this.Plugin.MlFilter?.Version,
                 ChatTypeExt.FromDalamud(type),
                 senderId,
                 sender,
                 message,
-                true,
-                reason
-            ));
+                classification,
+                custom,
+                false
+            );
+            this.Plugin.AddMessageHistory(history);
 
             if (filter && this.Plugin.Config.LogFilteredChat) {
-                PluginLog.Log($"Filtered chat message ({reason}): {text}");
+                PluginLog.Log($"Filtered chat message ({history.FilterReason ?? "unknown"}): {text}");
             }
 
             return filter;
         }
 
-        private string? MlListingFilterReason(PartyFinderListing listing) {
+        private (MessageCategory?, string?) MlListingFilterReason(PartyFinderListing listing) {
             if (this.Plugin.MlFilter == null) {
-                return null;
+                return (null, null);
             }
 
             // ignore private listings if configured
             if (!this.Plugin.Config.ConsiderPrivatePfs && listing[SearchAreaFlags.Private]) {
-                return null;
+                return (null, null);
             }
 
             var desc = listing.Description.TextValue;
 
             // step 1. check if pf has an item level that's too high
             if (this.Plugin.Config.FilterHugeItemLevelPFs && listing.MinimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.Plugin.Interface.Data)) {
-                return "ilvl";
+                return (null, "ilvl");
             }
 
             // step 2. check custom filters
             if (this.Plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.Plugin.Config)) {
-                return "custom";
+                return (null, "custom");
             }
 
             // only look at ml for pfs >= min words
             if (desc.Trim().Spacify().Split(' ').Length < MinWords) {
-                return null;
+                return (null, null);
             }
 
             var category = this.Plugin.MlFilter.ClassifyMessage((ushort) ChatType.None, desc);
 
             if (category != MessageCategory.Normal && this.Plugin.Config.MlEnabledOn(category, ChatType.None)) {
-                return category.Name();
+                return (category, null);
             }
 
-            return null;
-        }
-
-        private static bool SetReason(out string reason, string value) {
-            reason = value;
-            return true;
+            return (null, null);
         }
     }
 }

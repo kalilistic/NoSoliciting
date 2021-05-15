@@ -43,20 +43,6 @@ namespace NoSoliciting.Ml {
         };
 
         #if DEBUG
-        public static string ToModelName(this MessageCategory category) => category switch {
-            MessageCategory.Trade => "TRADE",
-            MessageCategory.FreeCompany => "FC",
-            MessageCategory.Normal => "NORMAL",
-            MessageCategory.Phishing => "PHISH",
-            MessageCategory.RmtContent => "RMT_C",
-            MessageCategory.RmtGil => "RMT_G",
-            MessageCategory.Roleplaying => "RP",
-            MessageCategory.Static => "STATIC",
-            MessageCategory.Community => "COMMUNITY",
-            MessageCategory.StaticSub => "STATIC_SUB",
-            _ => throw new ArgumentException("Invalid category", nameof(category)),
-        };
-
         public static MessageCategory? FromName(string? category) => category switch {
             "Trade ads" => MessageCategory.Trade,
             "Free Company ads" => MessageCategory.FreeCompany,
@@ -70,8 +56,21 @@ namespace NoSoliciting.Ml {
             "Static substitutes" => MessageCategory.StaticSub,
             _ => null,
         };
-
         #endif
+
+        public static string ToModelName(this MessageCategory category) => category switch {
+            MessageCategory.Trade => "TRADE",
+            MessageCategory.FreeCompany => "FC",
+            MessageCategory.Normal => "NORMAL",
+            MessageCategory.Phishing => "PHISH",
+            MessageCategory.RmtContent => "RMT_C",
+            MessageCategory.RmtGil => "RMT_G",
+            MessageCategory.Roleplaying => "RP",
+            MessageCategory.Static => "STATIC",
+            MessageCategory.Community => "COMMUNITY",
+            MessageCategory.StaticSub => "STATIC_SUB",
+            _ => throw new ArgumentException("Invalid category", nameof(category)),
+        };
 
         public static string Name(this MessageCategory category) => category switch {
             MessageCategory.Trade => Language.TradeCategory,
