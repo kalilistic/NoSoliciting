@@ -50,21 +50,7 @@ namespace NoSoliciting {
                 return;
             }
 
-            Task.Run(async () => {
-                var status = await this.Plugin.Ui.Report.ReportMessageAsync(message);
-                switch (status) {
-                    case ReportStatus.Successful: {
-                        var msg = Language.ReportToastSuccess;
-                        this.Plugin.Interface.Framework.Gui.Toast.ShowNormal(string.Format(msg, listing.Name));
-                        break;
-                    }
-                    case ReportStatus.Failure: {
-                        var msg = Language.ReportToastFailure;
-                        this.Plugin.Interface.Framework.Gui.Toast.ShowError(string.Format(msg, listing.Name));
-                        break;
-                    }
-                }
-            });
+            this.Plugin.Ui.Report.ToShowModal = message;
         }
     }
 }

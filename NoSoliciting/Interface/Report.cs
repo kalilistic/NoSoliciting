@@ -3,12 +3,12 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Numerics;
-using System.Text;
 using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Plugin;
 using ImGuiNET;
+using NoSoliciting.Ml;
 using NoSoliciting.Resources;
 
 namespace NoSoliciting.Interface {
@@ -34,6 +34,8 @@ namespace NoSoliciting.Interface {
             set => this._showReporting = value;
         }
 
+        internal Message? ToShowModal { get; set; }
+
         public Report(Plugin plugin) {
             this.Plugin = plugin;
         }
@@ -47,6 +49,13 @@ namespace NoSoliciting.Interface {
         }
 
         public void Draw() {
+            var toShow = this.ToShowModal;
+            if (toShow != null) {
+                if (!this.SetUpReportModal(toShow)) {
+                    ImGui.OpenPopup($"###modal-message-{toShow.Id}");
+                }
+            }
+
             if (!this.ShowReporting) {
                 return;
             }
@@ -102,7 +111,7 @@ namespace NoSoliciting.Interface {
                     foreach (var message in this.Plugin.MessageHistory) {
                         ImGui.TableNextRow();
 
-                        if (message.FilterReason != null) {
+                        if (message.Filtered) {
                             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
                         }
 
@@ -112,11 +121,11 @@ namespace NoSoliciting.Interface {
                             .Select(payload => payload.Text)
                             .FirstOrDefault() ?? "";
 
-                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? "", sender, message.Content.TextValue)) {
+                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? string.Empty, sender, message.Content.TextValue)) {
                             ImGui.OpenPopup($"###modal-message-{message.Id}");
                         }
 
-                        if (message.FilterReason != null) {
+                        if (message.Filtered) {
                             ImGui.PopStyleColor();
                         }
 
@@ -142,7 +151,7 @@ namespace NoSoliciting.Interface {
                 var builder = new StringBuilder();
 
                 foreach (var message in this.Plugin.PartyFinderHistory) {
-                    if (message.FilterReason == null) {
+                    if (message.Classification == null) {
                         continue;
                     }
 
@@ -165,7 +174,7 @@ namespace NoSoliciting.Interface {
                     foreach (var message in this.Plugin.PartyFinderHistory) {
                         ImGui.TableNextRow();
 
-                        if (message.FilterReason != null) {
+                        if (message.Filtered) {
                             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(238f / 255f, 71f / 255f, 71f / 255f, 1f));
                         }
 
@@ -175,11 +184,11 @@ namespace NoSoliciting.Interface {
                             .Select(payload => payload.Text)
                             .FirstOrDefault() ?? "";
 
-                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.FilterReason ?? "", sender, message.Content.TextValue)) {
+                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.FilterReason ?? string.Empty, sender, message.Content.TextValue)) {
                             ImGui.OpenPopup($"###modal-message-{message.Id}");
                         }
 
-                        if (message.FilterReason != null) {
+                        if (message.Filtered) {
                             ImGui.PopStyleColor();
                         }
 
@@ -197,25 +206,65 @@ namespace NoSoliciting.Interface {
 
         #region Modal
 
-        private void SetUpReportModal(Message message) {
+        private MessageCategory? _reportCategory;
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>true if modal is closing</returns>
+        private bool SetUpReportModal(Message message) {
+            var closing = false;
+
             ImGui.SetNextWindowSize(new Vector2(350, -1));
 
             var modalTitle = string.Format(Language.ReportModalTitle, this.Plugin.Name);
             if (!ImGui.BeginPopupModal($"{modalTitle}###modal-message-{message.Id}")) {
-                return;
+                return false;
+            }
+
+            if (this._reportCategory == null) {
+                if (message.Classification != null) {
+                    this._reportCategory = message.Classification;
+                } else if (message.Classification == null && !message.Custom && !message.ItemLevel) {
+                    this._reportCategory = MessageCategory.Normal;
+                }
             }
 
             ImGui.PushTextWrapPos();
 
             ImGui.TextUnformatted(Language.ReportModalHelp1);
 
-            ImGui.TextUnformatted(message.FilterReason != null
-                ? Language.ReportModalWasFiltered
-                : Language.ReportModalWasNotFiltered);
-
             ImGui.Separator();
 
             ImGui.TextUnformatted(message.Content.TextValue);
+
+            ImGui.Separator();
+
+            ImGui.TextUnformatted(string.Format(Language.ReportModalOriginalClassification, message.FilterReason ?? MessageCategory.Normal.Name()));
+
+            ImGui.TextUnformatted(Language.ReportModalSuggestedClassification);
+
+            ImGui.SetNextItemWidth(-1);
+            if (ImGui.BeginCombo($"##modal-classification-{message.Id}", this._reportCategory?.Name() ?? string.Empty)) {
+                foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
+                    if (ImGui.Selectable($"{category.Name()}##modal-option-{message.Id}", this._reportCategory == category)) {
+                        this._reportCategory = category;
+                    }
+
+                    if (!ImGui.IsItemHovered()) {
+                        continue;
+                    }
+
+                    ImGui.BeginTooltip();
+                    ImGui.PushTextWrapPos(ImGui.GetFontSize() * 24);
+                    ImGui.TextUnformatted(category.Description());
+                    ImGui.PopTextWrapPos();
+                    ImGui.EndTooltip();
+                }
+
+                ImGui.EndCombo();
+            }
 
             ImGui.Separator();
 
@@ -225,22 +274,61 @@ namespace NoSoliciting.Interface {
 
             ImGui.Separator();
 
-            if (message.FilterReason == "custom") {
+            string? errorText = null;
+            if (message.Custom) {
+                errorText = Language.ReportModalDisabledCustom;
+            } else if (message.ItemLevel) {
+                errorText = Language.ReportModalDisabledItemLevel;
+            } else if (message.ModelVersion == null) {
+                errorText = Language.ReportModalDisabledBadModel;
+            } else if (this._reportCategory == message.Classification) {
+                errorText = Language.ReportModalDisabledSameClassification;
+            } else {
+                switch (this.Plugin.Config.AdvancedMode) {
+                    case true when this.Plugin.Config.MlFilters.Values.All(set => set.Count == 0):
+                    case false when this.Plugin.Config.BasicMlFilters.Count == 0:
+                        errorText = Language.ReportModalDisabledNoFilters;
+                        break;
+                }
+            }
+
+            if (errorText != null) {
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
-                ImGui.TextUnformatted(Language.ReportModalCustom);
+                ImGui.TextUnformatted(errorText);
                 ImGui.PopStyleColor();
             } else {
-                var buttonTitle =Language.ReportModalReport;
-                if (ImGui.Button($"{buttonTitle}##report-submit-{message.Id}")) {
-                    this.ReportMessage(message);
+                if (ImGui.Button($"{Language.ReportModalReport}##report-submit-{message.Id}")) {
+                    var suggested = this._reportCategory?.ToModelName() ?? "none (this is a bug)";
+                    this._reportCategory = null;
+                    if (message == this.ToShowModal) {
+                        Task.Run(async () => {
+                            var status = await this.Plugin.Ui.Report.ReportMessageAsync(message, suggested);
+                            switch (status) {
+                                case ReportStatus.Successful: {
+                                    var msg = Language.ReportToastSuccess;
+                                    this.Plugin.Interface.Framework.Gui.Toast.ShowNormal(string.Format(msg, message.Sender));
+                                    break;
+                                }
+                                case ReportStatus.Failure: {
+                                    var msg = Language.ReportToastFailure;
+                                    this.Plugin.Interface.Framework.Gui.Toast.ShowError(string.Format(msg, message.Sender));
+                                    break;
+                                }
+                            }
+                        });
+                        this.ToShowModal = null;
+                    } else {
+                        this.ReportMessage(message, suggested);
+                    }
+
                     ImGui.CloseCurrentPopup();
+                    closing = true;
                 }
 
                 ImGui.SameLine();
             }
 
-            var copyButton = Language.ReportModalCopy;
-            if (ImGui.Button($"{copyButton}##report-copy-{message.Id}")) {
+            if (ImGui.Button($"{Language.ReportModalCopy}##report-copy-{message.Id}")) {
                 ImGui.SetClipboardText(message.Content.TextValue);
             }
 
@@ -255,12 +343,20 @@ namespace NoSoliciting.Interface {
 
             var cancelButton = Language.ReportModalCancel;
             if (ImGui.Button($"{cancelButton}##report-cancel-{message.Id}")) {
+                this._reportCategory = null;
+                if (message == this.ToShowModal) {
+                    this.ToShowModal = null;
+                }
+
                 ImGui.CloseCurrentPopup();
+                closing = true;
             }
 
             ImGui.PopTextWrapPos();
 
             ImGui.EndPopup();
+
+            return closing;
         }
 
         #endregion
@@ -292,18 +388,21 @@ namespace NoSoliciting.Interface {
             return clicked;
         }
 
-        internal void ReportMessage(Message message) {
-            Task.Run(async () => await this.ReportMessageAsync(message));
+        private void ReportMessage(Message message, string suggested) {
+            Task.Run(async () => await this.ReportMessageAsync(message, suggested));
         }
 
-        internal async Task<ReportStatus> ReportMessageAsync(Message message) {
+        private async Task<ReportStatus> ReportMessageAsync(Message message, string suggested) {
             string? resp = null;
             try {
                 using var client = new WebClient();
                 this.LastReportStatus = ReportStatus.InProgress;
                 var reportUrl = this.Plugin.MlFilter?.ReportUrl;
                 if (reportUrl != null) {
-                    resp = await client.UploadStringTaskAsync(reportUrl, message.ToJson()).ConfigureAwait(true);
+                    var json = message.ToJson(suggested);
+                    if (json != null) {
+                        resp = await client.UploadStringTaskAsync(reportUrl, json).ConfigureAwait(true);
+                    }
                 }
             } catch (Exception) {
                 // ignored

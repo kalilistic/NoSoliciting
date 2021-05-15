@@ -181,7 +181,7 @@
   <data name="ReportModalWasNotFiltered" xml:space="preserve">
     <value>De maneira específica, essa mensagem NÃO FOI filtrada, mas deveria ter sido.</value>
   </data>
-  <data name="ReportModalCustom" xml:space="preserve">
+  <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>Voçê não pode relatar as mensagens filtradas por causa de um filtro personalizado.</value>
   </data>
   <data name="ReportModalReport" xml:space="preserve">

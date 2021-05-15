@@ -172,7 +172,7 @@
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSolicitingは英語のメッセージにのみ有効です。 他の言語でメッセージを報告しないでください。</value>
   </data>
-  <data name="ReportModalCustom" xml:space="preserve">
+  <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>カスタムフィルタでフィルタリングされたメッセージを報告することはできません。</value>
   </data>
   <data name="ReportModalReport" xml:space="preserve">

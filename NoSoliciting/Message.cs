@@ -6,66 +6,87 @@ using System.Linq;
 using Dalamud.Data;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Lumina.Excel.GeneratedSheets;
+using NoSoliciting.Ml;
+
 #if DEBUG
 using System.Text;
-using NoSoliciting.Ml;
 #endif
 
 namespace NoSoliciting {
     [Serializable]
     public class Message {
         public Guid Id { get; }
+
         [JsonIgnore]
         public uint ActorId { get; }
-        public uint DefinitionsVersion { get; }
+
+        public uint? ModelVersion { get; }
         public DateTime Timestamp { get; }
         public ChatType ChatType { get; }
         public SeString Sender { get; }
         public SeString Content { get; }
-        public bool Ml { get; }
-        public string? FilterReason { get; }
 
-        public Message(uint defsVersion, ChatType type, uint actorId, SeString sender, SeString content, bool ml, string? reason) {
+        public MessageCategory? Classification { get; }
+
+        public bool Custom { get; }
+        public bool ItemLevel { get; }
+
+        public bool Filtered => this.Custom || this.ItemLevel || this.Classification != null;
+
+        public string? FilterReason => this.Custom
+            ? "custom"
+            : this.ItemLevel
+                ? "ilvl"
+                : this.Classification?.Name();
+
+        internal Message(uint? defsVersion, ChatType type, uint actorId, SeString sender, SeString content, MessageCategory? classification, bool custom, bool ilvl) {
             this.Id = Guid.NewGuid();
-            this.DefinitionsVersion = defsVersion;
+            this.ModelVersion = defsVersion;
             this.Timestamp = DateTime.Now;
             this.ChatType = type;
             this.ActorId = actorId;
             this.Sender = sender;
             this.Content = content;
-            this.Ml = ml;
-            this.FilterReason = reason;
+            this.Classification = classification;
+            this.Custom = custom;
+            this.ItemLevel = ilvl;
         }
 
         [Serializable]
         [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
         private class JsonMessage {
-            public Guid Id { get; set; }
-            public uint DefinitionsVersion { get; set; }
+            public uint ReportVersion { get; } = 2;
+            public uint ModelVersion { get; set; }
             public DateTime Timestamp { get; set; }
 
             public ushort Type { get; set; }
 
             // note: cannot use byte[] because Newtonsoft thinks it's a good idea to always base64 byte[]
-            //       and I don't want to write a custom converter to overwrite their stupiditiy
+            //       and I don't want to write a custom converter to overwrite their stupidity
             public List<byte> Sender { get; set; }
             public List<byte> Content { get; set; }
-            public bool Ml { get; set; }
             public string? Reason { get; set; }
+            public string? SuggestedClassification { get; set; }
         }
 
-        public string ToJson() {
+        public string? ToJson(string suggested) {
+            if (this.ModelVersion == null) {
+                return null;
+            }
+
             var msg = new JsonMessage {
-                Id = this.Id,
-                DefinitionsVersion = this.DefinitionsVersion,
+                ModelVersion = this.ModelVersion.Value,
                 Timestamp = this.Timestamp,
                 Type = (ushort) this.ChatType,
                 Sender = this.Sender.Encode().ToList(),
                 Content = this.Content.Encode().ToList(),
-                Ml = this.Ml,
-                Reason = this.FilterReason,
+                Reason = this.Custom
+                    ? "custom"
+                    : this.ItemLevel
+                        ? "ilvl"
+                        : this.Classification?.ToModelName() ?? "unknown",
+                SuggestedClassification = suggested,
             };
 
             return JsonConvert.SerializeObject(msg, new JsonSerializerSettings {
@@ -77,9 +98,7 @@ namespace NoSoliciting {
         public StringBuilder ToCsv(StringBuilder? builder = null) {
             builder ??= new StringBuilder();
 
-            var category = MessageCategoryExt.FromName(this.FilterReason) ?? MessageCategory.Normal;
-
-            builder.Append(category.ToModelName());
+            builder.Append(this.Classification?.ToModelName());
             builder.Append(',');
             builder.Append((int) this.ChatType);
             builder.Append(",\"");

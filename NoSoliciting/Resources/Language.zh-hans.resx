@@ -175,7 +175,7 @@
   <data name="ReportModalWasNotFiltered" xml:space="preserve">
     <value>具体来说，这是一条应该被过滤的消息，但它被放过了。</value>
   </data>
-  <data name="ReportModalCustom" xml:space="preserve">
+  <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>你不能报告被自定义过滤规则过滤的消息。</value>
   </data>
   <data name="ReportModalReport" xml:space="preserve">

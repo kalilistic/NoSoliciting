@@ -132,7 +132,7 @@
   <data name="ReportModalReport" xml:space="preserve">
     <value>Melden</value>
   </data>
-  <data name="ReportModalCustom" xml:space="preserve">
+  <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>Du kannst Nachrichten, die aufgrund von benutzerdefinierten Filtern gefiltert wurden, nicht melden.</value>
   </data>
   <data name="PhishingCategory" xml:space="preserve">

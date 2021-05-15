@@ -3,7 +3,7 @@
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -153,7 +153,7 @@
     <data name="ReportModalHelp2" xml:space="preserve">
         <value>NoSoliciting only works for English messages. Do not report non-English messages.</value>
     </data>
-    <data name="ReportModalCustom" xml:space="preserve">
+    <data name="ReportModalDisabledCustom" xml:space="preserve">
         <value>You cannot report messages filtered because of a custom filter.</value>
     </data>
     <data name="ReportModalReport" xml:space="preserve">
@@ -254,5 +254,23 @@
     </data>
     <data name="ModelStatusInitialised" xml:space="preserve">
         <value>Initialised</value>
+    </data>
+    <data name="ReportModalDisabledBadModel" xml:space="preserve">
+        <value>Reporting is disabled because your ML model was not functioning when you saw this message.</value>
+    </data>
+    <data name="ReportModalDisabledNoFilters" xml:space="preserve">
+        <value>Reporting is disabled because you do not have any filters enabled.</value>
+    </data>
+    <data name="ReportModalDisabledSameClassification" xml:space="preserve">
+        <value>Reporting is disabled because you must choose a different classification than the original.</value>
+    </data>
+    <data name="ReportModalDisabledItemLevel" xml:space="preserve">
+        <value>You cannot report messages filtered because of item level.</value>
+    </data>
+    <data name="ReportModalOriginalClassification" xml:space="preserve">
+        <value>This message's original classification: {0}</value>
+    </data>
+    <data name="ReportModalSuggestedClassification" xml:space="preserve">
+        <value>How do you think this message should have been classified?</value>
     </data>
 </root>
