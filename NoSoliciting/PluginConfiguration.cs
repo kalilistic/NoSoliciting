@@ -126,5 +126,23 @@ namespace NoSoliciting {
 
             return filtered.Contains(chatType);
         }
+
+        internal IEnumerable<MessageCategory> CreateFiltersClone() {
+            var filters = new HashSet<MessageCategory>();
+
+            foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
+                if (this.AdvancedMode) {
+                    if (this.MlFilters.TryGetValue(category, out var filtered) && filtered.Count > 0) {
+                        filters.Add(category);
+                    }
+                } else {
+                    if (this.BasicMlFilters.Contains(category)) {
+                        filters.Add(category);
+                    }
+                }
+            }
+
+            return filters;
+        }
     }
 }

@@ -493,6 +493,15 @@ namespace NoSoliciting.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reporting is disabled because you weren&apos;t filtering for this kind of message at the time you saw it..
+        /// </summary>
+        internal static string ReportModalDisabledFilterNotEnabled {
+            get {
+                return ResourceManager.GetString("ReportModalDisabledFilterNotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You cannot report messages filtered because of item level..
         /// </summary>
         internal static string ReportModalDisabledItemLevel {

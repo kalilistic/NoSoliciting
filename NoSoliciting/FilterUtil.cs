@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
+using NoSoliciting.Ml;
 
 namespace NoSoliciting {
     public static class FilterUtil {
@@ -123,9 +123,13 @@ namespace NoSoliciting {
         }
     }
 
-    public static class RmtExtensions {
+    public static class Extensions {
         public static bool ContainsIgnoreCase(this string haystack, string needle) {
             return CultureInfo.InvariantCulture.CompareInfo.IndexOf(haystack, needle, CompareOptions.IgnoreCase) >= 0;
+        }
+
+        public static bool WasEnabled(this IEnumerable<MessageCategory> enabled, MessageCategory category) {
+            return enabled.Contains(category);
         }
     }
 }

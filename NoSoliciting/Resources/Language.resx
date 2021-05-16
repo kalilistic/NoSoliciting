@@ -273,4 +273,7 @@
     <data name="ReportModalSuggestedClassification" xml:space="preserve">
         <value>How do you think this message should have been classified?</value>
     </data>
+    <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
+        <value>Reporting is disabled because you weren't filtering for this kind of message at the time you saw it.</value>
+    </data>
 </root>

@@ -94,7 +94,8 @@ namespace NoSoliciting {
                     listing.Description,
                     category,
                     reason == "custom",
-                    reason == "ilvl"
+                    reason == "ilvl",
+                    this.Plugin.Config.CreateFiltersClone()
                 ));
 
                 if (category == null && reason == null) {
@@ -160,7 +161,8 @@ namespace NoSoliciting {
                 message,
                 classification,
                 custom,
-                false
+                false,
+                this.Plugin.Config.CreateFiltersClone()
             );
             this.Plugin.AddMessageHistory(history);
 
