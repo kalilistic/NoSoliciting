@@ -166,9 +166,6 @@
   <data name="ReportModalTitle" xml:space="preserve">
     <value>{0}に報告</value>
   </data>
-  <data name="ReportModalWasNotFiltered" xml:space="preserve">
-    <value>具体的には、この内容はフィルタされていませんが本来フィルタリングされるべきだったと報告します。</value>
-  </data>
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSolicitingは英語のメッセージにのみ有効です。 他の言語でメッセージを報告しないでください。</value>
   </data>
@@ -255,9 +252,6 @@
   </data>
   <data name="ReportModalHelp1" xml:space="preserve">
     <value>このメッセージを報告することで、開発者はこのメッセージが誤って分類されたことを知ることができます。</value>
-  </data>
-  <data name="ReportModalWasFiltered" xml:space="preserve">
-    <value>具体的には、フィルタされた内容は本来フィルタリングされるべきではなかったことを報告します。</value>
   </data>
   <data name="FreeCompanyCategory" xml:space="preserve">
     <value>FC広告</value>

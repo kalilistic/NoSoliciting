@@ -169,12 +169,6 @@
   <data name="ReportModalTitle" xml:space="preserve">
     <value>报告给 {0}</value>
   </data>
-  <data name="ReportModalWasFiltered" xml:space="preserve">
-    <value>具体来说，这是一条正常消息，但它被错误地过滤了。</value>
-  </data>
-  <data name="ReportModalWasNotFiltered" xml:space="preserve">
-    <value>具体来说，这是一条应该被过滤的消息，但它被放过了。</value>
-  </data>
   <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>你不能报告被自定义过滤规则过滤的消息。</value>
   </data>

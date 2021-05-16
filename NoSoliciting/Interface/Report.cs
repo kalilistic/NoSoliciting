@@ -285,13 +285,6 @@ namespace NoSoliciting.Interface {
                 errorText = Language.ReportModalDisabledFilterNotEnabled;
             } else if (this._reportCategory == (message.Classification ?? MessageCategory.Normal)) {
                 errorText = Language.ReportModalDisabledSameClassification;
-            } else {
-                switch (this.Plugin.Config.AdvancedMode) {
-                    case true when this.Plugin.Config.MlFilters.Values.All(set => set.Count == 0):
-                    case false when this.Plugin.Config.BasicMlFilters.Count == 0:
-                        errorText = Language.ReportModalDisabledNoFilters;
-                        break;
-                }
             }
 
             if (errorText != null) {

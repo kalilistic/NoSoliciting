@@ -166,9 +166,6 @@
   <data name="ReportModalHelp1" xml:space="preserve">
     <value>Al informar de este mensaje le harás saber a la desarrolladora que crees que este mensaje ha sido clasificado de manera errónea.</value>
   </data>
-  <data name="ReportModalWasFiltered" xml:space="preserve">
-    <value>Específicamente, este mensaje HA SIDO filtrado pero no debería haberlo sido.</value>
-  </data>
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSoliciting sólo funciona con mensajes en inglés. No informes de mensajes en otros idiomas.</value>
   </data>
@@ -258,9 +255,6 @@
   </data>
   <data name="ReportStatusMessage" xml:space="preserve">
     <value>Estado del último reporte: {0}</value>
-  </data>
-  <data name="ReportModalWasNotFiltered" xml:space="preserve">
-    <value>Específicamente, este mensaje NO HA SIDO filtrado pero debería haberlo sido.</value>
   </data>
   <data name="NormalCategory" xml:space="preserve">
     <value>Mensajes normales</value>

@@ -133,12 +133,6 @@
   <data name="ReportModalTitle" xml:space="preserve">
     <value>報告給 {0}</value>
   </data>
-  <data name="ReportModalWasFiltered" xml:space="preserve">
-    <value>具體來說，這是一條正常消息，但它被錯誤地過濾了。</value>
-  </data>
-  <data name="ReportModalWasNotFiltered" xml:space="preserve">
-    <value>具體來說，這是一條應該被過濾的消息，但它被略過了。</value>
-  </data>
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSoliciting 只對英文消息有效。請不要報告其他語言的消息。</value>
   </data>

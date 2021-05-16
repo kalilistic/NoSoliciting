@@ -511,15 +511,6 @@ namespace NoSoliciting.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reporting is disabled because you do not have any filters enabled..
-        /// </summary>
-        internal static string ReportModalDisabledNoFilters {
-            get {
-                return ResourceManager.GetString("ReportModalDisabledNoFilters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reporting is disabled because you must choose a different classification than the original..
         /// </summary>
         internal static string ReportModalDisabledSameClassification {
@@ -579,24 +570,6 @@ namespace NoSoliciting.Resources {
         internal static string ReportModalTitle {
             get {
                 return ResourceManager.GetString("ReportModalTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specifically, this message WAS filtered but shouldn&apos;t have been..
-        /// </summary>
-        internal static string ReportModalWasFiltered {
-            get {
-                return ResourceManager.GetString("ReportModalWasFiltered", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Specifically, this message WAS NOT filtered but should have been..
-        /// </summary>
-        internal static string ReportModalWasNotFiltered {
-            get {
-                return ResourceManager.GetString("ReportModalWasNotFiltered", resourceCulture);
             }
         }
         

@@ -144,12 +144,6 @@
     <data name="ReportModalHelp1" xml:space="preserve">
         <value>Reporting this message will let the developer know that you think this message was incorrectly classified.</value>
     </data>
-    <data name="ReportModalWasFiltered" xml:space="preserve">
-        <value>Specifically, this message WAS filtered but shouldn't have been.</value>
-    </data>
-    <data name="ReportModalWasNotFiltered" xml:space="preserve">
-        <value>Specifically, this message WAS NOT filtered but should have been.</value>
-    </data>
     <data name="ReportModalHelp2" xml:space="preserve">
         <value>NoSoliciting only works for English messages. Do not report non-English messages.</value>
     </data>
@@ -257,9 +251,6 @@
     </data>
     <data name="ReportModalDisabledBadModel" xml:space="preserve">
         <value>Reporting is disabled because your ML model was not functioning when you saw this message.</value>
-    </data>
-    <data name="ReportModalDisabledNoFilters" xml:space="preserve">
-        <value>Reporting is disabled because you do not have any filters enabled.</value>
     </data>
     <data name="ReportModalDisabledSameClassification" xml:space="preserve">
         <value>Reporting is disabled because you must choose a different classification than the original.</value>

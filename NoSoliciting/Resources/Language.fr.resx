@@ -210,12 +210,6 @@
   <data name="ReportModalHelp1" xml:space="preserve">
     <value>Signaler ce message avertira la développeuse que vous pensez qu'il a été incorrectement classifié.</value>
   </data>
-  <data name="ReportModalWasFiltered" xml:space="preserve">
-    <value>Plus précisément, cela veut dire que ce message A ÉTÉ filtré alors qu'il n'aurait pas dû l'être.</value>
-  </data>
-  <data name="ReportModalWasNotFiltered" xml:space="preserve">
-    <value>Plus précisément, cela veut dire que ce message N'A PAS ÉTÉ filtré alors qu'il aurait dû l'être.</value>
-  </data>
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSoliciting n'est fonctionnel que pour les messages en anglais. Veuillez ne pas signaler des messages qui ne sont pas en anglais.</value>
   </data>
