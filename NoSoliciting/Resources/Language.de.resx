@@ -225,4 +225,40 @@
   <data name="TradeCategory" xml:space="preserve">
     <value>Handelswerbung</value>
   </data>
+  <data name="ModelStatusUninitialised" xml:space="preserve">
+    <value>nicht initialisiert</value>
+  </data>
+  <data name="ModelStatusInitialised" xml:space="preserve">
+    <value>initialisiert</value>
+  </data>
+  <data name="ModelStatusDownloadingModel" xml:space="preserve">
+    <value>lade Modell herunter</value>
+  </data>
+  <data name="ModelStatusPreparing" xml:space="preserve">
+    <value>bereite Aktualisierung des Modells vor</value>
+  </data>
+  <data name="ModelStatusDownloadingManifest" xml:space="preserve">
+    <value>lade Machine Learning Manifest herunter</value>
+  </data>
+  <data name="ModelStatusInitialising" xml:space="preserve">
+    <value>initialisiere Modell und Klassifikator</value>
+  </data>
+  <data name="ReportModalDisabledBadModel" xml:space="preserve">
+    <value>Du kannst diese Nachricht nicht melden, weil das Machine Learning Modell nicht funktionierte, als du sie gesehen hast.</value>
+  </data>
+  <data name="ReportModalDisabledItemLevel" xml:space="preserve">
+    <value>Du kannst Nachrichten, die wegen zu hoher Gegenstandsstufe gefiltert wurden, nicht melden.</value>
+  </data>
+  <data name="ReportModalDisabledSameClassification" xml:space="preserve">
+    <value>Wähle eine andere Kategorie, bevor du diese Nachricht meldest.</value>
+  </data>
+  <data name="ReportModalOriginalClassification" xml:space="preserve">
+    <value>Ursprüngliche Kategorie dieser Nachricht: {0}</value>
+  </data>
+  <data name="ReportModalSuggestedClassification" xml:space="preserve">
+    <value>Wie denkst du, hätte diese Nachricht kategorisiert werden sollen?</value>
+  </data>
+  <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
+    <value>Du kannst diese Nachricht nicht melden, weil du diese Art von Nachrichten nicht gefiltert hast, als du sie gesehen hast.</value>
+  </data>
 </root>

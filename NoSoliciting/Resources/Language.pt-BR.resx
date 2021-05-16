@@ -277,4 +277,16 @@
   <data name="TradeDescription" xml:space="preserve">
     <value>Mensagens de propaganda de troca de itens ou serviços por gil, tais como omnicrafters oferecendo serviços ou pessoas vendendo itens raros fora do market board</value>
   </data>
+  <data name="ReportToastFailure" xml:space="preserve">
+    <value>Falha ao relatar anúncio de Party Finder do anfitrião {0}.</value>
+  </data>
+  <data name="OtherGameLanguage" xml:space="preserve">
+    <value>Usar a configuração de idioma do jogo em vez da do Dalamud</value>
+  </data>
+  <data name="ModelStatusUninitialised" xml:space="preserve">
+    <value>Não inicializado</value>
+  </data>
+  <data name="ModelStatusPreparing" xml:space="preserve">
+    <value>Preparando para atualizar modelo</value>
+  </data>
 </root>

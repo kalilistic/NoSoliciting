@@ -289,4 +289,22 @@
   <data name="ModelStatusInitialised" xml:space="preserve">
     <value>初始化完成</value>
   </data>
+  <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
+    <value>您暂时无法报告此消息。因为您在当时并没有过滤此类消息。</value>
+  </data>
+  <data name="ReportModalDisabledBadModel" xml:space="preserve">
+    <value>您暂时无法报告此消息。因为机器学习模型在当时并未启用。</value>
+  </data>
+  <data name="ReportModalDisabledSameClassification" xml:space="preserve">
+    <value>您暂时无法报告此消息。因为您必须选择与原始分类不同的分类。</value>
+  </data>
+  <data name="ReportModalDisabledItemLevel" xml:space="preserve">
+    <value>您暂时无法报告此消息。因为它的平均品级实在是太高了！</value>
+  </data>
+  <data name="ReportModalOriginalClassification" xml:space="preserve">
+    <value>此消息的原始分类：{0}</value>
+  </data>
+  <data name="ReportModalSuggestedClassification" xml:space="preserve">
+    <value>您觉得此消息应当被归为何种分类？</value>
+  </data>
 </root>

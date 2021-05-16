@@ -52,7 +52,7 @@
     <value>Date et heure</value>
   </data>
   <data name="ReportColumnChannel" xml:space="preserve">
-    <value>Channel</value>
+    <value>Canal</value>
   </data>
   <data name="ReportColumnReason" xml:space="preserve">
     <value>Raison</value>
@@ -242,5 +242,23 @@
   </data>
   <data name="ModelStatusInitialising" xml:space="preserve">
     <value>Initialisation du modèle et du classificateur</value>
+  </data>
+  <data name="ReportModalDisabledBadModel" xml:space="preserve">
+    <value>Le signalement est désactivé car votre modèle de ML n'est pas fonctionnel au moment où ce message est affiché.</value>
+  </data>
+  <data name="ReportModalDisabledSameClassification" xml:space="preserve">
+    <value>Le signalement est désactivé car vous devez choisir une catégorisation différente de celle d'origine.</value>
+  </data>
+  <data name="ReportModalDisabledItemLevel" xml:space="preserve">
+    <value>Vous ne pouvez pas signaler ce message à cause du niveau d'objet requis.</value>
+  </data>
+  <data name="ReportModalOriginalClassification" xml:space="preserve">
+    <value>La catégorisation originale du message : {0}</value>
+  </data>
+  <data name="ReportModalSuggestedClassification" xml:space="preserve">
+    <value>De quelle manière pensez-vous que ce message aurait dû être catégorisé ?</value>
+  </data>
+  <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
+    <value>Le signalement est désactivé parce que vous ne filtriez pas cette catégorie de messages au moment où vous l'avez vu.</value>
   </data>
 </root>
