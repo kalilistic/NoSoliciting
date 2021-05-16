@@ -289,4 +289,22 @@
   <data name="ModelStatusInitialised" xml:space="preserve">
     <value>Inicializado</value>
   </data>
+  <data name="ReportModalSuggestedClassification" xml:space="preserve">
+    <value>¿Cómo crees que se debería haber clasificado este mensaje?</value>
+  </data>
+  <data name="ReportModalDisabledBadModel" xml:space="preserve">
+    <value>No puedes reportar este mensaje porque tu modelo ML no estaba funcionando correctamente cuando viste este mensaje.</value>
+  </data>
+  <data name="ReportModalDisabledSameClassification" xml:space="preserve">
+    <value>No puedes reportar este mensaje porque debes elegir una clasificación distinta a la original.</value>
+  </data>
+  <data name="ReportModalDisabledItemLevel" xml:space="preserve">
+    <value>No puedes reportar mensajes filtrados por item level.</value>
+  </data>
+  <data name="ReportModalOriginalClassification" xml:space="preserve">
+    <value>La clasificación original de este mensaje: {0}</value>
+  </data>
+  <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
+    <value>No puedes reportar este mensaje porque no estabas filtrando este tipo de mensaje cuando lo viste.</value>
+  </data>
 </root>

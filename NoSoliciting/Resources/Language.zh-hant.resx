@@ -289,4 +289,22 @@
   <data name="ModelStatusInitialised" xml:space="preserve">
     <value>初始化完成</value>
   </data>
+  <data name="ReportModalDisabledBadModel" xml:space="preserve">
+    <value>您暫時無法報告此消息。因為機器學習模型在當時並未啟用。</value>
+  </data>
+  <data name="ReportModalDisabledSameClassification" xml:space="preserve">
+    <value>您暫時無法報告此消息。因為您必須選擇與原始分類不同的分類。</value>
+  </data>
+  <data name="ReportModalDisabledItemLevel" xml:space="preserve">
+    <value>您暫時無法報告此消息。因為它的平均品級太高了。</value>
+  </data>
+  <data name="ReportModalOriginalClassification" xml:space="preserve">
+    <value>此消息的原始分類：{0}</value>
+  </data>
+  <data name="ReportModalSuggestedClassification" xml:space="preserve">
+    <value>您覺得此消息應當被歸為何種分類？</value>
+  </data>
+  <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
+    <value>您暫時無法報告此消息。因為您在當時並沒有過濾此類消息。</value>
+  </data>
 </root>
