@@ -141,9 +141,6 @@
   <data name="NormalCategory" xml:space="preserve">
     <value>Normale Nachrichten</value>
   </data>
-  <data name="ReportModalWasNotFiltered" xml:space="preserve">
-    <value>Diese Nachricht WURDE NICHT gefiltert, hätte aber gefiltert werden sollen.</value>
-  </data>
   <data name="ReportModalHelp2" xml:space="preserve">
     <value>NoSoliciting funktioniert nur für englische Nachrichten, bitte ausschließlich englische Nachrichten melden.</value>
   </data>
@@ -203,9 +200,6 @@
   </data>
   <data name="ModelTabStatus" xml:space="preserve">
     <value>Status des Modells: {0}</value>
-  </data>
-  <data name="ReportModalWasFiltered" xml:space="preserve">
-    <value>Diese Nachricht WURDE gefiltert, hätte aber nicht gefiltert werden sollen.</value>
   </data>
   <data name="LogFilteredMessages" xml:space="preserve">
     <value>Gefilterte Nachrichten protokollieren</value>

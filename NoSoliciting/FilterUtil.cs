@@ -129,7 +129,7 @@ namespace NoSoliciting {
         }
 
         public static bool WasEnabled(this IEnumerable<MessageCategory> enabled, MessageCategory category) {
-            return enabled.Contains(category);
+            return category == MessageCategory.Normal || enabled.Contains(category);
         }
     }
 }

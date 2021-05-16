@@ -175,12 +175,6 @@
   <data name="ReportModalTitle" xml:space="preserve">
     <value>Relatar a(ao) {0}</value>
   </data>
-  <data name="ReportModalWasFiltered" xml:space="preserve">
-    <value>De maneira específica, essa mensagem FOI filtrada, mas não deveria ter sido.</value>
-  </data>
-  <data name="ReportModalWasNotFiltered" xml:space="preserve">
-    <value>De maneira específica, essa mensagem NÃO FOI filtrada, mas deveria ter sido.</value>
-  </data>
   <data name="ReportModalDisabledCustom" xml:space="preserve">
     <value>Voçê não pode relatar as mensagens filtradas por causa de um filtro personalizado.</value>
   </data>
