@@ -281,6 +281,8 @@ namespace NoSoliciting.Interface {
                 errorText = Language.ReportModalDisabledItemLevel;
             } else if (message.ModelVersion == null) {
                 errorText = Language.ReportModalDisabledBadModel;
+            } else if (!message.EnabledSnapshot.WasEnabled(this._reportCategory ?? MessageCategory.Normal)) {
+                errorText = Language.ReportModalDisabledFilterNotEnabled;
             } else if (this._reportCategory == (message.Classification ?? MessageCategory.Normal)) {
                 errorText = Language.ReportModalDisabledSameClassification;
             } else {
