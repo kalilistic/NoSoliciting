@@ -11,6 +11,10 @@ using ImGuiNET;
 using NoSoliciting.Ml;
 using NoSoliciting.Resources;
 
+#if DEBUG
+using System.Text;
+#endif
+
 namespace NoSoliciting.Interface {
     public class Report {
         private const ImGuiTableFlags TableFlags = ImGuiTableFlags.Borders
