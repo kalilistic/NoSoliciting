@@ -142,7 +142,7 @@ namespace NoSoliciting {
             }
 
             // only look at ml if message >= min words
-            if (!filter && this.Plugin.MlFilter != null && text.Trim().Split(' ').Length >= MinWords) {
+            if (!filter && this.Plugin.MlFilter != null && CountWords(text) >= MinWords) {
                 // step 2. classify the message using the model
                 var category = this.Plugin.MlFilter.ClassifyMessage((ushort) chatType, text);
 
@@ -196,7 +196,7 @@ namespace NoSoliciting {
             }
 
             // only look at ml for pfs >= min words
-            if (desc.Trim().Spacify().Split(' ').Length < MinWords) {
+            if (CountWords(desc) < MinWords) {
                 return (null, null);
             }
 
@@ -207,6 +207,10 @@ namespace NoSoliciting {
             }
 
             return (null, null);
+        }
+
+        private static int CountWords(string text) {
+            return text.Spacify().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
         }
     }
 }
