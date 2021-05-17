@@ -88,7 +88,7 @@ namespace NoSoliciting {
                     ? "custom"
                     : this.ItemLevel
                         ? "ilvl"
-                        : this.Classification?.ToModelName() ?? "unknown",
+                        : this.Classification?.ToModelName() ?? MessageCategory.Normal.ToModelName(),
                 SuggestedClassification = suggested,
             };
 
