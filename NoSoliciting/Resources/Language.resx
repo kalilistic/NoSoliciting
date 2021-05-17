@@ -267,4 +267,13 @@
     <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
         <value>Reporting is disabled because you weren't filtering for this kind of message at the time you saw it.</value>
     </data>
+    <data name="ReportModalClassificationOther" xml:space="preserve">
+        <value>Other</value>
+    </data>
+    <data name="ReportModalGoToCustomButton" xml:space="preserve">
+        <value>Go to custom filters</value>
+    </data>
+    <data name="ReportModalClassificationOtherDescription" xml:space="preserve">
+        <value>Messages that don't fall under any of the other categories.</value>
+    </data>
 </root>

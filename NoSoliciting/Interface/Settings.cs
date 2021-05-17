@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Text;
 using System.Text.RegularExpressions;
 using Dalamud.Interface;
 using ImGuiNET;
@@ -36,6 +37,10 @@ namespace NoSoliciting.Interface {
 
         public void Toggle() {
             this.ShowSettings = !this.ShowSettings;
+        }
+
+        public void Show() {
+            this.ShowSettings = true;
         }
 
         public void Draw() {
@@ -189,8 +194,26 @@ namespace NoSoliciting.Interface {
 
         #region Other config
 
+        internal bool ShowOtherFilters;
+
+        private static unsafe bool BeginTabItem(string label, ImGuiTabItemFlags flags) {
+            var unterminatedLabelBytes = Encoding.UTF8.GetBytes(label);
+            var labelBytes = stackalloc byte[unterminatedLabelBytes.Length + 1];
+            fixed (byte* unterminatedPtr = unterminatedLabelBytes) {
+                Buffer.MemoryCopy(unterminatedPtr, labelBytes, unterminatedLabelBytes.Length + 1, unterminatedLabelBytes.Length);
+            }
+
+            labelBytes[unterminatedLabelBytes.Length] = 0;
+
+            var num2 = (int) ImGuiNative.igBeginTabItem(labelBytes, null, flags);
+            return (uint) num2 > 0U;
+        }
+
         private void DrawOtherFilters() {
-            if (!ImGui.BeginTabItem($"{Language.OtherFiltersTab}###other-filters-tab")) {
+            var flags = this.ShowOtherFilters ? ImGuiTabItemFlags.SetSelected : ImGuiTabItemFlags.None;
+            this.ShowOtherFilters = false;
+
+            if (!BeginTabItem($"{Language.OtherFiltersTab}###other-filters-tab", flags)) {
                 return;
             }
 

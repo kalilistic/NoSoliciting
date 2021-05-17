@@ -207,6 +207,7 @@ namespace NoSoliciting.Interface {
         #region Modal
 
         private MessageCategory? _reportCategory;
+        private bool _other;
 
         /// <summary>
         ///
@@ -223,7 +224,7 @@ namespace NoSoliciting.Interface {
                 return false;
             }
 
-            if (this._reportCategory == null) {
+            if (this._reportCategory == null && !this._other) {
                 if (message.Classification != null) {
                     this._reportCategory = message.Classification;
                 } else if (message.Classification == null && !message.Custom && !message.ItemLevel) {
@@ -246,22 +247,23 @@ namespace NoSoliciting.Interface {
             ImGui.TextUnformatted(Language.ReportModalSuggestedClassification);
 
             ImGui.SetNextItemWidth(-1);
-            if (ImGui.BeginCombo($"##modal-classification-{message.Id}", this._reportCategory?.Name() ?? string.Empty)) {
+            var preview = this._reportCategory?.Name() ?? (this._other ? Language.ReportModalClassificationOther : string.Empty);
+            if (ImGui.BeginCombo($"##modal-classification-{message.Id}", preview)) {
                 foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
                     if (ImGui.Selectable($"{category.Name()}##modal-option-{message.Id}", this._reportCategory == category)) {
                         this._reportCategory = category;
+                        this._other = false;
                     }
 
-                    if (!ImGui.IsItemHovered()) {
-                        continue;
-                    }
-
-                    ImGui.BeginTooltip();
-                    ImGui.PushTextWrapPos(ImGui.GetFontSize() * 24);
-                    ImGui.TextUnformatted(category.Description());
-                    ImGui.PopTextWrapPos();
-                    ImGui.EndTooltip();
+                    WrappedTooltip(category.Description());
                 }
+
+                if (ImGui.Selectable(Language.ReportModalClassificationOther)) {
+                    this._reportCategory = null;
+                    this._other = true;
+                }
+
+                WrappedTooltip(Language.ReportModalClassificationOtherDescription);
 
                 ImGui.EndCombo();
             }
@@ -287,7 +289,20 @@ namespace NoSoliciting.Interface {
                 errorText = Language.ReportModalDisabledSameClassification;
             }
 
-            if (errorText != null) {
+            if (this._other) {
+                if (ImGui.Button($"{Language.ReportModalGoToCustomButton}##report-goto-custom-{message.Id}")) {
+                    ImGui.CloseCurrentPopup();
+                    closing = true;
+                    if (message == this.ToShowModal) {
+                        this.ToShowModal = null;
+                    }
+
+                    this.Plugin.Ui.Settings.ShowOtherFilters = true;
+                    this.Plugin.Ui.Settings.Show();
+                }
+
+                ImGui.SameLine();
+            } else if (errorText != null) {
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
                 ImGui.TextUnformatted(errorText);
                 ImGui.PopStyleColor();
@@ -351,6 +366,10 @@ namespace NoSoliciting.Interface {
 
             ImGui.EndPopup();
 
+            if (closing) {
+                this._other = false;
+            }
+
             return closing;
         }
 
@@ -381,6 +400,18 @@ namespace NoSoliciting.Interface {
             }
 
             return clicked;
+        }
+
+        private static void WrappedTooltip(string text) {
+            if (!ImGui.IsItemHovered()) {
+                return;
+            }
+
+            ImGui.BeginTooltip();
+            ImGui.PushTextWrapPos(ImGui.GetFontSize() * 24);
+            ImGui.TextUnformatted(text);
+            ImGui.PopTextWrapPos();
+            ImGui.EndTooltip();
         }
 
         private void ReportMessage(Message message, string suggested) {

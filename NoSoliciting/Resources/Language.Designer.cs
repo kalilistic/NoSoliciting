@@ -466,6 +466,24 @@ namespace NoSoliciting.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        internal static string ReportModalClassificationOther {
+            get {
+                return ResourceManager.GetString("ReportModalClassificationOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Messages that don&apos;t fall under any of the other categories..
+        /// </summary>
+        internal static string ReportModalClassificationOtherDescription {
+            get {
+                return ResourceManager.GetString("ReportModalClassificationOtherDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy to clipboard.
         /// </summary>
         internal static string ReportModalCopy {
@@ -516,6 +534,15 @@ namespace NoSoliciting.Resources {
         internal static string ReportModalDisabledSameClassification {
             get {
                 return ResourceManager.GetString("ReportModalDisabledSameClassification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to custom filters.
+        /// </summary>
+        internal static string ReportModalGoToCustomButton {
+            get {
+                return ResourceManager.GetString("ReportModalGoToCustomButton", resourceCulture);
             }
         }
         
