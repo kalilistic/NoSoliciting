@@ -183,12 +183,12 @@ namespace NoSoliciting {
                 return (null, null);
             }
 
-            var desc = listing.Description.TextValue;
-
             // step 1. check if pf has an item level that's too high
             if (this.Plugin.Config.FilterHugeItemLevelPFs && listing.MinimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.Plugin.Interface.Data)) {
                 return (null, "ilvl");
             }
+
+            var desc = listing.Description.TextValue;
 
             // step 2. check custom filters
             if (this.Plugin.Config.CustomPFFilter && PartyFinder.MatchesCustomFilters(desc, this.Plugin.Config)) {
