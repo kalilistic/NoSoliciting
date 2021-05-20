@@ -307,4 +307,13 @@
   <data name="ReportModalSuggestedClassification" xml:space="preserve">
     <value>您觉得此消息应当被归为何种分类？</value>
   </data>
+  <data name="ReportModalGoToCustomButton" xml:space="preserve">
+    <value>前往自定义过滤规则</value>
+  </data>
+  <data name="ReportModalClassificationOther" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="ReportModalClassificationOtherDescription" xml:space="preserve">
+    <value>不属于任何类别的消息。</value>
+  </data>
 </root>

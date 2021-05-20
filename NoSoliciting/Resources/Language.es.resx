@@ -307,4 +307,13 @@
   <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
     <value>No puedes reportar este mensaje porque no estabas filtrando este tipo de mensaje cuando lo viste.</value>
   </data>
+  <data name="ReportModalClassificationOther" xml:space="preserve">
+    <value>Otro</value>
+  </data>
+  <data name="ReportModalGoToCustomButton" xml:space="preserve">
+    <value>Ir a filtros personalizados</value>
+  </data>
+  <data name="ReportModalClassificationOtherDescription" xml:space="preserve">
+    <value>Mensajes que no encajan en ninguna otra categoría.</value>
+  </data>
 </root>

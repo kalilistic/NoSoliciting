@@ -307,4 +307,13 @@
   <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
     <value>您暫時無法報告此消息。因為您在當時並沒有過濾此類消息。</value>
   </data>
+  <data name="ReportModalClassificationOther" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="ReportModalGoToCustomButton" xml:space="preserve">
+    <value>前往客製化過濾規則</value>
+  </data>
+  <data name="ReportModalClassificationOtherDescription" xml:space="preserve">
+    <value>不屬於任何類別的消息。</value>
+  </data>
 </root>

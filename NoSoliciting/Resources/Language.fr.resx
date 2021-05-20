@@ -261,4 +261,13 @@
   <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
     <value>Le signalement est désactivé parce que vous ne filtriez pas cette catégorie de messages au moment où vous l'avez vu.</value>
   </data>
+  <data name="ReportModalClassificationOther" xml:space="preserve">
+    <value>Autres</value>
+  </data>
+  <data name="ReportModalGoToCustomButton" xml:space="preserve">
+    <value>Ouvrir les filtres de discussion personnalisés</value>
+  </data>
+  <data name="ReportModalClassificationOtherDescription" xml:space="preserve">
+    <value>Messages qui ne correspondent à aucune des autres catégories.</value>
+  </data>
 </root>

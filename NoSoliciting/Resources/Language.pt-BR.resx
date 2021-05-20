@@ -289,4 +289,31 @@
   <data name="ModelStatusPreparing" xml:space="preserve">
     <value>Preparando para atualizar modelo</value>
   </data>
+  <data name="ReportModalClassificationOtherDescription" xml:space="preserve">
+    <value>Mensagens que não caiam em outras categorias.</value>
+  </data>
+  <data name="ReportModalClassificationOther" xml:space="preserve">
+    <value>Outros</value>
+  </data>
+  <data name="ReportModalGoToCustomButton" xml:space="preserve">
+    <value>Ir para filtros personalizados</value>
+  </data>
+  <data name="ReportModalDisabledBadModel" xml:space="preserve">
+    <value>Função relatar está desabilitada por que seu modelo de ML não estava funcionando quando você viu esta mensagem.</value>
+  </data>
+  <data name="ReportModalDisabledSameClassification" xml:space="preserve">
+    <value>Função relatar desabilitada por que você precisa escolher uma classificação diferente da original.</value>
+  </data>
+  <data name="ReportModalDisabledItemLevel" xml:space="preserve">
+    <value>Você não pode relatar mensagens filtradas por causa de item level.</value>
+  </data>
+  <data name="ReportModalOriginalClassification" xml:space="preserve">
+    <value>Classificação original desta mensagem: {0}</value>
+  </data>
+  <data name="ReportModalSuggestedClassification" xml:space="preserve">
+    <value>Como você acha que esta mensagem deveria ter sido classificada?</value>
+  </data>
+  <data name="ReportModalDisabledFilterNotEnabled" xml:space="preserve">
+    <value>Função relatar desabilitada por que você não estava filtrando este tipo de mensagem quando a viu.</value>
+  </data>
 </root>
