@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using ConsoleTables;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
+using NoSoliciting.Interface;
 using NoSoliciting.Internal.Interface;
 
 namespace NoSoliciting.Trainer {
@@ -34,6 +37,7 @@ namespace NoSoliciting.Trainer {
             CreateModel,
             Interactive,
             InteractiveFull,
+            Normalise,
         }
 
         private static void Main(string[] args) {
@@ -42,8 +46,23 @@ namespace NoSoliciting.Trainer {
                 "create-model" => Mode.CreateModel,
                 "interactive" => Mode.Interactive,
                 "interactive-full" => Mode.InteractiveFull,
+                "normalise" => Mode.Normalise,
                 _ => throw new ArgumentException("invalid argument"),
             };
+
+            if (mode == Mode.Normalise) {
+                Console.WriteLine("Ready");
+
+                while (true) {
+                    Console.Write("> ");
+                    var input = Console.ReadLine();
+                    var bytes = Convert.FromBase64String(input!);
+                    var toNormalise = Encoding.UTF8.GetString(bytes);
+                    var normalised = NoSolUtil.Normalise(toNormalise);
+                    Console.WriteLine(normalised);
+                }
+            }
+
             var path = "../../../data.csv";
 
             if (args.Length > 1) {
@@ -215,6 +234,12 @@ namespace NoSoliciting.Trainer {
 
                 if (parts.Length < 2 || !ushort.TryParse(parts[0], out var channel)) {
                     continue;
+                }
+
+                var size = Base64.GetMaxDecodedFromUtf8Length(parts[1].Length);
+                var buf = new byte[size];
+                if (Convert.TryFromBase64String(parts[1], buf, out var written)) {
+                    parts[1] = Encoding.UTF8.GetString(buf[..written]);
                 }
 
                 var input = new Data(channel, parts[1]);
