@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Costura.Fody" Version="5.3.0" PrivateAssets="all"/>
+        <PackageReference Include="Costura.Fody" Version="4.1.0" PrivateAssets="all"/>
         <PackageReference Include="Fody" Version="6.5.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
