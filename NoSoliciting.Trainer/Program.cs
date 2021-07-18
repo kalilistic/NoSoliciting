@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using ConsoleTables;
 using CsvHelper;
@@ -11,6 +12,8 @@ using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NoSoliciting.Interface;
 using NoSoliciting.Internal.Interface;
 
@@ -38,6 +41,49 @@ namespace NoSoliciting.Trainer {
             Interactive,
             InteractiveFull,
             Normalise,
+            Import,
+        }
+
+        [Serializable]
+        [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
+        private class ReportInput {
+            public uint ReportVersion { get; } = 2;
+            public uint ModelVersion { get; set; }
+            public DateTime Timestamp { get; set; }
+            public ushort Type { get; set; }
+            public List<byte> Sender { get; set; }
+            public List<byte> Content { get; set; }
+            public string? Reason { get; set; }
+            public string? SuggestedClassification { get; set; }
+        }
+
+        private static void Import(string path) {
+            var allData = new List<Data>();
+
+            foreach (var emlPath in Directory.GetFiles(path, "*.eml")) {
+                var lines = File.ReadAllLines(emlPath);
+                var json = lines.FirstOrDefault(line => line.StartsWith("JSON: "));
+                if (json == null) {
+                    continue;
+                }
+
+                var jsonText = Encoding.UTF8.GetString(Convert.FromBase64String(json.Split(": ")[1]));
+                var report = JsonConvert.DeserializeObject<ReportInput>(jsonText);
+                var content = XivString.GetText(report.Content);
+                var data = new Data(report.Type, content) {
+                    Category = report.SuggestedClassification,
+                };
+                allData.Add(data);
+            }
+
+            var writer = new StringWriter();
+            using var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture) {
+                HeaderValidated = null,
+            });
+            csv.WriteRecords(allData
+                .OrderBy(data => data.Channel)
+                .ThenBy(data => data.Message));
+            Console.WriteLine(writer.ToString());
         }
 
         private static void Main(string[] args) {
@@ -47,8 +93,14 @@ namespace NoSoliciting.Trainer {
                 "interactive" => Mode.Interactive,
                 "interactive-full" => Mode.InteractiveFull,
                 "normalise" => Mode.Normalise,
+                "import" => Mode.Import,
                 _ => throw new ArgumentException("invalid argument"),
             };
+
+            if (mode == Mode.Import) {
+                Import(args[1]);
+                return;
+            }
 
             if (mode == Mode.Normalise) {
                 Console.WriteLine("Ready");
