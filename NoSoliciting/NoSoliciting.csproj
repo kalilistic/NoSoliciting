@@ -36,14 +36,14 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="DalamudPackager" Version="1.2.1"/>
-        <PackageReference Include="Fody" Version="6.5.1" PrivateAssets="all"/>
+        <PackageReference Include="Fody" Version="6.5.2" PrivateAssets="all"/>
         <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2"/>
         <PackageReference Include="JKang.IpcServiceFramework.Client.NamedPipe" Version="3.1.0"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2"/>
         <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all"/>
         <PackageReference Include="ResourcesMerge.Fody" Version="1.0.3" PrivateAssets="all"/>
-        <PackageReference Include="XivCommon" Version="2.0.0"/>
-        <PackageReference Include="YamlDotNet" Version="11.1.1"/>
+        <PackageReference Include="XivCommon" Version="2.2.0"/>
+        <PackageReference Include="YamlDotNet" Version="11.2.1"/>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="..\NoSoliciting.MessageClassifier\bin\Release\net48\NoSoliciting.MessageClassifier.exe"/>
