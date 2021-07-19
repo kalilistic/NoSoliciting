@@ -12,6 +12,7 @@ using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
+using MimeKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NoSoliciting.Interface;
@@ -60,9 +61,12 @@ namespace NoSoliciting.Trainer {
         private static void Import(string path) {
             var allData = new List<Data>();
 
+            var opts = new ParserOptions {
+                CharsetEncoding = Encoding.UTF8,
+            };
             foreach (var emlPath in Directory.GetFiles(path, "*.eml")) {
-                var lines = File.ReadAllLines(emlPath);
-                var json = lines.FirstOrDefault(line => line.StartsWith("JSON: "));
+                var message = MimeMessage.Load(opts, new FileStream(emlPath, FileMode.Open));
+                var json = message.TextBody.Split('\r', '\n').FirstOrDefault(line => line.StartsWith("JSON: "));
                 if (json == null) {
                     continue;
                 }
@@ -73,16 +77,22 @@ namespace NoSoliciting.Trainer {
                 var data = new Data(report.Type, content) {
                     Category = report.SuggestedClassification,
                 };
+                data.Message = data.Message
+                    .Replace("\r\n", " ")
+                    .Replace('\r', ' ')
+                    .Replace('\n', ' ');
                 allData.Add(data);
             }
 
             var writer = new StringWriter();
             using var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture) {
                 HeaderValidated = null,
+                Encoding = Encoding.UTF8,
             });
             csv.WriteRecords(allData
                 .OrderBy(data => data.Channel)
                 .ThenBy(data => data.Message));
+            Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine(writer.ToString());
         }
 
