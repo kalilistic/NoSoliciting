@@ -13,6 +13,7 @@ namespace NoSoliciting.Ml {
         Static,
         Community,
         StaticSub,
+        Fluff,
     }
 
     public static class MessageCategoryExt {
@@ -26,6 +27,7 @@ namespace NoSoliciting.Ml {
             MessageCategory.Static,
             MessageCategory.StaticSub,
             MessageCategory.Community,
+            MessageCategory.Fluff,
         };
 
         public static MessageCategory? FromString(string? category) => category switch {
@@ -39,6 +41,7 @@ namespace NoSoliciting.Ml {
             "STATIC" => MessageCategory.Static,
             "COMMUNITY" => MessageCategory.Community,
             "STATIC_SUB" => MessageCategory.StaticSub,
+            "FLUFF" => MessageCategory.Fluff,
             _ => null,
         };
 
@@ -54,6 +57,7 @@ namespace NoSoliciting.Ml {
             "Static recruitment" => MessageCategory.Static,
             "Community ads" => MessageCategory.Community,
             "Static substitutes" => MessageCategory.StaticSub,
+            "Fluff" => MessageCategory.Fluff,
             _ => null,
         };
         #endif
@@ -69,6 +73,7 @@ namespace NoSoliciting.Ml {
             MessageCategory.Static => "STATIC",
             MessageCategory.Community => "COMMUNITY",
             MessageCategory.StaticSub => "STATIC_SUB",
+            MessageCategory.Fluff => "FLUFF",
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
 
@@ -83,6 +88,7 @@ namespace NoSoliciting.Ml {
             MessageCategory.Static => Language.StaticCategory,
             MessageCategory.Community => Language.CommunityCategory,
             MessageCategory.StaticSub => Language.StaticSubCategory,
+            MessageCategory.Fluff => Language.FluffCategory,
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
 
@@ -97,6 +103,7 @@ namespace NoSoliciting.Ml {
             MessageCategory.Static => Language.StaticDescription,
             MessageCategory.Community => Language.CommunityDescription,
             MessageCategory.StaticSub => Language.StaticSubDescription,
+            MessageCategory.Fluff => Language.FluffDescription,
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
     }

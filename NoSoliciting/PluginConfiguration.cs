@@ -75,6 +75,9 @@ namespace NoSoliciting {
             [MessageCategory.Community] = new HashSet<ChatType> {
                 ChatType.None,
             },
+            [MessageCategory.Fluff] = new HashSet<ChatType> {
+                ChatType.None,
+            },
         };
 
         public bool LogFilteredPfs { get; set; } = true;

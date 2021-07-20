@@ -160,6 +160,24 @@ namespace NoSoliciting.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fluff.
+        /// </summary>
+        internal static string FluffCategory {
+            get {
+                return ResourceManager.GetString("FluffCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Messages that don&apos;t full into other categories and are not for content (Party Finder).
+        /// </summary>
+        internal static string FluffDescription {
+            get {
+                return ResourceManager.GetString("FluffDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free Company ads.
         /// </summary>
         internal static string FreeCompanyCategory {

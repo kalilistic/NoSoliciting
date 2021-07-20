@@ -276,4 +276,10 @@
     <data name="ReportModalClassificationOtherDescription" xml:space="preserve">
         <value>Messages that don't fall under any of the other categories.</value>
     </data>
+    <data name="FluffCategory" xml:space="preserve">
+        <value>Fluff</value>
+    </data>
+    <data name="FluffDescription" xml:space="preserve">
+        <value>Messages that don't full into other categories and are not for content (Party Finder)</value>
+    </data>
 </root>
