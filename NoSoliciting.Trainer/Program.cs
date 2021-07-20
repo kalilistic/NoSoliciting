@@ -90,7 +90,8 @@ namespace NoSoliciting.Trainer {
                 Encoding = Encoding.UTF8,
             });
             csv.WriteRecords(allData
-                .OrderBy(data => data.Channel)
+                .OrderBy(data => data.Category)
+                .ThenBy(data => data.Channel)
                 .ThenBy(data => data.Message));
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine(writer.ToString());
