@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using ConsoleTables;
 using CsvHelper;
@@ -16,7 +15,6 @@ using MimeKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NoSoliciting.Interface;
-using NoSoliciting.Internal.Interface;
 
 namespace NoSoliciting.Trainer {
     internal static class Program {

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="458.08871"
+   height="458.08871"
+   viewBox="0 0 121.20264 121.20264"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="C:\Users\Anna\Desktop\nosol.png"
+   inkscape:export-xdpi="107.298"
+   inkscape:export-ydpi="107.298"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="nosol.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="1.7039681"
+     inkscape:cx="175.7662"
+     inkscape:cy="230.34468"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1592"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     units="px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-53.447652,-85.066737)">
+    <path
+       sodipodi:type="star"
+       style="fill:#af3310;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:8;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path33"
+       inkscape:flatsided="true"
+       sodipodi:sides="8"
+       sodipodi:cx="-396.65961"
+       sodipodi:cy="345.39066"
+       sodipodi:r1="243.58626"
+       sodipodi:r2="225.04436"
+       sodipodi:arg1="0"
+       sodipodi:arg2="0.39269908"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m -153.07335,345.39066 -71.34476,172.24149 -172.2415,71.34476 -172.24149,-71.34476 -71.34476,-172.24149 71.34476,-172.2415 172.24149,-71.34476 172.2415,71.34476 z"
+       transform="matrix(0.24444312,0.10125166,-0.10125166,0.24444312,245.98106,101.40213)"
+       inkscape:transform-center-x="-1.8847157e-06"
+       inkscape:transform-center-y="-3.1424378e-06"
+       inkscape:export-filename="C:\Users\Anna\Desktop\path33.png"
+       inkscape:export-xdpi="61.923672"
+       inkscape:export-ydpi="61.923672" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:38.4628px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="57.772713"
+       y="159.98831"
+       id="text3416"><tspan
+         sodipodi:role="line"
+         id="tspan3414"
+         style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         x="57.772713"
+         y="159.98831">NoSol</tspan></text>
+  </g>
+</svg>

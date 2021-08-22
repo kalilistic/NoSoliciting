@@ -169,7 +169,7 @@ namespace NoSoliciting.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Messages that don&apos;t full into other categories and are not for content (Party Finder).
+        ///   Looks up a localized string similar to Messages that don&apos;t fall into other categories and are not for content (Party Finder).
         /// </summary>
         internal static string FluffDescription {
             get {

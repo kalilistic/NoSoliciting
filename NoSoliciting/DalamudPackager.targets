@@ -4,7 +4,6 @@
                          OutputPath="$(OutputPath)"
                          AssemblyName="$(AssemblyName)"
                          VersionComponents="3"
-                         MakeZip="true"
-                         Include="NoSoliciting.json;NoSoliciting.dll;NoSoliciting.pdb"/>
+                         MakeZip="true"/>
     </Target>
 </Project>

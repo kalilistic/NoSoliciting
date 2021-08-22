@@ -24,14 +24,14 @@ namespace NoSoliciting.Interface {
             this.Plugin = plugin;
             this.Ui = ui;
 
-            this.Plugin.Interface.UiBuilder.OnOpenConfigUi += this.Open;
+            this.Plugin.Interface.UiBuilder.OpenConfigUi += this.Open;
         }
 
         public void Dispose() {
-            this.Plugin.Interface.UiBuilder.OnOpenConfigUi -= this.Open;
+            this.Plugin.Interface.UiBuilder.OpenConfigUi -= this.Open;
         }
 
-        private void Open(object? sender, EventArgs? e) {
+        private void Open() {
             this.ShowSettings = true;
         }
 
@@ -164,7 +164,7 @@ namespace NoSoliciting.Interface {
                 var types = this.Plugin.Config.MlFilters[category];
 
                 void DrawTypes(ChatType type, string id) {
-                    var name = type.Name(this.Plugin.Interface.Data);
+                    var name = type.Name(this.Plugin.DataManager);
 
                     var check = types.Contains(type);
                     if (!ImGui.Checkbox($"{name}##{id}", ref check)) {

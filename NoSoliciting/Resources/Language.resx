@@ -280,6 +280,6 @@
         <value>Fluff</value>
     </data>
     <data name="FluffDescription" xml:space="preserve">
-        <value>Messages that don't full into other categories and are not for content (Party Finder)</value>
+        <value>Messages that don't fall into other categories and are not for content (Party Finder)</value>
     </data>
 </root>

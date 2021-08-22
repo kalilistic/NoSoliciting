@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
-using NoSoliciting.Interface;
 
-namespace NoSoliciting.Internal.Interface {
+namespace NoSoliciting.Interface {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
@@ -127,7 +126,7 @@ namespace NoSoliciting.Internal.Interface {
             var normalised = NoSolUtil.Normalise(this.Message);
 
             output.PartyFinder = this.Channel == 0;
-            output.Shout = this.Channel == 11 || this.Channel == 30;
+            output.Shout = this.Channel is 11 or 30;
             output.ContainsWard = WardWords.Any(word => word.IsMatch(normalised));
             output.ContainsPlot = PlotWords.Any(word => word.IsMatch(normalised));
             output.ContainsHousingNumbers = NumbersRegex.IsMatch(normalised);
@@ -145,7 +144,7 @@ namespace NoSoliciting.Internal.Interface {
         public string Category { get; set; } = "UNKNOWN";
 
         [ColumnName("Score")]
-        public float[] Probabilities { get; set; } = new float[0];
+        public float[] Probabilities { get; set; } = Array.Empty<float>();
     }
 
     internal static class Ext {

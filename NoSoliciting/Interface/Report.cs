@@ -6,7 +6,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Plugin;
+using Dalamud.Logging;
 using ImGuiNET;
 using NoSoliciting.Ml;
 using NoSoliciting.Resources;
@@ -68,6 +68,7 @@ namespace NoSoliciting.Interface {
 
             var windowTitle = string.Format(Language.Reporting, this.Plugin.Name);
             if (!ImGui.Begin($"{windowTitle}###NoSoliciting reporting", ref this._showReporting)) {
+                ImGui.End();
                 return;
             }
 
@@ -125,7 +126,7 @@ namespace NoSoliciting.Interface {
                             .Select(payload => payload.Text)
                             .FirstOrDefault() ?? "";
 
-                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.Interface.Data), message.FilterReason ?? string.Empty, sender, message.Content.TextValue)) {
+                        if (AddRow(message.Timestamp.ToString(CultureInfo.CurrentCulture), message.ChatType.Name(this.Plugin.DataManager), message.FilterReason ?? string.Empty, sender, message.Content.TextValue)) {
                             ImGui.OpenPopup($"###modal-message-{message.Id}");
                         }
 
@@ -320,12 +321,12 @@ namespace NoSoliciting.Interface {
                             switch (status) {
                                 case ReportStatus.Successful: {
                                     var msg = Language.ReportToastSuccess;
-                                    this.Plugin.Interface.Framework.Gui.Toast.ShowNormal(string.Format(msg, message.Sender));
+                                    this.Plugin.ToastGui.ShowNormal(string.Format(msg, message.Sender));
                                     break;
                                 }
                                 case ReportStatus.Failure: {
                                     var msg = Language.ReportToastFailure;
-                                    this.Plugin.Interface.Framework.Gui.Toast.ShowError(string.Format(msg, message.Sender));
+                                    this.Plugin.ToastGui.ShowError(string.Format(msg, message.Sender));
                                     break;
                                 }
                             }

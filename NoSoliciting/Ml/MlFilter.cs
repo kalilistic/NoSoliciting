@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Dalamud.Plugin;
-using JKang.IpcServiceFramework.Client;
-using Microsoft.Extensions.DependencyInjection;
+using Dalamud.Logging;
 using NoSoliciting.Interface;
 using NoSoliciting.Resources;
-using Resourcer;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -31,18 +27,16 @@ namespace NoSoliciting.Ml {
         public uint Version { get; }
         public Uri ReportUrl { get; }
 
-        private Process Process { get; }
-        private IIpcClient<IClassifier> Classifier { get; }
+        private IClassifier Classifier { get; }
 
-        private MlFilter(uint version, Uri reportUrl, Process process, IIpcClient<IClassifier> classifier) {
-            this.Process = process;
+        private MlFilter(uint version, Uri reportUrl, IClassifier classifier) {
             this.Classifier = classifier;
             this.Version = version;
             this.ReportUrl = reportUrl;
         }
 
         public MessageCategory ClassifyMessage(ushort channel, string message) {
-            var prediction = this.Classifier.InvokeAsync(classifier => classifier.Classify(channel, message)).Result;
+            var prediction = this.Classifier.Classify(channel, message);
             var category = MessageCategoryExt.FromString(prediction);
 
             if (category != null) {
@@ -71,7 +65,7 @@ namespace NoSoliciting.Ml {
             if (localManifest != null && (manifest?.Item1 == null || localManifest.Version == manifest.Value.manifest.Version)) {
                 try {
                     // try to reach the cached model
-                    data = File.ReadAllBytes(CachedFilePath(plugin, ModelName));
+                    data = await File.ReadAllBytesAsync(CachedFilePath(plugin, ModelName));
                     // set the manifest to our local one and an empty string for the source
                     manifest ??= (localManifest, string.Empty);
                 } catch (IOException) {
@@ -128,62 +122,14 @@ namespace NoSoliciting.Ml {
             }
 
             // initialise the classifier
-            var pluginFolder = plugin.Interface.ConfigDirectory.ToString();
-
-            var exePath = await ExtractClassifier(pluginFolder);
-
-            var pipeId = Guid.NewGuid();
-
-            var process = StartClassifier(exePath, pipeId, showWindow);
-            var client = await CreateClassifierClient(pipeId, data);
+            var classifier = new Classifier();
+            classifier.Initialise(data);
 
             return new MlFilter(
                 manifest.Value.manifest!.Version,
                 manifest.Value.manifest!.ReportUrl,
-                process!,
-                client
+                classifier
             );
-        }
-
-        private static async Task<IIpcClient<IClassifier>> CreateClassifierClient(Guid pipeId, byte[] data) {
-            var serviceProvider = new ServiceCollection()
-                .AddNamedPipeIpcClient<IClassifier>("client", (_, options) => {
-                    options.PipeName = $"NoSoliciting.MessageClassifier-{pipeId}";
-                    options.Serializer = new BetterIpcSerialiser();
-                })
-                .BuildServiceProvider();
-
-            var clientFactory = serviceProvider.GetRequiredService<IIpcClientFactory<IClassifier>>();
-            var client = clientFactory.CreateClient("client");
-
-            await client.InvokeAsync(classifier => classifier.Initialise(data));
-            return client;
-        }
-
-        private static Process StartClassifier(string exePath, Guid pipeId, bool showWindow) {
-            var game = Process.GetCurrentProcess();
-
-            var startInfo = new ProcessStartInfo(exePath) {
-                CreateNoWindow = !showWindow,
-                UseShellExecute = false,
-                Arguments = $"\"{game.Id}\" \"{game.ProcessName}\" \"{pipeId}\"",
-            };
-            return Process.Start(startInfo)!;
-        }
-
-        private static async Task<string> ExtractClassifier(string pluginFolder) {
-            using var exe = Resource.AsStream("NoSoliciting.NoSoliciting.MessageClassifier.exe");
-            Directory.CreateDirectory(pluginFolder);
-            var exePath = Path.Combine(pluginFolder, "NoSoliciting.MessageClassifier.exe");
-
-            try {
-                using var exeFile = File.Create(exePath);
-                await exe.CopyToAsync(exeFile);
-            } catch (IOException ex) {
-                PluginLog.LogWarning($"Could not update classifier. Continuing as normal.\n{ex}");
-            }
-
-            return exePath;
         }
 
         private static async Task<byte[]?> DownloadModel(Uri url) {
@@ -211,7 +157,7 @@ namespace NoSoliciting.Ml {
             var file = File.Create(cachePath);
             await file.WriteAsync(data, 0, data.Length);
             await file.FlushAsync();
-            file.Dispose();
+            await file.DisposeAsync();
         }
 
         private static async Task<(Manifest manifest, string source)?> DownloadManifest() {
@@ -257,12 +203,7 @@ namespace NoSoliciting.Ml {
         }
 
         public void Dispose() {
-            try {
-                this.Process.Kill();
-                this.Process.Dispose();
-            } catch (Exception) {
-                // ignored
-            }
+            this.Classifier.Dispose();
         }
     }
 

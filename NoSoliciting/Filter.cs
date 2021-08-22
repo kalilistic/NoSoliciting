@@ -1,9 +1,8 @@
-﻿using Dalamud.Plugin;
-using System;
-using Dalamud.Game.Internal.Gui;
-using Dalamud.Game.Internal.Gui.Structs;
+﻿using System;
+using Dalamud.Game.Gui.PartyFinder.Types;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Logging;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 
@@ -48,8 +47,8 @@ namespace NoSoliciting {
         public Filter(Plugin plugin) {
             this.Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin), "Plugin cannot be null");
 
-            this.Plugin.Interface.Framework.Gui.Chat.OnCheckMessageHandled += this.OnChat;
-            this.Plugin.Interface.Framework.Gui.PartyFinder.ReceiveListing += this.OnListing;
+            this.Plugin.ChatGui.CheckMessageHandled += this.OnChat;
+            this.Plugin.PartyFinderGui.ReceiveListing += this.OnListing;
         }
 
         private void Dispose(bool disposing) {
@@ -58,8 +57,8 @@ namespace NoSoliciting {
             }
 
             if (disposing) {
-                this.Plugin.Interface.Framework.Gui.Chat.OnCheckMessageHandled -= this.OnChat;
-                this.Plugin.Interface.Framework.Gui.PartyFinder.ReceiveListing -= this.OnListing;
+                this.Plugin.ChatGui.CheckMessageHandled -= this.OnChat;
+                this.Plugin.PartyFinderGui.ReceiveListing -= this.OnListing;
             }
 
             this._disposedValue = true;
@@ -184,7 +183,7 @@ namespace NoSoliciting {
             }
 
             // step 1. check if pf has an item level that's too high
-            if (this.Plugin.Config.FilterHugeItemLevelPFs && listing.MinimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.Plugin.Interface.Data)) {
+            if (this.Plugin.Config.FilterHugeItemLevelPFs && listing.MinimumItemLevel > FilterUtil.MaxItemLevelAttainable(this.Plugin.DataManager)) {
                 return (null, "ilvl");
             }
 

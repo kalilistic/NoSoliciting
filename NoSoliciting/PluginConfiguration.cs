@@ -109,7 +109,7 @@ namespace NoSoliciting {
         }
 
         internal bool MlEnabledOn(MessageCategory category, ChatType chatType) {
-            HashSet<ChatType> filtered;
+            HashSet<ChatType>? filtered;
 
             if (this.AdvancedMode) {
                 if (!this.MlFilters.TryGetValue(category, out filtered)) {

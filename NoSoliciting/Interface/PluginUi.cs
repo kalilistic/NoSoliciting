@@ -13,11 +13,11 @@ namespace NoSoliciting.Interface {
             this.Settings = new Settings(plugin, this);
             this.Report = new Report(plugin);
 
-            this.Plugin.Interface.UiBuilder.OnBuildUi += this.Draw;
+            this.Plugin.Interface.UiBuilder.Draw += this.Draw;
         }
 
         public void Dispose() {
-            this.Plugin.Interface.UiBuilder.OnBuildUi -= this.Draw;
+            this.Plugin.Interface.UiBuilder.Draw -= this.Draw;
             this.Settings.Dispose();
         }
 

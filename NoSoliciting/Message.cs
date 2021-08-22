@@ -220,7 +220,7 @@ namespace NoSoliciting {
                     return "Party (Cross-world)";
             }
 
-            var lf = data.GetExcelSheet<LogFilter>().FirstOrDefault(lf => lf.LogKind == type.LogKind());
+            var lf = data.GetExcelSheet<LogFilter>()!.FirstOrDefault(lf => lf.LogKind == type.LogKind());
             return lf?.Name?.ToString() ?? type.ToString();
         }
 

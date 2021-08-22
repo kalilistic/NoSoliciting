@@ -98,7 +98,7 @@ namespace NoSoliciting {
 
             var ilvls = new Dictionary<Slot, int>();
 
-            foreach (var item in data.GetExcelSheet<Item>()) {
+            foreach (var item in data.GetExcelSheet<Item>()!) {
                 var slot = SlotFromItem(item);
                 if (slot == null) {
                     continue;
