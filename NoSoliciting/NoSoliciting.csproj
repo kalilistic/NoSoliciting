@@ -19,10 +19,6 @@
             <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\ImGui.NET.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="ImGuiScene">
-            <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\ImGuiScene.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
         <Reference Include="Lumina">
             <HintPath>$(AppData)\XIVLauncher\addon\Hooks\dev\Lumina.dll</HintPath>
             <Private>False</Private>
@@ -37,11 +33,12 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="DalamudLinter" Version="1.0.3"/>
         <PackageReference Include="DalamudPackager" Version="2.1.2"/>
-        <PackageReference Include="Fody" Version="6.5.2" PrivateAssets="all"/>
+        <PackageReference Include="Fody" Version="6.5.3" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.ML" Version="1.6.0"/>
         <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all"/>
-        <PackageReference Include="XivCommon" Version="3.0.1"/>
+        <PackageReference Include="XivCommon" Version="3.0.2"/>
         <PackageReference Include="YamlDotNet" Version="11.2.1"/>
     </ItemGroup>
     <ItemGroup>
