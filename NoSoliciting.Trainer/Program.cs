@@ -64,12 +64,18 @@ namespace NoSoliciting.Trainer {
             };
             foreach (var emlPath in Directory.GetFiles(path, "*.eml")) {
                 var message = MimeMessage.Load(opts, new FileStream(emlPath, FileMode.Open));
-                var json = message.TextBody.Split('\r', '\n').FirstOrDefault(line => line.StartsWith("JSON: "));
-                if (json == null) {
+                var lines = message.TextBody
+                    .Split('\r', '\n')
+                    .SkipWhile(line => !line.StartsWith("JSON: "))
+                    .Select(line => line.Replace("JSON: ", "").Replace(" ", "").Trim())
+                    .ToArray();
+                if (lines.Length == 0) {
                     continue;
                 }
 
-                var jsonText = Encoding.UTF8.GetString(Convert.FromBase64String(json.Split(": ")[1]));
+                var json = string.Join("", lines);
+
+                var jsonText = Encoding.UTF8.GetString(Convert.FromBase64String(json));
                 var report = JsonConvert.DeserializeObject<ReportInput>(jsonText);
                 var content = XivString.GetText(report.Content);
                 var data = new Data(report.Type, content) {
