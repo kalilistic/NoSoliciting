@@ -11,35 +11,33 @@
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(IsCI)' == 'true'">
+        <Dalamud>$(HOME)/dalamud</Dalamud>
+    </PropertyGroup>
+
     <PropertyGroup>
         <Dalamud>$(AppData)\XIVLauncher\addon\Hooks\dev</Dalamud>
-        <CI>$(HOME)/dalamud</CI>
     </PropertyGroup>
 
     <ItemGroup>
         <Reference Include="Dalamud">
             <HintPath>$(Dalamud)\Dalamud.dll</HintPath>
-            <HintPath Condition="'$(IsCI)' == 'true'">$(CI)/Dalamud.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="ImGui.NET">
             <HintPath>$(Dalamud)\ImGui.NET.dll</HintPath>
-            <HintPath Condition="'$(IsCI)' == 'true'">$(CI)/ImGui.NET.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Lumina">
             <HintPath>$(Dalamud)\Lumina.dll</HintPath>
-            <HintPath Condition="'$(IsCI)' == 'true'">$(CI)/Lumina.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Lumina.Excel">
             <HintPath>$(Dalamud)\Lumina.Excel.dll</HintPath>
-            <HintPath Condition="'$(IsCI)' == 'true'">$(CI)/Lumina.Excel.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Newtonsoft.Json">
             <HintPath>$(Dalamud)\Newtonsoft.Json.dll</HintPath>
-            <HintPath Condition="'$(IsCI)' == 'true'">$(CI)/Newtonsoft.Json.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
