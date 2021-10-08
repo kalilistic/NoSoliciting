@@ -1,12 +1,23 @@
 image: fedora/latest
 packages:
   - dotnet
+  - wget
+  - unzip
 sources:
   - https://git.sr.ht/~jkcclemens/NoSoliciting
 secrets:
   - 92fe0dd0-db40-41e0-903a-a18489f75548
 tasks:
-  - build: |
+  - download-dalamud: |
+      mkdir dalamud
+      cd dalamud
+      wget https://github.com/goatcorp/dalamud-distrib/raw/main/latest.zip
+      unzip latest.zip
+      rm latest.zip
+  - build-plugin: |
+      cd NoSoliciting/NoSoliciting
+      dotnet build -c Release -p:IsCI=true
+  - build-trainer: |
       cd NoSoliciting/NoSoliciting.Trainer
       dotnet build -c Release
   - test: |
@@ -22,4 +33,5 @@ tasks:
           ssh actions@warm.kitteh.space model update "$(git rev-parse HEAD)" < NoSoliciting.Trainer/model.zip
       fi
 artifacts:
+  - NoSoliciting/NoSoliciting/bin/Release/net5-windows/NoSoliciting/latest.zip
   - NoSoliciting/NoSoliciting.Trainer/model.zip
