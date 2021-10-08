@@ -11,12 +11,12 @@
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(IsCI)' == 'true'">
-        <Dalamud>$(HOME)/dalamud</Dalamud>
-    </PropertyGroup>
-
     <PropertyGroup>
         <Dalamud>$(AppData)\XIVLauncher\addon\Hooks\dev</Dalamud>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsCI)' == 'true'">
+        <Dalamud>$(HOME)/dalamud</Dalamud>
     </PropertyGroup>
 
     <ItemGroup>
