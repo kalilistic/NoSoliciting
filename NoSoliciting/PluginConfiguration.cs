@@ -45,6 +45,7 @@ namespace NoSoliciting {
         public Dictionary<MessageCategory, HashSet<ChatType>> MlFilters { get; set; } = new() {
             [MessageCategory.RmtGil] = new HashSet<ChatType> {
                 ChatType.Say,
+                ChatType.Shout,
             },
             [MessageCategory.RmtContent] = new HashSet<ChatType> {
                 ChatType.None,
