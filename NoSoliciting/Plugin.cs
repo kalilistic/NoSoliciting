@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud;
+using Dalamud.ContextMenu;
 using Dalamud.Data;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.Command;
@@ -51,6 +52,7 @@ namespace NoSoliciting {
 
         internal PluginConfiguration Config { get; }
         internal XivCommonBase Common { get; }
+        internal DalamudContextMenu DalamudContextMenu { get; }
         internal PluginUi Ui { get; }
         private Commands Commands { get; }
         private ContextMenu ContextMenu { get; }
@@ -78,7 +80,8 @@ namespace NoSoliciting {
             this.ConfigureLanguage();
             this.Interface.LanguageChanged += this.OnLanguageUpdate;
 
-            this.Common = new XivCommonBase(Hooks.PartyFinder | Hooks.ContextMenu);
+            this.Common = new XivCommonBase(Hooks.PartyFinderListings);
+            this.DalamudContextMenu = new DalamudContextMenu();
 
             this.Ui = new PluginUi(this);
             this.Commands = new Commands(this);
@@ -107,6 +110,7 @@ namespace NoSoliciting {
                 this.ContextMenu.Dispose();
                 this.Commands.Dispose();
                 this.Ui.Dispose();
+                this.DalamudContextMenu.Dispose();
                 this.Common.Dispose();
                 this.Interface.LanguageChanged -= this.OnLanguageUpdate;
             }

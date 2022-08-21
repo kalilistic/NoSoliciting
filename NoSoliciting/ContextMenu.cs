@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Dalamud.ContextMenu;
 using NoSoliciting.Resources;
-using XivCommon.Functions.ContextMenu;
 
 namespace NoSoliciting {
     public class ContextMenu : IDisposable {
@@ -10,14 +10,14 @@ namespace NoSoliciting {
         internal ContextMenu(Plugin plugin) {
             this.Plugin = plugin;
 
-            this.Plugin.Common.Functions.ContextMenu.OpenContextMenu += this.OnOpenContextMenu;
+            this.Plugin.DalamudContextMenu.OnOpenGameObjectContextMenu += this.OnOpenContextMenu;
         }
 
         public void Dispose() {
-            this.Plugin.Common.Functions.ContextMenu.OpenContextMenu -= this.OnOpenContextMenu;
+            this.Plugin.DalamudContextMenu.OnOpenGameObjectContextMenu -= this.OnOpenContextMenu;
         }
 
-        private void OnOpenContextMenu(ContextMenuOpenArgs args) {
+        private void OnOpenContextMenu(GameObjectContextMenuOpenArgs args) {
             if (args.ParentAddonName != "LookingForGroup") {
                 return;
             }
@@ -27,10 +27,10 @@ namespace NoSoliciting {
             }
 
             var label = Language.ReportToNoSoliciting;
-            args.Items.Add(new NormalContextMenuItem(label, this.Report));
+            args.AddCustomItem(new GameObjectContextMenuItem(label, this.Report));
         }
 
-        private void Report(ContextMenuItemSelectedArgs args) {
+        private void Report(GameObjectContextMenuItemSelectedArgs args) {
             if (args.ContentIdLower == 0) {
                 return;
             }
