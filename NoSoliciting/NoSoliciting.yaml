@@ -17,4 +17,3 @@ description: |-
 repo_url: https://git.sr.ht/~jkcclemens/NoSoliciting
 # Use higher priority to filter messages before other plugins get them.
 load_priority: 100
-dalamud_api_level: 7
