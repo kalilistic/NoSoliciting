@@ -225,7 +225,7 @@ namespace NoSoliciting.Trainer {
                 .Append(ctx.Transforms.Conversion.ConvertType("HasPlot", nameof(Data.Computed.ContainsPlot)))
                 .Append(ctx.Transforms.Conversion.ConvertType("HasNumbers", nameof(Data.Computed.ContainsHousingNumbers)))
                 .Append(ctx.Transforms.Concatenate("Features", "FeaturisedMessage", "CPartyFinder", "CShout", "CTrade", "HasWard", "HasPlot", "HasNumbers", "CSketch"))
-                .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight"))
+                .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight", l1Regularization: 0, l2Regularization: 0))
                 .Append(ctx.Transforms.Conversion.MapKeyToValue("PredictedLabel"));
 
             var train = mode switch {
