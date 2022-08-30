@@ -10,6 +10,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using Microsoft.ML.TorchSharp;
 using Microsoft.ML.Transforms.Text;
 using MimeKit;
 using Newtonsoft.Json;
@@ -211,12 +212,12 @@ namespace NoSoliciting.Trainer {
                 .Append(ctx.Transforms.CustomMapping(compute.GetMapping(), "Compute"))
                 .Append(ctx.Transforms.CustomMapping(normalise.GetMapping(), "Normalise"))
                 .Append(ctx.Transforms.Text.NormalizeText("MsgNormal", nameof(Data.Normalise.Normalised.NormalisedMessage), keepPunctuations: false, keepNumbers: false))
-                .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
-                .Append(ctx.Transforms.Text.RemoveDefaultStopWords("MsgNoDefStop", "MsgTokens"))
-                .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgNoDefStop", StopWords))
-                .Append(ctx.Transforms.Conversion.MapValueToKey("MsgKey", "MsgNoStop"))
-                .Append(ctx.Transforms.Text.ProduceNgrams("MsgNgrams", "MsgKey", weighting: NgramExtractingEstimator.WeightingCriteria.Tf))
-                .Append(ctx.Transforms.NormalizeLpNorm("FeaturisedMessage", "MsgNgrams"))
+                // .Append(ctx.Transforms.Text.TokenizeIntoWords("MsgTokens", "MsgNormal"))
+                // .Append(ctx.Transforms.Text.RemoveDefaultStopWords("MsgNoDefStop", "MsgTokens"))
+                // .Append(ctx.Transforms.Text.RemoveStopWords("MsgNoStop", "MsgNoDefStop", StopWords))
+                // .Append(ctx.Transforms.Conversion.MapValueToKey("MsgKey", "MsgNoStop"))
+                // .Append(ctx.Transforms.Text.ProduceNgrams("MsgNgrams", "MsgKey", weighting: NgramExtractingEstimator.WeightingCriteria.Tf))
+                // .Append(ctx.Transforms.NormalizeLpNorm("FeaturisedMessage", "MsgNgrams"))
                 .Append(ctx.Transforms.Conversion.ConvertType("CPartyFinder", nameof(Data.Computed.PartyFinder)))
                 .Append(ctx.Transforms.Conversion.ConvertType("CShout", nameof(Data.Computed.Shout)))
                 .Append(ctx.Transforms.Conversion.ConvertType("CTrade", nameof(Data.Computed.ContainsTradeWords)))
@@ -224,8 +225,9 @@ namespace NoSoliciting.Trainer {
                 .Append(ctx.Transforms.Conversion.ConvertType("HasWard", nameof(Data.Computed.ContainsWard)))
                 .Append(ctx.Transforms.Conversion.ConvertType("HasPlot", nameof(Data.Computed.ContainsPlot)))
                 .Append(ctx.Transforms.Conversion.ConvertType("HasNumbers", nameof(Data.Computed.ContainsHousingNumbers)))
-                .Append(ctx.Transforms.Concatenate("Features", "FeaturisedMessage", "CPartyFinder", "CShout", "CTrade", "HasWard", "HasPlot", "HasNumbers", "CSketch"))
-                .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight"))
+                // .Append(ctx.Transforms.Concatenate("Features", "FeaturisedMessage", "CPartyFinder", "CShout", "CTrade", "HasWard", "HasPlot", "HasNumbers", "CSketch"))
+                // .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight"))
+                .Append(ctx.MulticlassClassification.Trainers.TextClassification(sentence1ColumnName: "MsgNormal"))
                 .Append(ctx.Transforms.Conversion.MapKeyToValue("PredictedLabel"));
 
             var train = mode switch {
