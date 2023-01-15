@@ -4,7 +4,7 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <Version>3.0.5</Version>
-        <TargetFramework>net6-windows</TargetFramework>
+        <TargetFramework>net7-windows</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <PlatformTarget>x64</PlatformTarget>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -47,13 +47,13 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Dalamud.ContextMenu" Version="1.2.0"/>
-        <PackageReference Include="DalamudPackager" Version="2.1.8"/>
-        <PackageReference Include="Fody" Version="6.6.3" PrivateAssets="all"/>
-        <PackageReference Include="Microsoft.ML" Version="1.7.1"/>
+        <PackageReference Include="Dalamud.ContextMenu" Version="1.2.1"/>
+        <PackageReference Include="DalamudPackager" Version="2.1.10"/>
+        <PackageReference Include="Fody" Version="6.6.4" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.ML" Version="2.0.0"/>
         <PackageReference Include="Resourcer.Fody" Version="1.8.0" PrivateAssets="all"/>
-        <PackageReference Include="XivCommon" Version="6.0.0"/>
-        <PackageReference Include="YamlDotNet" Version="12.0.0"/>
+        <PackageReference Include="XivCommon" Version="7.0.0-alpha.1"/>
+        <PackageReference Include="YamlDotNet" Version="12.3.1"/>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Update="Resources\Language.resx">
