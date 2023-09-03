@@ -1,4 +1,4 @@
-﻿author: ascclemens
+﻿author: Anna
 name: NoSoliciting
 punchline: Adblock for FFXIV.
 description: |-
@@ -14,6 +14,6 @@ description: |-
   - Trade ads
   - Community ads
   - Any PF with an item level over the max
-repo_url: https://git.sr.ht/~jkcclemens/NoSoliciting
+repo_url: https://git.anna.lgbt/anna/NoSoliciting
 # Use higher priority to filter messages before other plugins get them.
 load_priority: 100
