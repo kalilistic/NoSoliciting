@@ -5,7 +5,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Dalamud.Logging;
 using NoSoliciting.Interface;
 using NoSoliciting.Resources;
 using YamlDotNet.Core;
@@ -43,7 +42,7 @@ namespace NoSoliciting.Ml {
                 return (MessageCategory) category;
             }
 
-            PluginLog.LogWarning($"Unknown message category: {prediction}");
+            Plugin.Log.Warning($"Unknown message category: {prediction}");
             return MessageCategory.Normal;
         }
 
@@ -53,7 +52,7 @@ namespace NoSoliciting.Ml {
             // download and parse the remote manifest
             var manifest = await DownloadManifest();
             if (manifest == null) {
-                PluginLog.LogWarning("Could not download manifest. Will attempt to fall back on cached version.");
+                Plugin.Log.Warning("Could not download manifest. Will attempt to fall back on cached version.");
             }
 
             // model zip file data
@@ -96,7 +95,7 @@ namespace NoSoliciting.Ml {
                 var hash = sha.ComputeHash(data);
 
                 while (!hash.SequenceEqual(correctHash) && retries < maxRetries) {
-                    PluginLog.Warning($"Model checksum did not match. Redownloading (attempt {retries + 1}/{maxRetries})");
+                    Plugin.Log.Warning($"Model checksum did not match. Redownloading (attempt {retries + 1}/{maxRetries})");
                     retries += 1;
 
                     data = await DownloadModel(manifest!.Value.manifest!.ModelUrl);
@@ -138,8 +137,8 @@ namespace NoSoliciting.Ml {
                 var data = await client.DownloadDataTaskAsync(url);
                 return data;
             } catch (WebException e) {
-                PluginLog.LogError("Could not download newest model.");
-                PluginLog.LogError(e.ToString());
+                Plugin.Log.Error("Could not download newest model.");
+                Plugin.Log.Error(e.ToString());
                 LastError = e.Message;
                 return null;
             }
@@ -167,8 +166,8 @@ namespace NoSoliciting.Ml {
                 LastError = null;
                 return (LoadYaml<Manifest>(data), data);
             } catch (Exception e) when (e is WebException or YamlException) {
-                PluginLog.LogError("Could not download newest model manifest.");
-                PluginLog.LogError(e.ToString());
+                Plugin.Log.Error("Could not download newest model manifest.");
+                Plugin.Log.Error(e.ToString());
                 LastError = e.Message;
                 return null;
             }

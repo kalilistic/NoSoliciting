@@ -44,7 +44,7 @@ namespace NoSoliciting.Interface {
         }
 
         public void Draw() {
-            var windowTitle = string.Format(Language.Settings, this.Plugin.Name);
+            var windowTitle = string.Format(Language.Settings, Plugin.Name);
             if (!this.ShowSettings || !ImGui.Begin($"{windowTitle}###NoSoliciting settings", ref this._showSettings)) {
                 return;
             }

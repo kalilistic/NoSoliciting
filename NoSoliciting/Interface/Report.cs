@@ -6,7 +6,6 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
-using Dalamud.Logging;
 using ImGuiNET;
 using NoSoliciting.Ml;
 using NoSoliciting.Resources;
@@ -66,7 +65,7 @@ namespace NoSoliciting.Interface {
 
             ImGui.SetNextWindowSize(new Vector2(1_000, 350), ImGuiCond.FirstUseEver);
 
-            var windowTitle = string.Format(Language.Reporting, this.Plugin.Name);
+            var windowTitle = string.Format(Language.Reporting, Plugin.Name);
             if (!ImGui.Begin($"{windowTitle}###NoSoliciting reporting", ref this._showReporting)) {
                 ImGui.End();
                 return;
@@ -224,7 +223,7 @@ namespace NoSoliciting.Interface {
 
             ImGui.SetNextWindowSize(new Vector2(350, -1));
 
-            var modalTitle = string.Format(Language.ReportModalTitle, this.Plugin.Name);
+            var modalTitle = string.Format(Language.ReportModalTitle, Plugin.Name);
             if (!ImGui.BeginPopupModal($"{modalTitle}###modal-message-{message.Id}")) {
                 return false;
             }
@@ -441,11 +440,11 @@ namespace NoSoliciting.Interface {
 
             var status = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
             if (status == ReportStatus.Failure) {
-                PluginLog.LogWarning($"Failed to report message:\n{resp}");
+                Plugin.Log.Warning($"Failed to report message:\n{resp}");
             }
 
             this.LastReportStatus = status;
-            PluginLog.Log(resp == null
+            Plugin.Log.Info(resp == null
                 ? "Report not sent. ML model not set."
                 : $"Report sent. Response: {resp}");
 

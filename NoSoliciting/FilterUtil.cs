@@ -1,9 +1,9 @@
-﻿using Dalamud.Data;
-using Lumina.Excel.GeneratedSheets;
+﻿using Lumina.Excel.GeneratedSheets;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dalamud.Plugin.Services;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
@@ -87,7 +87,7 @@ namespace NoSoliciting {
             return null;
         }
 
-        public static int MaxItemLevelAttainable(DataManager data) {
+        public static int MaxItemLevelAttainable(IDataManager data) {
             if (MaxItemLevel > 0) {
                 return MaxItemLevel;
             }

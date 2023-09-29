@@ -44,13 +44,17 @@ namespace NoSoliciting {
 
         public Dictionary<MessageCategory, HashSet<ChatType>> MlFilters { get; set; } = new() {
             [MessageCategory.RmtGil] = new HashSet<ChatType> {
+                ChatType.None,
                 ChatType.Say,
                 ChatType.Shout,
             },
             [MessageCategory.RmtContent] = new HashSet<ChatType> {
                 ChatType.None,
+                ChatType.Say,
+                ChatType.Shout,
             },
             [MessageCategory.Phishing] = new HashSet<ChatType> {
+                ChatType.None,
                 ChatType.TellIncoming,
             },
             [MessageCategory.Roleplaying] = new HashSet<ChatType> {
@@ -72,12 +76,18 @@ namespace NoSoliciting {
             },
             [MessageCategory.Trade] = new HashSet<ChatType> {
                 ChatType.None,
+                ChatType.Shout,
+                ChatType.Yell,
             },
             [MessageCategory.Community] = new HashSet<ChatType> {
                 ChatType.None,
+                ChatType.Shout,
+                ChatType.Yell,
             },
             [MessageCategory.Fluff] = new HashSet<ChatType> {
                 ChatType.None,
+                ChatType.Shout,
+                ChatType.Yell,
             },
         };
 

@@ -11,7 +11,6 @@ using CsvHelper.Configuration;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms.Text;
-using MimeKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NoSoliciting.Interface;
@@ -21,6 +20,8 @@ namespace NoSoliciting.Trainer {
         private static readonly string[] StopWords = {
             "discord",
             "gg",
+            "twitch",
+            "tv",
             "lgbt",
             "lgbtq",
             "lgbtqia",
@@ -40,7 +41,6 @@ namespace NoSoliciting.Trainer {
             Interactive,
             InteractiveFull,
             Normalise,
-            Import,
         }
 
         [Serializable]
@@ -56,51 +56,6 @@ namespace NoSoliciting.Trainer {
             public string? SuggestedClassification { get; set; }
         }
 
-        private static void Import(string path) {
-            var allData = new List<Data>();
-
-            var opts = new ParserOptions {
-                CharsetEncoding = Encoding.UTF8,
-            };
-            foreach (var emlPath in Directory.GetFiles(path, "*.eml")) {
-                var message = MimeMessage.Load(opts, new FileStream(emlPath, FileMode.Open));
-                var lines = message.TextBody
-                    .Split('\r', '\n')
-                    .SkipWhile(line => !line.StartsWith("JSON: "))
-                    .Select(line => line.Replace("JSON: ", "").Replace(" ", "").Trim())
-                    .ToArray();
-                if (lines.Length == 0) {
-                    continue;
-                }
-
-                var json = string.Join("", lines);
-
-                var jsonText = Encoding.UTF8.GetString(Convert.FromBase64String(json));
-                var report = JsonConvert.DeserializeObject<ReportInput>(jsonText);
-                var content = XivString.GetText(report.Content);
-                var data = new Data(report.Type, content) {
-                    Category = report.SuggestedClassification,
-                };
-                data.Message = data.Message
-                    .Replace("\r\n", " ")
-                    .Replace('\r', ' ')
-                    .Replace('\n', ' ');
-                allData.Add(data);
-            }
-
-            var writer = new StringWriter();
-            using var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture) {
-                HeaderValidated = null,
-                Encoding = Encoding.UTF8,
-            });
-            csv.WriteRecords(allData
-                .OrderBy(data => data.Category)
-                .ThenBy(data => data.Channel)
-                .ThenBy(data => data.Message));
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine(writer.ToString());
-        }
-
         private static void Main(string[] args) {
             var mode = args[0] switch {
                 "test" => Mode.Test,
@@ -108,14 +63,8 @@ namespace NoSoliciting.Trainer {
                 "interactive" => Mode.Interactive,
                 "interactive-full" => Mode.InteractiveFull,
                 "normalise" => Mode.Normalise,
-                "import" => Mode.Import,
                 _ => throw new ArgumentException("invalid argument"),
             };
-
-            if (mode == Mode.Import) {
-                Import(args[1]);
-                return;
-            }
 
             if (mode == Mode.Normalise) {
                 Console.WriteLine("Ready");
@@ -225,7 +174,9 @@ namespace NoSoliciting.Trainer {
                 .Append(ctx.Transforms.Conversion.ConvertType("HasPlot", nameof(Data.Computed.ContainsPlot)))
                 .Append(ctx.Transforms.Conversion.ConvertType("HasNumbers", nameof(Data.Computed.ContainsHousingNumbers)))
                 .Append(ctx.Transforms.Concatenate("Features", "FeaturisedMessage", "CPartyFinder", "CShout", "CTrade", "HasWard", "HasPlot", "HasNumbers", "CSketch"))
-                .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight", l1Regularization: 0, l2Regularization: 0))
+                // macro 81.8 micro 84.6 (Tf weighting) - slow
+                // .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight", l1Regularization: 0, l2Regularization: 0, maximumNumberOfIterations: 2_500))
+                .Append(ctx.MulticlassClassification.Trainers.SdcaMaximumEntropy(exampleWeightColumnName: "Weight", l1Regularization: 0, l2Regularization: 0, maximumNumberOfIterations: null))
                 .Append(ctx.Transforms.Conversion.MapKeyToValue("PredictedLabel"));
 
             var train = mode switch {

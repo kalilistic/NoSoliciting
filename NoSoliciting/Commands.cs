@@ -24,7 +24,7 @@ namespace NoSoliciting {
 
         private void OnCommand(string command, string args) {
             if (command == "/prmt") {
-                this.Plugin.ChatGui.PrintError($"[{this.Plugin.Name}] The /prmt command is deprecated and will be removed. Please use /nosol instead.");
+                this.Plugin.ChatGui.PrintError($"[{Plugin.Name}] The /prmt command is deprecated and will be removed. Please use /nosol instead.");
             }
 
             if (args == "report") {

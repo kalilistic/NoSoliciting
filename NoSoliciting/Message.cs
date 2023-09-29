@@ -3,9 +3,9 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Data;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Plugin.Services;
 using Lumina.Excel.GeneratedSheets;
 using NoSoliciting.Ml;
 
@@ -208,7 +208,7 @@ namespace NoSoliciting {
             _ => (byte) type,
         };
 
-        public static string Name(this ChatType type, DataManager data) {
+        public static string Name(this ChatType type, IDataManager data) {
             switch (type) {
                 case ChatType.None:
                     return "Party Finder";

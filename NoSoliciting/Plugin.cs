@@ -7,14 +7,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud;
 using Dalamud.ContextMenu;
-using Dalamud.Data;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.Command;
-using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.PartyFinder;
-using Dalamud.Game.Gui.Toast;
 using Dalamud.IoC;
-using Dalamud.Logging;
+using Dalamud.Plugin.Services;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 using NoSoliciting.Resources;
@@ -25,30 +19,33 @@ namespace NoSoliciting {
     public class Plugin : IDalamudPlugin {
         private bool _disposedValue;
 
-        public string Name => "NoSoliciting";
+        internal static string Name => "NoSoliciting";
 
         private Filter Filter { get; }
+
+        [PluginService]
+        internal static IPluginLog Log { get; private set; } = null!;
 
         [PluginService]
         internal DalamudPluginInterface Interface { get; init; } = null!;
 
         [PluginService]
-        private ClientState ClientState { get; init; } = null!;
+        private IClientState ClientState { get; init; } = null!;
 
         [PluginService]
-        internal ChatGui ChatGui { get; init; } = null!;
+        internal IChatGui ChatGui { get; init; } = null!;
 
         [PluginService]
-        internal PartyFinderGui PartyFinderGui { get; init; } = null!;
+        internal IPartyFinderGui PartyFinderGui { get; init; } = null!;
 
         [PluginService]
-        internal DataManager DataManager { get; init; } = null!;
+        internal IDataManager DataManager { get; init; } = null!;
 
         [PluginService]
-        internal CommandManager CommandManager { get; init; } = null!;
+        internal ICommandManager CommandManager { get; init; } = null!;
 
         [PluginService]
-        internal ToastGui ToastGui { get; init; } = null!;
+        internal IToastGui ToastGui { get; init; } = null!;
 
         internal PluginConfiguration Config { get; }
         internal XivCommonBase Common { get; }
@@ -81,7 +78,7 @@ namespace NoSoliciting {
             this.Interface.LanguageChanged += this.OnLanguageUpdate;
 
             this.Common = new XivCommonBase(Hooks.PartyFinderListings);
-            this.DalamudContextMenu = new DalamudContextMenu();
+            this.DalamudContextMenu = new DalamudContextMenu(this.Interface);
 
             this.Ui = new PluginUi(this);
             this.Commands = new Commands(this);
@@ -95,7 +92,7 @@ namespace NoSoliciting {
             try {
                 FilterUtil.MaxItemLevelAttainable(this.DataManager);
             } catch (Exception ex) {
-                PluginLog.LogError(ex, "Exception while computing max item level");
+                Plugin.Log.Error(ex, "Exception while computing max item level");
             }
         }
 
@@ -152,7 +149,7 @@ namespace NoSoliciting {
                     }
 
                     this.MlStatus = MlFilterStatus.Initialised;
-                    PluginLog.Log("Machine learning model loaded");
+                    Log.Info("Machine learning model loaded");
                 });
         }
 

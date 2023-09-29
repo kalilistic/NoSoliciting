@@ -2,7 +2,6 @@
 using Dalamud.Game.Gui.PartyFinder.Types;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
-using Dalamud.Logging;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 
@@ -104,10 +103,10 @@ namespace NoSoliciting {
                 args.Visible = false;
 
                 if (this.Plugin.Config.LogFilteredPfs) {
-                    PluginLog.Log($"Filtered PF listing from {listing.Name.TextValue} ({reason}): {listing.Description.TextValue}");
+                    Plugin.Log.Info($"Filtered PF listing from {listing.Name.TextValue} ({reason}): {listing.Description.TextValue}");
                 }
             } catch (Exception ex) {
-                PluginLog.LogError($"Error in PF listing event: {ex}");
+                Plugin.Log.Error($"Error in PF listing event: {ex}");
             }
         }
 
@@ -166,7 +165,7 @@ namespace NoSoliciting {
             this.Plugin.AddMessageHistory(history);
 
             if (filter && this.Plugin.Config.LogFilteredChat) {
-                PluginLog.Log($"Filtered chat message ({history.FilterReason ?? "unknown"}): {text}");
+                Plugin.Log.Info($"Filtered chat message ({history.FilterReason ?? "unknown"}): {text}");
             }
 
             return filter;
@@ -202,7 +201,7 @@ namespace NoSoliciting {
             var category = this.Plugin.MlFilter.ClassifyMessage((ushort) ChatType.None, desc);
 
             if (category != MessageCategory.Normal && this.Plugin.Config.MlEnabledOn(category, ChatType.None)) {
-                return (category, null);
+                return (category, Enum.GetName(category));
             }
 
             return (null, null);
