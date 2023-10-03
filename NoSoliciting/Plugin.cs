@@ -77,7 +77,7 @@ namespace NoSoliciting {
             this.ConfigureLanguage();
             this.Interface.LanguageChanged += this.OnLanguageUpdate;
 
-            this.Common = new XivCommonBase(Hooks.PartyFinderListings);
+            this.Common = new XivCommonBase(this.Interface, Hooks.PartyFinderListings);
             this.DalamudContextMenu = new DalamudContextMenu(this.Interface);
 
             this.Ui = new PluginUi(this);
