@@ -66,7 +66,18 @@ namespace NoSoliciting {
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public string AssemblyLocation { get; private set; } = Assembly.GetExecutingAssembly().Location;
 
-        public Plugin() {
+        public Plugin(IPluginLog log, DalamudPluginInterface @interface, IClientState clientState, IChatGui chatGui, 
+            IPartyFinderGui partyFinderGui, IDataManager dataManager, ICommandManager commandManager, IToastGui toastGui)
+        {
+            Log = log;
+            Interface = @interface;
+            ClientState = clientState;
+            ChatGui = chatGui;
+            PartyFinderGui = partyFinderGui;
+            DataManager = dataManager;
+            CommandManager = commandManager;
+            ToastGui = toastGui;
+
             string path = Environment.GetEnvironmentVariable("PATH")!;
             string newPath = Path.GetDirectoryName(this.AssemblyLocation)!;
             Environment.SetEnvironmentVariable("PATH", $"{path};{newPath}");
