@@ -17,11 +17,7 @@ namespace NoSoliciting.Ml {
 
         private const string ManifestName = "manifest.yaml";
         private const string ModelName = "model.zip";
-        #if DEBUG
-        private const string Url = "http://localhost:8000/manifest.yaml";
-        #else
-        private const string Url = "https://annaclemens.io/assets/nosol/ml/manifest.yaml";
-        #endif
+        private const string Url = "https://no-soliciting.nyc3.digitaloceanspaces.com/manifest.yaml";
 
         public uint Version { get; }
         public Uri ReportUrl { get; }
@@ -54,6 +50,10 @@ namespace NoSoliciting.Ml {
             if (manifest == null) {
                 Plugin.Log.Warning("Could not download manifest. Will attempt to fall back on cached version.");
             }
+            else
+            {
+                Plugin.Log.Info($"Downloaded manifest version {manifest.Value.manifest.Version}");
+            }
 
             // model zip file data
             byte[]? data = null;
@@ -63,6 +63,7 @@ namespace NoSoliciting.Ml {
             // if there is a cached manifest and we either couldn't download/parse the remote OR the cached version is the same as remote version
             if (localManifest != null && (manifest?.Item1 == null || localManifest.Version == manifest.Value.manifest.Version)) {
                 try {
+                    Plugin.Log.Info("Using cached model since it is up to date.");
                     // try to reach the cached model
                     data = await File.ReadAllBytesAsync(CachedFilePath(plugin, ModelName));
                     // set the manifest to our local one and an empty string for the source
@@ -70,6 +71,10 @@ namespace NoSoliciting.Ml {
                 } catch (IOException) {
                     // ignored
                 }
+            }
+            else
+            {
+                Plugin.Log.Info("Cached model is outdated or missing.");
             }
 
             // if there is source for the manifest
@@ -81,6 +86,7 @@ namespace NoSoliciting.Ml {
 
             // give up if we couldn't get any data at this point
             if (data == null) {
+                Plugin.Log.Warning("Could not download model.");
                 plugin.MlStatus = MlFilterStatus.Uninitialised;
                 return null;
             }
@@ -107,6 +113,7 @@ namespace NoSoliciting.Ml {
 
             // give up if we couldn't get any data at this point
             if (data == null) {
+                Plugin.Log.Warning("Could not download model.");
                 plugin.MlStatus = MlFilterStatus.Uninitialised;
                 return null;
             }
@@ -115,6 +122,7 @@ namespace NoSoliciting.Ml {
 
             // if there is source for the manifest
             if (!string.IsNullOrEmpty(manifest!.Value.source)) {
+                Plugin.Log.Info("Initialising model with source.");
                 // update the cached files
                 UpdateCachedFile(plugin, ModelName, data);
                 UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Value.source));
@@ -133,6 +141,7 @@ namespace NoSoliciting.Ml {
 
         private static async Task<byte[]?> DownloadModel(Uri url) {
             try {
+                Plugin.Log.Info("Downloading model from {0}", url);
                 using var client = new WebClient();
                 var data = await client.DownloadDataTaskAsync(url);
                 return data;
