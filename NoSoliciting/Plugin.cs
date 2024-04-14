@@ -30,7 +30,7 @@ namespace NoSoliciting {
         internal DalamudPluginInterface Interface { get; init; } = null!;
 
         [PluginService]
-        private IClientState ClientState { get; init; } = null!;
+        internal IClientState ClientState { get; init; } = null!;
 
         [PluginService]
         internal IChatGui ChatGui { get; init; } = null!;

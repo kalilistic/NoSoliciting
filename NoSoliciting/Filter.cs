@@ -126,6 +126,16 @@ namespace NoSoliciting {
             if (chatType.IsBattle()) {
                 return false;
             }
+            
+            // don't filter own chat messages
+            var playerName = Plugin.ClientState.LocalPlayer?.Name.TextValue;
+            if (sender != null && 
+                !string.IsNullOrEmpty(sender.TextValue) && 
+                !string.IsNullOrEmpty(playerName) && 
+                sender.TextValue.Equals(playerName)) {
+                Plugin.Log.Verbose("Skip filtering own message for character: " + playerName);
+                return false;
+            }
 
             var text = message.TextValue;
 
