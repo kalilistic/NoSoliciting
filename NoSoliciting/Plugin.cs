@@ -5,14 +5,12 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using Dalamud;
-using Dalamud.ContextMenu;
+using Dalamud.Game;
 using Dalamud.IoC;
 using Dalamud.Plugin.Services;
 using NoSoliciting.Interface;
 using NoSoliciting.Ml;
 using NoSoliciting.Resources;
-using XivCommon;
 
 namespace NoSoliciting {
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -27,7 +25,7 @@ namespace NoSoliciting {
         internal static IPluginLog Log { get; private set; } = null!;
 
         [PluginService]
-        internal DalamudPluginInterface Interface { get; init; } = null!;
+        internal IDalamudPluginInterface Interface { get; init; } = null!;
 
         [PluginService]
         internal IClientState ClientState { get; init; } = null!;
@@ -48,11 +46,8 @@ namespace NoSoliciting {
         internal IToastGui ToastGui { get; init; } = null!;
 
         internal PluginConfiguration Config { get; }
-        internal XivCommonBase Common { get; }
-        internal DalamudContextMenu DalamudContextMenu { get; }
         internal PluginUi Ui { get; }
         private Commands Commands { get; }
-        private ContextMenu ContextMenu { get; }
         internal MlFilterStatus MlStatus { get; set; } = MlFilterStatus.Uninitialised;
         internal MlFilter? MlFilter { get; set; }
 
@@ -66,7 +61,7 @@ namespace NoSoliciting {
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public string AssemblyLocation { get; private set; } = Assembly.GetExecutingAssembly().Location;
 
-        public Plugin(IPluginLog log, DalamudPluginInterface @interface, IClientState clientState, IChatGui chatGui, 
+        public Plugin(IPluginLog log, IDalamudPluginInterface @interface, IClientState clientState, IChatGui chatGui, 
             IPartyFinderGui partyFinderGui, IDataManager dataManager, ICommandManager commandManager, IToastGui toastGui)
         {
             Log = log;
@@ -88,12 +83,8 @@ namespace NoSoliciting {
             this.ConfigureLanguage();
             this.Interface.LanguageChanged += this.OnLanguageUpdate;
 
-            this.Common = new XivCommonBase(this.Interface, Hooks.PartyFinderListings);
-            this.DalamudContextMenu = new DalamudContextMenu(this.Interface);
-
             this.Ui = new PluginUi(this);
             this.Commands = new Commands(this);
-            this.ContextMenu = new ContextMenu(this);
 
             this.Filter = new Filter(this);
 
@@ -115,11 +106,8 @@ namespace NoSoliciting {
             if (disposing) {
                 this.Filter.Dispose();
                 this.MlFilter?.Dispose();
-                this.ContextMenu.Dispose();
                 this.Commands.Dispose();
                 this.Ui.Dispose();
-                this.DalamudContextMenu.Dispose();
-                this.Common.Dispose();
                 this.Interface.LanguageChanged -= this.OnLanguageUpdate;
             }
 

@@ -69,11 +69,11 @@ namespace NoSoliciting {
             GC.SuppressFinalize(this);
         }
 
-        private void OnChat(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
+        private void OnChat(XivChatType type, int senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
             isHandled = isHandled || this.FilterMessage(type, senderId, sender, message);
         }
 
-        private void OnListing(PartyFinderListing listing, PartyFinderListingEventArgs args) {
+        private void OnListing(IPartyFinderListing listing, IPartyFinderListingEventArgs args) {
             try {
                 if (this.LastBatch != args.BatchNumber) {
                     this.Plugin.ClearPartyFinderHistory();
@@ -87,7 +87,7 @@ namespace NoSoliciting {
                 this.Plugin.AddPartyFinderHistory(new Message(
                     version,
                     ChatType.None,
-                    listing.ContentIdLower,
+                    (uint)listing.ContentId,
                     listing.Name,
                     listing.Description,
                     category,
@@ -110,7 +110,7 @@ namespace NoSoliciting {
             }
         }
 
-        private bool FilterMessage(XivChatType type, uint senderId, SeString sender, SeString message) {
+        private bool FilterMessage(XivChatType type, int senderId, SeString sender, SeString message) {
             if (message == null) {
                 throw new ArgumentNullException(nameof(message), "SeString cannot be null");
             }
@@ -118,7 +118,7 @@ namespace NoSoliciting {
             return this.MlFilterMessage(type, senderId, sender, message);
         }
 
-        private bool MlFilterMessage(XivChatType type, uint senderId, SeString sender, SeString message) {
+        private bool MlFilterMessage(XivChatType type, int senderId, SeString sender, SeString message) {
             var chatType = ChatTypeExt.FromDalamud(type);
 
             // NOTE: don't filter on user-controlled chat types here because custom filters are supposed to check all
@@ -164,8 +164,8 @@ namespace NoSoliciting {
             var history = new Message(
                 this.Plugin.MlFilter?.Version,
                 ChatTypeExt.FromDalamud(type),
-                senderId,
-                sender,
+                (uint)senderId,
+                sender ?? SeString.Empty,
                 message,
                 classification,
                 custom,
@@ -181,7 +181,7 @@ namespace NoSoliciting {
             return filter;
         }
 
-        private (MessageCategory?, string?) MlListingFilterReason(PartyFinderListing listing) {
+        private (MessageCategory?, string?) MlListingFilterReason(IPartyFinderListing listing) {
             if (this.Plugin.MlFilter == null) {
                 return (null, null);
             }

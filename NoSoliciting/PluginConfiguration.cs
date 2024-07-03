@@ -12,7 +12,7 @@ namespace NoSoliciting {
     public class PluginConfiguration : IPluginConfiguration {
         public static readonly PluginConfiguration Default = new();
 
-        private DalamudPluginInterface Interface { get; set; } = null!;
+        private IDalamudPluginInterface Interface { get; set; } = null!;
 
         public int Version { get; set; } = 2;
 
@@ -99,7 +99,7 @@ namespace NoSoliciting {
         public IEnumerable<string> ValidChatSubstrings => this.ChatSubstrings.Where(needle => !string.IsNullOrWhiteSpace(needle));
         public IEnumerable<string> ValidPfSubstrings => this.PFSubstrings.Where(needle => !string.IsNullOrWhiteSpace(needle));
 
-        public void Initialise(DalamudPluginInterface pi) {
+        public void Initialise(IDalamudPluginInterface pi) {
             this.Interface = pi;
             this.CompileRegexes();
         }
