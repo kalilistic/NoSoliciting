@@ -6,7 +6,7 @@ using System.Linq;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Plugin.Services;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 using NoSoliciting.Ml;
 
 #if DEBUG
@@ -220,10 +220,42 @@ namespace NoSoliciting {
                     return "Party (Cross-world)";
             }
 
-            var lf = data.GetExcelSheet<LogFilter>()!.FirstOrDefault(lf => lf.LogKind == type.LogKind());
-            return lf?.Name?.ToString() ?? type.ToString();
+            var lfResult =
+                data.GetExcelSheet<LogFilter>()!.TryGetFirst(lf1 => lf1.LogKind == type.LogKind(), out var lf);
+            return !lfResult ? type.ToString() : lf.Name.ExtractText();
+        }
+        
+        public static bool TryGetFirst<T>(this IEnumerable<T> values, out T result) where T : struct
+        {
+            using var e = values.GetEnumerator();
+            if (e.MoveNext())
+            {
+                result = e.Current;
+                return true;
+            }
+
+            result = default;
+            return false;
         }
 
+        public static bool TryGetFirst<T>(this IEnumerable<T> values, Predicate<T> predicate, out T result) where T : struct
+        {
+            using var e = values.GetEnumerator();
+            while (e.MoveNext())
+            {
+                if (!predicate(e.Current))
+                {
+                    continue;
+                }
+
+                result = e.Current;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+        
         public static ChatType FromCode(ushort code) {
             return (ChatType) (code & Clear7);
         }

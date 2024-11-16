@@ -1,9 +1,9 @@
-﻿using Lumina.Excel.GeneratedSheets;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dalamud.Plugin.Services;
+using Lumina.Excel.Sheets;
 using NoSoliciting.Ml;
 
 namespace NoSoliciting {
@@ -28,9 +28,6 @@ namespace NoSoliciting {
 
         private static Slot? SlotFromItem(Item item) {
             var cat = item.EquipSlotCategory.Value;
-            if (cat == null) {
-                return null;
-            }
 
             if (cat.MainHand != 0) {
                 return Slot.MainHand;
@@ -104,11 +101,8 @@ namespace NoSoliciting {
                     continue;
                 }
 
-                var itemLevel = 0;
                 var ilvl = item.LevelItem.Value;
-                if (ilvl != null) {
-                    itemLevel = (int) ilvl.RowId;
-                }
+                var itemLevel = (int) ilvl.RowId;
 
                 if (ilvls.TryGetValue((Slot) slot, out var currentMax) && currentMax > itemLevel) {
                     continue;
