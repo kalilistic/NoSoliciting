@@ -15,5 +15,5 @@ description: |-
   - Community ads
   - Any PF with an item level over the max
 repo_url: https://github.com/kalilistic/NoSoliciting
-# Use higher priority to filter messages before other plugins get them.
 load_priority: 100
+accepts_feedback: false
