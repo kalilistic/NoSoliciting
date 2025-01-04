@@ -1,0 +1,18 @@
+changelog_version: "1.0"
+
+stable:
+  - version: "3.1.2.0"
+    date: "2025-01-04"
+    is_critical: false
+    headline: Backend changes only to prepare for future releases.
+    added:
+    changed:
+        - Remove old files.
+        - Add interface project as submodule.
+        - Rename project to use plugin suffix.
+    deprecated:
+    fixed:
+    removed:
+    technical:
+        - This will be flagged as large due to the rename/moving files around.
+        - There's no actual material code changes in this PR.
