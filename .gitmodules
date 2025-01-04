@@ -1,0 +1,3 @@
+[submodule "NoSoliciting.Interface"]
+	path = NoSoliciting.Interface
+	url = https://github.com/kalilistic/NoSoliciting.Interface.git
