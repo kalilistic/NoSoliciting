@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSoliciting", "NoSolicitin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C424003-6609-47D7-8D27-BF309C34E909}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSoliciting.Interface", "NoSoliciting.Interface\NoSoliciting.Interface.csproj", "{E88E57AB-EFB8-4F2F-93DB-F63123638C44}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSoliciting.Trainer", "NoSoliciting.Trainer\NoSoliciting.Trainer.csproj", "{3D774127-F7A9-4B6D-AB2F-3AAF80D15586}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
