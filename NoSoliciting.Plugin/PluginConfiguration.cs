@@ -37,18 +37,12 @@ namespace NoSoliciting {
         public bool FollowGameLanguage { get; set; }
 
         public HashSet<MessageCategory> BasicMlFilters { get; set; } = new() {
-            MessageCategory.RmtGil,
-            MessageCategory.RmtContent,
+            MessageCategory.Rmt,
             MessageCategory.Phishing,
         };
 
         public Dictionary<MessageCategory, HashSet<ChatType>> MlFilters { get; set; } = new() {
-            [MessageCategory.RmtGil] = new HashSet<ChatType> {
-                ChatType.None,
-                ChatType.Say,
-                ChatType.Shout,
-            },
-            [MessageCategory.RmtContent] = new HashSet<ChatType> {
+            [MessageCategory.Rmt] = new HashSet<ChatType> {
                 ChatType.None,
                 ChatType.Say,
                 ChatType.Shout,
@@ -56,11 +50,6 @@ namespace NoSoliciting {
             [MessageCategory.Phishing] = new HashSet<ChatType> {
                 ChatType.None,
                 ChatType.TellIncoming,
-            },
-            [MessageCategory.Roleplaying] = new HashSet<ChatType> {
-                ChatType.None,
-                ChatType.Shout,
-                ChatType.Yell,
             },
             [MessageCategory.FreeCompany] = new HashSet<ChatType> {
                 ChatType.None,
@@ -71,20 +60,12 @@ namespace NoSoliciting {
             [MessageCategory.Static] = new HashSet<ChatType> {
                 ChatType.None,
             },
-            [MessageCategory.StaticSub] = new HashSet<ChatType> {
-                ChatType.None,
-            },
             [MessageCategory.Trade] = new HashSet<ChatType> {
                 ChatType.None,
                 ChatType.Shout,
                 ChatType.Yell,
             },
-            [MessageCategory.Community] = new HashSet<ChatType> {
-                ChatType.None,
-                ChatType.Shout,
-                ChatType.Yell,
-            },
-            [MessageCategory.Fluff] = new HashSet<ChatType> {
+            [MessageCategory.Social] = new HashSet<ChatType> {
                 ChatType.None,
                 ChatType.Shout,
                 ChatType.Yell,

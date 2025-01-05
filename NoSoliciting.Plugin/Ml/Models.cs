@@ -3,17 +3,25 @@ using NoSoliciting.Resources;
 
 namespace NoSoliciting.Ml {
     public enum MessageCategory {
-        Trade,
-        FreeCompany,
         Normal,
+        FreeCompany,
         Phishing,
-        RmtContent,
-        RmtGil,
-        Roleplaying,
+        Rmt,
+        Social,
         Static,
-        Community,
+        Trade,
+        [Obsolete("Use Static instead.")]
         StaticSub,
+        [Obsolete("Use Social instead.")]
+        Community,
+        [Obsolete("Use Community instead.")]
+        Roleplaying,
+        [Obsolete("Use Community instead.")]
         Fluff,
+        [Obsolete("Use RMT instead.")]
+        RmtContent,
+        [Obsolete("Use RMT instead.")]
+        RmtGil,
     }
 
     public static class MessageCategoryExt {
@@ -21,13 +29,9 @@ namespace NoSoliciting.Ml {
             MessageCategory.Trade,
             MessageCategory.FreeCompany,
             MessageCategory.Phishing,
-            MessageCategory.RmtContent,
-            MessageCategory.RmtGil,
-            MessageCategory.Roleplaying,
+            MessageCategory.Rmt,
             MessageCategory.Static,
-            MessageCategory.StaticSub,
-            MessageCategory.Community,
-            MessageCategory.Fluff,
+            MessageCategory.Social,
         };
 
         public static MessageCategory? FromString(string? category) => category switch {
@@ -35,13 +39,9 @@ namespace NoSoliciting.Ml {
             "FC" => MessageCategory.FreeCompany,
             "NORMAL" => MessageCategory.Normal,
             "PHISH" => MessageCategory.Phishing,
-            "RMT_C" => MessageCategory.RmtContent,
-            "RMT_G" => MessageCategory.RmtGil,
-            "RP" => MessageCategory.Roleplaying,
+            "RMT" => MessageCategory.Rmt,
             "STATIC" => MessageCategory.Static,
-            "COMMUNITY" => MessageCategory.Community,
-            "STATIC_SUB" => MessageCategory.StaticSub,
-            "FLUFF" => MessageCategory.Fluff,
+            "SOCIAL" => MessageCategory.Social,
             _ => null,
         };
 
@@ -51,13 +51,9 @@ namespace NoSoliciting.Ml {
             "Free Company ads" => MessageCategory.FreeCompany,
             "Normal messages" => MessageCategory.Normal,
             "Phishing messages" => MessageCategory.Phishing,
-            "RMT (content)" => MessageCategory.RmtContent,
-            "RMT (gil)" => MessageCategory.RmtGil,
-            "Roleplaying ads" => MessageCategory.Roleplaying,
-            "Static recruitment" => MessageCategory.Static,
-            "Community ads" => MessageCategory.Community,
-            "Static substitutes" => MessageCategory.StaticSub,
-            "Fluff" => MessageCategory.Fluff,
+            "RMT (content and gil)" => MessageCategory.Rmt,
+            "Static" => MessageCategory.Static,
+            "RP & Community ads" => MessageCategory.Social,
             _ => null,
         };
         #endif
@@ -67,13 +63,9 @@ namespace NoSoliciting.Ml {
             MessageCategory.FreeCompany => "FC",
             MessageCategory.Normal => "NORMAL",
             MessageCategory.Phishing => "PHISH",
-            MessageCategory.RmtContent => "RMT_C",
-            MessageCategory.RmtGil => "RMT_G",
-            MessageCategory.Roleplaying => "RP",
+            MessageCategory.Rmt => "RMT",
             MessageCategory.Static => "STATIC",
-            MessageCategory.Community => "COMMUNITY",
-            MessageCategory.StaticSub => "STATIC_SUB",
-            MessageCategory.Fluff => "FLUFF",
+            MessageCategory.Social => "SOCIAL",
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
 
@@ -82,13 +74,9 @@ namespace NoSoliciting.Ml {
             MessageCategory.FreeCompany => Language.FreeCompanyCategory,
             MessageCategory.Normal => Language.NormalCategory,
             MessageCategory.Phishing => Language.PhishingCategory,
-            MessageCategory.RmtContent => Language.RmtContentCategory,
-            MessageCategory.RmtGil => Language.RmtGilCategory,
-            MessageCategory.Roleplaying => Language.RoleplayingCategory,
+            MessageCategory.Rmt => Language.RmtCategory,
             MessageCategory.Static => Language.StaticCategory,
-            MessageCategory.Community => Language.CommunityCategory,
-            MessageCategory.StaticSub => Language.StaticSubCategory,
-            MessageCategory.Fluff => Language.FluffCategory,
+            MessageCategory.Social => Language.SocialCategory,
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
 
@@ -97,13 +85,9 @@ namespace NoSoliciting.Ml {
             MessageCategory.FreeCompany => Language.FreeCompanyDescription,
             MessageCategory.Normal => Language.NormalDescription,
             MessageCategory.Phishing => Language.PhishingDescription,
-            MessageCategory.RmtContent => Language.RmtContentDescription,
-            MessageCategory.RmtGil => Language.RmtGilDescription,
-            MessageCategory.Roleplaying => Language.RoleplayingDescription,
+            MessageCategory.Rmt => Language.RmtDescription,
             MessageCategory.Static => Language.StaticDescription,
-            MessageCategory.Community => Language.CommunityDescription,
-            MessageCategory.StaticSub => Language.StaticSubDescription,
-            MessageCategory.Fluff => Language.FluffDescription,
+            MessageCategory.Social => Language.SocialDescription,
             _ => throw new ArgumentException("Invalid category", nameof(category)),
         };
     }

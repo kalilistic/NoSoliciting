@@ -282,4 +282,16 @@
     <data name="FluffDescription" xml:space="preserve">
         <value>Messages that don't fall into other categories and are not for content (Party Finder)</value>
     </data>
+    <data name="RmtCategory" xml:space="preserve">
+        <value>RMT</value>
+    </data>
+    <data name="RmtDescription" xml:space="preserve">
+        <value>RMT (content and gil)</value>
+    </data>
+    <data name="SocialCategory" xml:space="preserve">
+        <value>Roleplaying &amp; Communities</value>
+    </data>
+    <data name="SocialDescription" xml:space="preserve">
+        <value>Rolepaying messages, commuities ads, and other social fluff</value>
+    </data>
 </root>
