@@ -45,90 +45,45 @@ namespace NoSoliciting.Ml {
         public static async Task<MlFilter?> Load(Plugin plugin, bool showWindow) {
             plugin.MlStatus = MlFilterStatus.DownloadingManifest;
 
-            // download and parse the remote manifest
             var manifest = await DownloadManifest();
             if (manifest == null) {
                 Plugin.Log.Warning("Could not download manifest. Will attempt to fall back on cached version.");
-            }
-            else
-            {
+            } else {
                 Plugin.Log.Info($"Downloaded manifest version {manifest.Value.manifest.Version}");
             }
 
-            // model zip file data
             byte[]? data = null;
 
-            // load the cached manifest
             var localManifest = LoadCachedManifest(plugin);
-            // if there is a cached manifest and we either couldn't download/parse the remote OR the cached version is the same as remote version
             if (localManifest != null && (manifest?.Item1 == null || localManifest.Version == manifest.Value.manifest.Version)) {
                 try {
                     Plugin.Log.Info("Using cached model since it is up to date.");
-                    // try to reach the cached model
                     data = await File.ReadAllBytesAsync(CachedFilePath(plugin, ModelName));
-                    // set the manifest to our local one and an empty string for the source
                     manifest ??= (localManifest, string.Empty);
                 } catch (IOException) {
-                    // ignored
+                    Plugin.Log.Info("Cached model is missing or corrupted.");
                 }
             }
-            else
-            {
-                Plugin.Log.Info("Cached model is outdated or missing.");
-            }
 
-            // if there is source for the manifest
             if (!string.IsNullOrEmpty(manifest?.source)) {
                 plugin.MlStatus = MlFilterStatus.DownloadingModel;
-                // download the model if necessary
                 data ??= await DownloadModel(manifest!.Value.manifest!.ModelUrl);
             }
 
-            // give up if we couldn't get any data at this point
             if (data == null) {
                 Plugin.Log.Warning("Could not download model.");
                 plugin.MlStatus = MlFilterStatus.Uninitialised;
                 return null;
             }
 
-            // validate checksum
-            var retries = 0;
-            const int maxRetries = 3;
-
-            var correctHash = manifest!.Value.manifest!.Hash();
-
-            using (var sha = SHA256.Create()) {
-                var hash = sha.ComputeHash(data);
-
-                while (!hash.SequenceEqual(correctHash) && retries < maxRetries) {
-                    Plugin.Log.Warning($"Model checksum did not match. Redownloading (attempt {retries + 1}/{maxRetries})");
-                    retries += 1;
-
-                    data = await DownloadModel(manifest!.Value.manifest!.ModelUrl);
-                    if (data != null) {
-                        hash = sha.ComputeHash(data);
-                    }
-                }
-            }
-
-            // give up if we couldn't get any data at this point
-            if (data == null) {
-                Plugin.Log.Warning("Could not download model.");
-                plugin.MlStatus = MlFilterStatus.Uninitialised;
-                return null;
-            }
-
-            plugin.MlStatus = MlFilterStatus.Initialising;
-
-            // if there is source for the manifest
             if (!string.IsNullOrEmpty(manifest!.Value.source)) {
-                Plugin.Log.Info("Initialising model with source.");
-                // update the cached files
+                Plugin.Log.Info("Updating cached files.");
                 UpdateCachedFile(plugin, ModelName, data);
                 UpdateCachedFile(plugin, ManifestName, Encoding.UTF8.GetBytes(manifest.Value.source));
             }
 
-            // initialise the classifier
+            plugin.MlStatus = MlFilterStatus.Initialising;
+
             var classifier = new Classifier();
             classifier.Initialise(data);
 

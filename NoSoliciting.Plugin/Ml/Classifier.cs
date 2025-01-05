@@ -1,35 +1,70 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.IO.Compression;
 using Microsoft.ML;
 using NoSoliciting.Interface;
 
 namespace NoSoliciting.Ml {
     internal class Classifier : IClassifier {
         private MLContext Context { get; set; } = null!;
-        private ITransformer Model { get; set; } = null!;
-        private DataViewSchema Schema { get; set; } = null!;
-        private PredictionEngine<Data, Prediction>? PredictionEngine { get; set; }
+        private ITransformer BinaryModel { get; set; } = null!;
+        private ITransformer MultiClassModel { get; set; } = null!;
+        private PredictionEngine<DataBinary, PredictionBinary>? BinaryPredictionEngine { get; set; }
+        private PredictionEngine<Data, Prediction>? MultiClassPredictionEngine { get; set; }
 
         public void Initialise(byte[] data) {
-            if (this.PredictionEngine != null) {
-                this.PredictionEngine.Dispose();
-                this.PredictionEngine = null;
-            }
+            DisposeEngines();
 
             this.Context = new MLContext();
-            this.Context.ComponentCatalog.RegisterAssembly(typeof(Data).Assembly);
+            this.Context.ComponentCatalog.RegisterAssembly(typeof(DataBinary).Assembly);
+
             using var stream = new MemoryStream(data);
-            var model = this.Context.Model.Load(stream, out var schema);
-            this.Model = model;
-            this.Schema = schema;
-            this.PredictionEngine = this.Context.Model.CreatePredictionEngine<Data, Prediction>(this.Model, this.Schema);
+            using var archive = new ZipArchive(stream, ZipArchiveMode.Read);
+
+            var binaryEntry = archive.GetEntry("model_binary.zip");
+            var multiclassEntry = archive.GetEntry("model_multiclass.zip");
+
+            if (binaryEntry == null || multiclassEntry == null) {
+                throw new InvalidDataException("Required model files not found in the archive.");
+            }
+
+            using var binaryStream = binaryEntry.Open();
+            using var multiclassStream = multiclassEntry.Open();
+
+            this.BinaryModel = this.Context.Model.Load(binaryStream, out _);
+            this.MultiClassModel = this.Context.Model.Load(multiclassStream, out _);
+
+            this.BinaryPredictionEngine = this.Context.Model.CreatePredictionEngine<DataBinary, PredictionBinary>(this.BinaryModel);
+            this.MultiClassPredictionEngine = this.Context.Model.CreatePredictionEngine<Data, Prediction>(this.MultiClassModel);
         }
 
         public string Classify(ushort channel, string message) {
-            return this.PredictionEngine?.Predict(new Data(channel, message))?.Category ?? "UNKNOWN";
+            if (this.BinaryPredictionEngine == null || this.MultiClassPredictionEngine == null) {
+                throw new InvalidOperationException("Classifier is not initialized.");
+            }
+
+            var binaryPrediction = this.BinaryPredictionEngine.Predict(new DataBinary {
+                Channel = channel,
+                Message = message
+            });
+
+            if (binaryPrediction.PredictedIsNormal) {
+                return "NORMAL";
+            }
+
+            var multiclassPrediction = this.MultiClassPredictionEngine.Predict(new Data(channel, message));
+            return multiclassPrediction.Category;
         }
 
         public void Dispose() {
-            this.PredictionEngine?.Dispose();
+            DisposeEngines();
+        }
+
+        private void DisposeEngines() {
+            this.BinaryPredictionEngine?.Dispose();
+            this.MultiClassPredictionEngine?.Dispose();
+            this.BinaryPredictionEngine = null;
+            this.MultiClassPredictionEngine = null;
         }
     }
 }
