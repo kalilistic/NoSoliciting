@@ -67,8 +67,8 @@ namespace NoSoliciting {
 
             // note: cannot use byte[] because Newtonsoft thinks it's a good idea to always base64 byte[]
             //       and I don't want to write a custom converter to overwrite their stupidity
-            public List<byte> Sender { get; set; }
-            public List<byte> Content { get; set; }
+            public List<byte> Sender { get; set; } = [];
+            public List<byte> Content { get; set; } = [];
             public string? Reason { get; set; }
             public string? SuggestedClassification { get; set; }
         }
