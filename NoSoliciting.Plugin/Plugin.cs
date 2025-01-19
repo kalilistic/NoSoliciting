@@ -52,6 +52,12 @@ namespace NoSoliciting {
         internal MlFilter? MlFilter { get; set; }
 
         private readonly List<Message> _messageHistory = new();
+        
+        #if DEBUG
+        internal const string report_url = "http://localhost:3000/report";
+        #else
+        internal const string report_url = "https://visualnovelonline.com/report";
+        #endif
         internal IEnumerable<Message> MessageHistory => this._messageHistory;
 
         private readonly List<Message> _partyFinderHistory = new();

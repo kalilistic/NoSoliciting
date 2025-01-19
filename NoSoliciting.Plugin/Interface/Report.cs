@@ -237,129 +237,125 @@ namespace NoSoliciting.Interface {
             }
 
             ImGui.PushTextWrapPos();
-
-            ImGui.TextUnformatted("Hey, thanks for your interest in reporting a message! I'm still in the process " +
-                                  "of taking over the plugin from Anna. I'll be setting up a new back-end to handle your " +
-                                  "reports and improving the filters. This feature will be back soon! - Kal");
-
+            
             ImGui.Separator();
             
-            //
-            // ImGui.TextUnformatted(message.Content.TextValue);
-            //
-            // ImGui.Separator();
-            //
-            // ImGui.TextUnformatted(string.Format(Language.ReportModalOriginalClassification, message.FilterReason ?? MessageCategory.Normal.Name()));
-            //
-            // ImGui.TextUnformatted(Language.ReportModalSuggestedClassification);
-            //
-            // ImGui.SetNextItemWidth(-1);
-            // var preview = this._reportCategory?.Name() ?? (this._other ? Language.ReportModalClassificationOther : string.Empty);
-            // if (ImGui.BeginCombo($"##modal-classification-{message.Id}", preview)) {
-            //     foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
-            //         if (ImGui.Selectable($"{category.Name()}##modal-option-{message.Id}", this._reportCategory == category)) {
-            //             this._reportCategory = category;
-            //             this._other = false;
-            //         }
-            //
-            //         WrappedTooltip(category.Description());
-            //     }
-            //
-            //     if (ImGui.Selectable(Language.ReportModalClassificationOther)) {
-            //         this._reportCategory = null;
-            //         this._other = true;
-            //     }
-            //
-            //     WrappedTooltip(Language.ReportModalClassificationOtherDescription);
-            //
-            //     ImGui.EndCombo();
-            // }
-            //
-            // ImGui.Separator();
-            //
-            // ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
-            // ImGui.TextUnformatted(Language.ReportModalHelp2);
-            // ImGui.PopStyleColor();
-            //
-            // ImGui.Separator();
-            //
-            // string? errorText = null;
-            // if (message.Custom) {
-            //     errorText = Language.ReportModalDisabledCustom;
-            // } else if (message.ItemLevel) {
-            //     errorText = Language.ReportModalDisabledItemLevel;
-            // } else if (message.ModelVersion == null) {
-            //     errorText = Language.ReportModalDisabledBadModel;
-            // } else if (!message.EnabledSnapshot.WasEnabled(this._reportCategory ?? MessageCategory.Normal)) {
-            //     errorText = Language.ReportModalDisabledFilterNotEnabled;
-            // } else if (this._reportCategory == (message.Classification ?? MessageCategory.Normal)) {
-            //     errorText = Language.ReportModalDisabledSameClassification;
-            // }
-            //
-            // if (this._other) {
-            //     if (ImGui.Button($"{Language.ReportModalGoToCustomButton}##report-goto-custom-{message.Id}")) {
-            //         ImGui.CloseCurrentPopup();
-            //         closing = true;
-            //         if (message == this.ToShowModal) {
-            //             this.ToShowModal = null;
-            //         }
-            //
-            //         this.Plugin.Ui.Settings.ShowOtherFilters = true;
-            //         this.Plugin.Ui.Settings.Show();
-            //     }
-            //
-            //     ImGui.SameLine();
-            // } else if (errorText != null) {
-            //     ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
-            //     ImGui.TextUnformatted(errorText);
-            //     ImGui.PopStyleColor();
-            // } else {
-            //     if (ImGui.Button($"{Language.ReportModalReport}##report-submit-{message.Id}")) {
-            //         var suggested = this._reportCategory?.ToModelName() ?? "none (this is a bug)";
-            //         this._reportCategory = null;
-            //         if (message == this.ToShowModal) {
-            //             Task.Run(async () => {
-            //                 var status = await this.Plugin.Ui.Report.ReportMessageAsync(message, suggested);
-            //                 switch (status) {
-            //                     case ReportStatus.Successful: {
-            //                         var msg = Language.ReportToastSuccess;
-            //                         this.Plugin.ToastGui.ShowNormal(string.Format(msg, message.Sender));
-            //                         break;
-            //                     }
-            //                     case ReportStatus.Failure: {
-            //                         var msg = Language.ReportToastFailure;
-            //                         this.Plugin.ToastGui.ShowError(string.Format(msg, message.Sender));
-            //                         break;
-            //                     }
-            //                 }
-            //             });
-            //             this.ToShowModal = null;
-            //         } else {
-            //             this.ReportMessage(message, suggested);
-            //         }
-            //
-            //         ImGui.CloseCurrentPopup();
-            //         closing = true;
-            //     }
-            //
-            //     ImGui.SameLine();
-            // }
-            //
-            // if (ImGui.Button($"{Language.ReportModalCopy}##report-copy-{message.Id}")) {
-            //     ImGui.SetClipboardText(message.Content.TextValue);
-            // }
-            //
-            // #if DEBUG
-            // ImGui.SameLine();
-            // if (ImGui.Button("Copy CSV")) {
-            //     ImGui.SetClipboardText(message.ToCsv().ToString());
-            // }
-            // #endif
-            //
-            // ImGui.SameLine();
+            
+            ImGui.TextUnformatted(message.Content.TextValue);
+            
+            ImGui.Separator();
+            
+            ImGui.TextUnformatted(string.Format(Language.ReportModalOriginalClassification, message.FilterReason ?? MessageCategory.Normal.Name()));
+            
+            ImGui.TextUnformatted(Language.ReportModalSuggestedClassification);
+            
+            ImGui.SetNextItemWidth(-1);
+            var preview = this._reportCategory?.Name() ?? (this._other ? Language.ReportModalClassificationOther : string.Empty);
+            if (ImGui.BeginCombo($"##modal-classification-{message.Id}", preview)) {
+                foreach (var category in (MessageCategory[]) Enum.GetValues(typeof(MessageCategory))) {
+                    if (ImGui.Selectable($"{category.Name()}##modal-option-{message.Id}", this._reportCategory == category)) {
+                        this._reportCategory = category;
+                        this._other = false;
+                    }
+            
+                    WrappedTooltip(category.Description());
+                }
+            
+                if (ImGui.Selectable(Language.ReportModalClassificationOther)) {
+                    this._reportCategory = null;
+                    this._other = true;
+                }
+            
+                WrappedTooltip(Language.ReportModalClassificationOtherDescription);
+            
+                ImGui.EndCombo();
+            }
+            
+            ImGui.Separator();
+            
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
+            ImGui.TextUnformatted(Language.ReportModalHelp2);
+            ImGui.PopStyleColor();
+            
+            ImGui.Separator();
+            
+            string? errorText = null;
+            if (message.Custom) {
+                errorText = Language.ReportModalDisabledCustom;
+            } else if (message.ItemLevel) {
+                errorText = Language.ReportModalDisabledItemLevel;
+            } else if (message.ModelVersion == null) {
+                errorText = Language.ReportModalDisabledBadModel;
+            } else if (!message.EnabledSnapshot.WasEnabled(this._reportCategory ?? MessageCategory.Normal)) {
+                errorText = Language.ReportModalDisabledFilterNotEnabled;
+            } else if (this._reportCategory == (message.Classification ?? MessageCategory.Normal)) {
+                errorText = Language.ReportModalDisabledSameClassification;
+            }
+            
+            if (this._other) {
+                if (ImGui.Button($"{Language.ReportModalGoToCustomButton}##report-goto-custom-{message.Id}")) {
+                    ImGui.CloseCurrentPopup();
+                    closing = true;
+                    if (message == this.ToShowModal) {
+                        this.ToShowModal = null;
+                    }
+            
+                    this.Plugin.Ui.Settings.ShowOtherFilters = true;
+                    this.Plugin.Ui.Settings.Show();
+                }
+            
+                ImGui.SameLine();
+            } else if (errorText != null) {
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0f, 0f, 1f));
+                ImGui.TextUnformatted(errorText);
+                ImGui.PopStyleColor();
+            } else {
+                if (ImGui.Button($"{Language.ReportModalReport}##report-submit-{message.Id}")) {
+                    var suggested = this._reportCategory?.ToModelName() ?? "none (this is a bug)";
+                    this._reportCategory = null;
+                    if (message == this.ToShowModal) {
+                        Task.Run(async () => {
+                            var status = await this.Plugin.Ui.Report.ReportMessageAsync(message, suggested);
+                            switch (status) {
+                                case ReportStatus.Successful: {
+                                    var msg = Language.ReportToastSuccess;
+                                    this.Plugin.ToastGui.ShowNormal(string.Format(msg, message.Sender));
+                                    break;
+                                }
+                                case ReportStatus.Failure: {
+                                    var msg = Language.ReportToastFailure;
+                                    this.Plugin.ToastGui.ShowError(string.Format(msg, message.Sender));
+                                    break;
+                                }
+                            }
+                        });
+                        this.ToShowModal = null;
+                    } else {
+                        this.ReportMessage(message, suggested);
+                    }
+            
+                    ImGui.CloseCurrentPopup();
+                    closing = true;
+                }
+            
+                ImGui.SameLine();
+            }
+            
+            if (ImGui.Button($"{Language.ReportModalCopy}##report-copy-{message.Id}")) {
+                ImGui.SetClipboardText(message.Content.TextValue);
+            }
+            
+            #if DEBUG
+            ImGui.SameLine();
+            if (ImGui.Button("Copy CSV")) {
+                ImGui.SetClipboardText(message.ToCsv().ToString());
+            }
+            #endif
+            
+            ImGui.SameLine();
 
             var cancelButton = Language.ReportModalCancel;
-            if (ImGui.Button("OK")) { // $"{cancelButton}##report-cancel-{message.Id}")
+            if (ImGui.Button("Cancel")) { // $"{cancelButton}##report-cancel-{message.Id}")
                 this._reportCategory = null;
                 if (message == this.ToShowModal) {
                     this.ToShowModal = null;
@@ -429,16 +425,16 @@ namespace NoSoliciting.Interface {
             string? resp = null;
             try {
                 using var client = new WebClient();
+                client.Headers.Add("Content-type","application/json");
                 this.LastReportStatus = ReportStatus.InProgress;
-                var reportUrl = this.Plugin.MlFilter?.ReportUrl;
-                if (reportUrl != null) {
-                    var json = message.ToJson(suggested);
+                var reportUrl = new Uri(Plugin.report_url);
+                var json = message.ToJson(suggested);
+                Plugin.Log.Debug($"Reporting {json}");
                     if (json != null) {
                         resp = await client.UploadStringTaskAsync(reportUrl, json).ConfigureAwait(true);
-                    }
                 }
-            } catch (Exception) {
-                // ignored
+            } catch (Exception e) {
+                Plugin.Log.Error(e.Message);
             }
 
             var status = resp == "{\"message\":\"ok\"}" ? ReportStatus.Successful : ReportStatus.Failure;
